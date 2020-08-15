@@ -3,7 +3,7 @@ if { [[ "$1" =~ ^md5|sha(1)?|sha2(56)?|sha3(84)?|sha5(12)?$ ]]; } && [ "$#" -ge 
   TYPE="$1"
   INPUT="$2"
 
-  # if more than 2 args, use all others as input
+  # if more than 2 args, use args >=2 as input
   if [ "$#" -ge 3 ]; then
     INPUT=$(echo "$@" | cut -d' ' -f2-)
   fi

@@ -160,6 +160,53 @@ if [ "$#" -eq 1 ] && { [ "$1" == "r" ] || [ "$1" == "rhost" ]; }; then
   echo "  RHOST: $RHOST"
   exit
 fi
+## u(ser)a(gent) [text]^: Show/Set User-Agent
+# Set USRAGENT
+DEFAULTUA='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36'
+if [[ "$1" =~ ^u(ser)?a(gent)?$ ]] && [ "$#" -ge 2 ]; then
+  FPATH="/dev/shm/.fxy"
+  FILE="/dev/shm/.fxy/useragent"
+  if [ "$#" -ge 2 ]; then
+    if [ ! -d "$FPATH" ]; then
+      mkdir "$FPATH"
+    fi
+
+    # if more than 2 args, use args >=2 as input
+    INPUT="$2"
+    if [ "$#" -ge 3 ]; then
+      INPUT="$(echo "$@" | cut -d' ' -f2-)"
+    fi
+
+    if [[ "$2" =~ ^default|reset$ ]]; then
+      INPUT="$DEFAULTUA"
+    fi
+
+    echo "$INPUT" > $FILE
+  fi
+  exit
+fi
+
+# Load USRAGENT from cache
+FILE="/dev/shm/.fxy/useragent"
+if [ -f $FILE ]; then
+  USRAGENT="$(cat $FILE)"
+  export USRAGENT
+
+  if [ -z "$USRAGENT" ]; then
+     echo "[!] Something went wrong on loading '$FILE'"
+     USRAGENT="$DEFAULTUA"
+     export USRAGENT
+  fi
+else
+  USRAGENT="$DEFAULTUA"
+  export USRAGENT
+fi
+
+# Show USRAGENT
+if [[ "$1" =~ ^u(ser)?a(gent)?$ ]] && [ "$#" -eq 1 ]; then
+  echo "  User-Agent: $USRAGENT"
+  exit
+fi
 ## b(ase)64(e|d) [input]^: Base64 Encode/Decode
 if [[ "$1" =~ ^b(ase)?64(e|d)?$ ]] && [ "$#" -eq 2 ]; then
   CMD="base64"; checkCmd
@@ -269,7 +316,7 @@ if [ "$1" == "curl" ]; then
     fi
   fi
 
-  CMD="$CMD -ski $PROTO://${RHOST}${SUBDIR} | less"
+  CMD="$CMD -ski -A $USRAGENT $PROTO://${RHOST}${SUBDIR} | less"
   echo "> $CMD"
   prompt
   bash -c "$CMD"
@@ -400,7 +447,7 @@ if { [[ "$1" =~ ^md5|sha(1)?|sha2(56)?|sha3(84)?|sha5(12)?$ ]]; } && [ "$#" -ge 
   TYPE="$1"
   INPUT="$2"
 
-  # if more than 2 args, use all others as input
+  # if more than 2 args, use args >=2 as input
   if [ "$#" -ge 3 ]; then
     INPUT=$(echo "$@" | cut -d' ' -f2-)
   fi
@@ -455,7 +502,7 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
 
   # hashtoolkit.com
   if [[ "$TYPE" =~ ^md5|sha1|sha256|sha356|sha512$ ]]; then
-    RES="$(curl -ski https://hashtoolkit.com/reverse-"$TYPE"-hash/?hash="$HASH")"
+    RES="$(curl -ski -A "$USRAGENT" https://hashtoolkit.com/reverse-"$TYPE"-hash/?hash="$HASH")"
 
     if [ -n "$(grep -i 'No hashes found for' <<< "$RES")" ]; then
       echo "[!] (hashtoolkit.com) No match found!";
@@ -470,8 +517,8 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
   # gromweb.com
   if [[ "$TYPE" =~ ^md5|sha1$ ]]; then
     case "$TYPE" in
-      "md5")        RES="$(curl -ski https://md5.gromweb.com/?md5="$HASH")" ;;
-      "sha1")       RES="$(curl -ski https://sha1.gromweb.com/?hash="$HASH")" ;;
+      "md5")        RES="$(curl -ski -A "$USRAGENT" https://md5.gromweb.com/?md5="$HASH")" ;;
+      "sha1")       RES="$(curl -ski -A "$USRAGENT" https://sha1.gromweb.com/?hash="$HASH")" ;;
       *)            echo "[!] Error parsing type of hash!"; exit ;;
     esac
 
@@ -491,7 +538,7 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
       -H 'cache-control: no-cache' \
       -H 'accept: application/json, text/javascript, */*; q=0.01' \
       -H 'dnt: 1' \
-      -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36' \
+      -H "user-agent: $USRAGENT" \
       -H 'content-type: application/json' \
       -H 'origin: https://www.objectif-securite.ch' \
       -H 'sec-fetch-site: cross-site' \
@@ -513,7 +560,7 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
   # online-domain-tools.com
   if [[ "$TYPE" =~ ^md5|sha1|sha256|lm|nt$ ]]; then
     if [ "$TYPE" == "nt" ]; then TYPE="ntlm"; fi
-    RES=$(curl -ski "https://reverse-hash-lookup.online-domain-tools.com/" --data "text=$HASH&function=$TYPE&do=form-submit&phone=5deab72563840e7678c4067671849b85332d7438&send=%3E+Reverse!")
+    RES=$(curl -ski -A "$USRAGENT" "https://reverse-hash-lookup.online-domain-tools.com/" --data "text=$HASH&function=$TYPE&do=form-submit&phone=5deab72563840e7678c4067671849b85332d7438&send=%3E+Reverse!")
     if [ -n "$(grep -i 'You do not have enough credits in your account.' <<< "$RES")" ]; then
       echo "[!] (online-domain-tools.com) No free credits left!";
     elif [ -n "$(grep -i 'Hash #1:</b> ERROR:' <<< "$RES")" ]; then

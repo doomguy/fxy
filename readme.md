@@ -42,6 +42,7 @@ Available commands:
   fxy  smbpasswd [cid]                                : smbpasswd -r RHOST -U :cid_user
   fxy  socat [port]                                   : socat based listener
   fxy  ssh [cid] [port]                               : sshpass -e ssh :cid_user@RHOST -p PORT
+  fxy  u(ser)a(gent) [text]                           : Show/Set User-Agent
   fxy  weevely [gen|help]                             : weevely php shell
   fxy  wfuzz                                          : wfuzz | tee
 

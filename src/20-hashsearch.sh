@@ -22,7 +22,7 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
 
   # hashtoolkit.com
   if [[ "$TYPE" =~ ^md5|sha1|sha256|sha356|sha512$ ]]; then
-    RES="$(curl -ski https://hashtoolkit.com/reverse-"$TYPE"-hash/?hash="$HASH")"
+    RES="$(curl -ski -A "$USRAGENT" https://hashtoolkit.com/reverse-"$TYPE"-hash/?hash="$HASH")"
 
     if [ -n "$(grep -i 'No hashes found for' <<< "$RES")" ]; then
       echo "[!] (hashtoolkit.com) No match found!";
@@ -37,8 +37,8 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
   # gromweb.com
   if [[ "$TYPE" =~ ^md5|sha1$ ]]; then
     case "$TYPE" in
-      "md5")        RES="$(curl -ski https://md5.gromweb.com/?md5="$HASH")" ;;
-      "sha1")       RES="$(curl -ski https://sha1.gromweb.com/?hash="$HASH")" ;;
+      "md5")        RES="$(curl -ski -A "$USRAGENT" https://md5.gromweb.com/?md5="$HASH")" ;;
+      "sha1")       RES="$(curl -ski -A "$USRAGENT" https://sha1.gromweb.com/?hash="$HASH")" ;;
       *)            echo "[!] Error parsing type of hash!"; exit ;;
     esac
 
@@ -58,7 +58,7 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
       -H 'cache-control: no-cache' \
       -H 'accept: application/json, text/javascript, */*; q=0.01' \
       -H 'dnt: 1' \
-      -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36' \
+      -H "user-agent: $USRAGENT" \
       -H 'content-type: application/json' \
       -H 'origin: https://www.objectif-securite.ch' \
       -H 'sec-fetch-site: cross-site' \
@@ -80,7 +80,7 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
   # online-domain-tools.com
   if [[ "$TYPE" =~ ^md5|sha1|sha256|lm|nt$ ]]; then
     if [ "$TYPE" == "nt" ]; then TYPE="ntlm"; fi
-    RES=$(curl -ski "https://reverse-hash-lookup.online-domain-tools.com/" --data "text=$HASH&function=$TYPE&do=form-submit&phone=5deab72563840e7678c4067671849b85332d7438&send=%3E+Reverse!")
+    RES=$(curl -ski -A "$USRAGENT" "https://reverse-hash-lookup.online-domain-tools.com/" --data "text=$HASH&function=$TYPE&do=form-submit&phone=5deab72563840e7678c4067671849b85332d7438&send=%3E+Reverse!")
     if [ -n "$(grep -i 'You do not have enough credits in your account.' <<< "$RES")" ]; then
       echo "[!] (online-domain-tools.com) No free credits left!";
     elif [ -n "$(grep -i 'Hash #1:</b> ERROR:' <<< "$RES")" ]; then

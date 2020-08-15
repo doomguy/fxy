@@ -17,7 +17,7 @@ if [ "$1" == "curl" ]; then
     fi
   fi
 
-  CMD="$CMD -ski $PROTO://${RHOST}${SUBDIR} | less"
+  CMD="$CMD -ski -A '$USRAGENT' $PROTO://${RHOST}${SUBDIR} | less"
   echo "> $CMD"
   prompt
   bash -c "$CMD"

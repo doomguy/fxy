@@ -6,7 +6,7 @@ cat src/* > build/fxy
 echo -e "\n[*] Making script executable"
 chmod +x build/fxy
 echo -e "\n[*] Running shellcheck"
-set +e; shellcheck build/fxy; set -e
+set +e; shellcheck -s bash build/fxy; set -e
 
 #echo
 #read -p "[?] Run tests? (y/N): " -n 1 -r
