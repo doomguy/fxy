@@ -5,7 +5,7 @@ if { [ "$1" == "hashcrack" ] || [ "$1" == "hc" ]; } && [ "$#" -eq 3 ]; then
     if [ -e "$WRDLST.gz" ]; then
       echo "[?] rockyou still zipped. Unzip?"
       CMD="gunzip $WRDLST.gz"
-      echo "> $CMD"; prompt; bash -c "$CMD";
+      echo "> $CMD"; prompt; bash -c "$CMD"
     else
       WRDLST="/path/to/my/wrdlst"
     fi

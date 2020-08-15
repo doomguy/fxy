@@ -5,8 +5,7 @@
 # smbmap
 # enum4linux
 # bash one liners
-# fix stuff:
-# /usr/bin/python3 -m pip install --upgrade pip
+# user agent
 
 # Nothing found? Invalid command?
 showHelp; exit
