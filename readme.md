@@ -19,7 +19,7 @@ Available commands:
   fxy  (cyber)chef [magic]                            : Open CyberChef in your browser
   fxy  dirb [s|ssl|tls] [subdir]                      : dirb PROTO://RHOST+SUBDIR | tee
   fxy  (evil-)winrm [cid]                             : evil-winrm -i RHOST -u :cid_user -p :cid_pass
-  fxy  fix [deps|pip(3)|py(3)′python(3)]              : Fix stufff
+  fxy  fix [deps|pip(3)|py(3)|python(3)]              : Fix stufff
   fxy  h(ash)c(rack) [type] [hash|cid]                : Crack hash
   fxy  h(ash)i(d) [hash]                              : Identify hash type
   fxy  h(ash)s(earch) [md5|sha1|...] [hash]           : Search for hashes
