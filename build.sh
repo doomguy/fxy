@@ -16,3 +16,12 @@ set +e; shellcheck build/fxy; set -e
 #fi
 echo -e "\n[*] Running tests"
 bats test/*
+
+# readme.md
+echo '
+# fxy
+Shell wizardry for hacking and CTF.
+' > readme.md
+echo '```' >> readme.md
+fxy help >> readme.md
+echo '```' >> readme.md
