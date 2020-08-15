@@ -49,12 +49,12 @@ getIP() {
 }
 
 getExtIP() {
-  EIP=$(curl ifconfig.me)
+  EXTIP=$(curl ifconfig.me)
   # curl api.ipify.org
   # curl ipinfo.io/ip
   # curl wtfismyip.com/text
   # curl checkip.amazonaws.com
-  echo "$EIP"
+  echo "$EXTIP"
 }
 
 showCreds() {
@@ -85,7 +85,6 @@ getCreds() {
     USRNME=$(sed -n "${CID}p" "$FILE" | cut -d':' -f1)
     PASSWD=$(sed -n "${CID}p" "$FILE" | cut -d':' -f2)
     HASH=$(sed -n "${CID}p" "$FILE" | cut -d':' -f3)
-
   fi
 }
 
