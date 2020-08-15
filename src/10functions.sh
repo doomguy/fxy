@@ -9,7 +9,7 @@ prompt() {
 showHead() {
 echo ' .    .
  |\__/|
- /     \    |  FOXACID  ||   shell wizard    |
+ /     \    |  FOXACID  ||   Shell Wizard    |
 /_,- -,_\   | https://github.com/doomguy/fxy |
    \@/
 '
@@ -17,7 +17,6 @@ echo ' .    .
 
 showHelp() {
   showHead
-  #echo -e "\n[ FOXACID || shell wizard ][ https://github.com/doomguy/fxy ]\n"
   echo "Available commands:"
   grep "^##" "$0" | sort | column -t -s'^' | sed 's,##,  fxy ,'
   echo
