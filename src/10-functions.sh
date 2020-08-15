@@ -9,8 +9,8 @@ prompt() {
 showHead() {
 echo ' .    .
  |\__/|
- /     \    |  FOXACID || Fox in the $hell   |
-/_,- -,_\   | https://github.com/doomguy/fxy |
+ /     \    | FOXACID || Fox in the $hell |
+/_,- -,_\   |   github.com/doomguy/fxy    |
    \@/
 '
 }
