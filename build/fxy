@@ -339,7 +339,7 @@ if [ "$1" == "evil-winrm" ] || [ "$1" == "winrm" ]; then
   bash -c "$CMD"
   exit
 fi
-## fix [deps|pip(3)|python(3)]^: Fix stufff
+## fix [deps|pip(3)|py(3)′python(3)]^: Fix stufff
 if [[ "$1" =~ ^fix$ ]] && [ "$#" -eq 2 ]; then
   if [[ "$2" =~ ^dep(s|endencies)$ ]]; then
     echo '# Run this to fix all fxy dependencies:'
@@ -973,10 +973,19 @@ if [ "$1" == "ssh" ]; then
   exit
 fi
 # Show 2DOs - internal command
-if [ "$#" -eq 1 ] && [ "$1" == "2do" ]; then
+if [ "$#" -eq 1 ] && [[ "$1" =~ ^(2|to)do$ ]]; then
   grep -Ein "^##|^# 2DO|^# -" "$0" | sed 's,\\t.*,,'
   exit
 fi
+
+# gobuster dir -u http://10.10.10.191/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php
+# msf multi handler
+# msf venom most common
+# smbclient
+# smbmap
+# enum4linux
+# bash one liners
+# user agent
 ## weevely [gen|help]^: weevely php shell
 # weevely help
 if [ "$1" == "weevely" ] && [ "$#" -ge 2 ] && [ "$2" == "help" ]; then
@@ -1128,14 +1137,5 @@ if [ "$1" == "wfuzz" ] && [ "$2" != "vhost" ]; then
   rm -rf "$FPATH"
   exit
 fi
-# gobuster dir -u http://10.10.10.191/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php
-# msf multi handler
-# msf venom most common
-# smbclient
-# smbmap
-# enum4linux
-# bash one liners
-# user agent
-
 # Nothing found? Invalid command?
 showHelp; exit
