@@ -9,7 +9,7 @@ prompt() {
 showHead() {
 echo ' .    .
  |\__/|
- /     \    |  FOXACID  ||   Shell Wizard    |
+ /     \    | FOXACID || Fox in the $hell    |
 /_,- -,_\   | https://github.com/doomguy/fxy |
    \@/
 '
