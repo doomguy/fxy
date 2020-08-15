@@ -5,7 +5,7 @@ Shell wizardry for hacking and CTF.
 ```
  .    .
  |\__/|
- /     \    |  FOXACID  ||   shell wizard    |
+ /     \    |  FOXACID  ||   Shell Wizard    |
 /_,- -,_\   | https://github.com/doomguy/fxy |
    \@/
 
