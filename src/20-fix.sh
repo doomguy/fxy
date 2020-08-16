@@ -1,4 +1,4 @@
-## fix [deps|pip(3)|py(3)|python(3)]^: Fix stufff
+## fix [deps|pip(3)|py(thon)(3)|sys(tem)]^: Fix stufff
 if [[ "$1" =~ ^fix$ ]] && [ "$#" -eq 2 ]; then
   if [[ "$2" =~ ^dep(s|endencies)$ ]]; then
     echo '# Run this to fix all fxy dependencies:'
