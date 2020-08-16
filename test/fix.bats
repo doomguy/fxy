@@ -39,3 +39,13 @@
   result="$(build/fxy fix py3 <<< N)"
   [[ "$result" =~ pip\ install\ --upgrade ]]
 }
+
+@test "fxy fix sys" {
+  result="$(build/fxy fix sys <<< N)"
+  [[ "$result" =~ apt\ update\ &&\ apt\ dist-upgrade ]]
+}
+
+@test "fxy fix system" {
+  result="$(build/fxy fix system <<< N)"
+  [[ "$result" =~ apt\ update\ &&\ apt\ dist-upgrade ]]
+}

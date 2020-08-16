@@ -14,6 +14,9 @@ if [[ "$1" =~ ^fix$ ]] && [ "$#" -eq 2 ]; then
   elif [[ "$2" =~ ^py(3)?|python(3)?$ ]]; then
     CMD="pip list --outdated --format=freeze | cut -d'=' -f1 | xargs -n1 pip install --upgrade"
     echo "> $CMD"; prompt; bash -c "$CMD"
+  elif [[ "$2" =~ ^sys(tem)?$ ]]; then
+      CMD="apt update && apt dist-upgrade -y"
+      echo "> $CMD"; prompt; bash -c "$CMD"
   fi
   exit
 fi
