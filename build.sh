@@ -17,7 +17,7 @@ set +e; shellcheck -s bash build/fxy; set -e
 echo -e "\n[*] Running tests"
 bats test/*
 
-# readme.md
+# build readme.md
 echo '
 # fxy
 Shell wizardry for hacking and CTF.

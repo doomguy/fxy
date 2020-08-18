@@ -452,7 +452,7 @@ if { [[ "$1" =~ ^md5|sha(1)?|sha2(56)?|sha3(84)?|sha5(12)?$ ]]; } && [ "$#" -ge 
 
   # if more than 2 args, use args >=2 as input
   if [ "$#" -ge 3 ]; then
-    INPUT=$(echo "$@" | cut -d' ' -f2-)
+    INPUT=$(echo -n "$@" | cut -d' ' -f2-)
   fi
 
   case "$TYPE" in
@@ -493,18 +493,37 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
   HASH="$3"
 
   case "$2" in
-    "md5")              TYPE="md5" ;;
-    "sha"|"sha1")       TYPE="sha1" ;;
-    "sha256"|"sha2")    TYPE="sha256" ;;
-    "sha384"|"sha3")    TYPE="sha356" ;;
-    "sha512"|"sha5")    TYPE="sha512" ;;
-    "lm"|"LM")          TYPE="lm" ;;
-    "nt"|"NT")          TYPE="nt" ;;
+    "md5")              TYPE="md5";
+                        [[ "$HASH" =~ ^[A-Za-z0-9]{32}$ ]] || { echo '[!] Invalid MD5 Hash!'; exit; };
+                        [ "$HASH" == 'd41d8cd98f00b204e9800998ecf8427e' ] && { echo '[!] Empty MD5 Hash!'; exit; } ;;
+    "sha"|"sha1")       TYPE="sha1";
+                        [[ "$HASH" =~ ^[A-Za-z0-9]{40}$ ]] || { echo '[!] Invalid SHA1 Hash!'; exit; };
+                        [ "$HASH" == 'da39a3ee5e6b4b0d3255bfef95601890afd80709' ] && { echo '[!] Empty SHA1 Hash!'; exit; } ;;
+
+    "sha256"|"sha2")    TYPE="sha256";
+                        [[ "$HASH" =~ ^[A-Za-z0-9]{64}$ ]] || { echo '[!] Invalid SHA256 Hash!'; exit; };
+                        [ "$HASH" == 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' ] && { echo '[!] Empty SHA256 Hash!'; exit; } ;;
+
+    "sha384"|"sha3")    TYPE="sha384";
+                        [[ "$HASH" =~ ^[A-Za-z0-9]{96}$ ]] || { echo '[!] Invalid SHA384 Hash!'; exit; };
+                        [ "$HASH" == '38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b' ] && { echo '[!] Empty SHA384 Hash!'; exit; } ;;
+
+    "sha512"|"sha5")    TYPE="sha512";
+                        [[ "$HASH" =~ ^[A-Za-z0-9]{128}$ ]] || { echo '[!] Invalid SHA512 Hash!'; exit; };
+                        [ "$HASH" == 'cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e' ] && { echo '[!] Empty SHA512 Hash!'; exit; } ;;
+
+    "lm"|"LM")          TYPE="lm";
+                        [[ "$HASH" =~ ^[A-Za-z0-9]{16,32}$ ]] || { echo '[!] 111 Invalid LM Hash!'; exit; };
+                        [ "$HASH" == 'aad3b435b51404ee' ] && { echo '[!] Empty LM Hash!'; exit; } ;;
+
+    "nt"|"NT")          TYPE="nt";
+                        [[ "$HASH" =~ ^[A-Za-z0-9]{32}$ ]] || { echo '[!] Invalid NT Hash!'; exit; } ;;
+
     *)                  echo "[!] Error parsing type of hash!"; exit ;;
   esac
 
   # hashtoolkit.com
-  if [[ "$TYPE" =~ ^md5|sha1|sha256|sha356|sha512$ ]]; then
+  if [[ "$TYPE" =~ ^md5|sha1|sha256|sha384|sha512$ ]]; then
     RES="$(curl -ski -A "$USRAGENT" https://hashtoolkit.com/reverse-"$TYPE"-hash/?hash="$HASH")"
 
     if [ -n "$(grep -i 'No hashes found for' <<< "$RES")" ]; then
@@ -513,7 +532,7 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
       PASSWD="$(grep -m 1 -io "/generate-hash/?text=.*>" <<< "$RES" | cut -d'>' -f2 | sed 's,</a,,')"
       PASSWD="$(sed 's,&lt;,<,' <<< "$PASSWD")"
       PASSWD="$(sed 's,&gt;,>,' <<< "$PASSWD")"
-      echo "[*] (hashtoolkit.com) Match found: $PASSWD"; exit
+      echo "[*] (hashtoolkit.com) Match found: '$PASSWD'"; exit
     fi
   fi
 
@@ -529,12 +548,12 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
     if [ -z "$RES" ]; then
       echo "[!] (gromweb.com) No match found!";
     else
-      echo "[*] (gromweb.com) Match found: $PASSWD"; exit
+      echo "[*] (gromweb.com) Match found: '$PASSWD'"; exit
     fi
   fi
 
   # objectif-securite.ch
-  if [[ "$TYPE" == "nt" ]]; then
+  if [ "$TYPE" == "nt" ]; then
     RES=$(curl -sk 'https://cracker.okx.ch/crack' \
       -H 'authority: cracker.okx.ch' \
       -H 'pragma: no-cache' \
@@ -549,6 +568,7 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
       -H 'sec-fetch-dest: empty' \
       -H 'referer: https://www.objectif-securite.ch/' \
       -H 'accept-language: en-GB,en-US;q=0.9,en;q=0.8' \
+      -H 'Connection: close' \
       --data-binary '{"value":"'"$HASH"'"}' \
       --compressed)
 
@@ -556,7 +576,50 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
     if [[  ! "$RES" =~ Password\ not\ found ]]; then
       echo "[!] (objectif-securite.ch) No match found!";
     else
-      echo "[*] (objectif-securite.ch) Match found: $PASSWD"; exit
+      echo "[*] (objectif-securite.ch) Match found: '$PASSWD'"; exit
+    fi
+  fi
+
+  # it64.com
+  if [ "$TYPE" == "lm" ]; then
+    HLEN="$(echo -n "$HASH" | wc -c)"
+    if { [[ ! "$HASH" =~ ^[A-Za-z0-9]{16}$ ]] && [[ ! "$HASH" =~ ^[A-Za-z0-9]{32}$ ]]; } || [ "$HASH" == "aad3b435b51404ee" ]; then
+      echo "[!] Invalid LM Hash!"; exit
+    fi
+
+    HASHES="$(echo -n "$HASH" | cut -c1-16)"
+    if [ "$HLEN" -eq 32 ]; then
+      HASH2="$(echo -n "$HASH" | cut -c17-32)"
+      if [ "$HASH2" != "aad3b435b51404ee" ]; then
+        HASHES="$HASHES $HASH2"
+      fi
+    fi
+
+    PASSWD=""
+    IFS=' '; for h in $HASHES; do
+      RES=$(curl -sk 'http://rainbowtables.it64.com/p3.php' \
+        -H "user-agent: $USRAGENT" \
+        -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8' \
+        -H 'Accept-Language: en-US,en;q=0.5' \
+        --compressed \
+        -H 'Content-Type: application/x-www-form-urlencoded' \
+        -H 'Origin: http://rainbowtables.it64.com' \
+        -H 'DNT: 1' \
+        -H 'Connection: close' \
+        -H 'Referer: http://rainbowtables.it64.com/p3.php' \
+        -H 'Upgrade-Insecure-Requests: 1' \
+        --data-raw 'hashe='"$h"'&ifik=+Submit+&forma=tak')
+
+      if [[ "$RES" =~ CRACKED ]]; then
+        PASSWD="${PASSWD}$(grep -o  'CRACKED&nbsp;</TD><TD>&nbsp;.*&nbsp;' <<< $RES | sed 's/.*&nbsp;\(.*\)&nbsp;/\1/')"
+      fi
+
+    done
+
+    if [ -n "$PASSWD" ]; then
+      echo "[*] (it64.com) Match found: '${PASSWD}'"; exit
+    else
+      echo "[!] (it64.com) No match found!"
     fi
   fi
 
@@ -572,7 +635,7 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
       PASSWD="$(grep -o -m 1 "Hash #1.*" <<< "$RES" | cut -d' ' -f3 | sed 's,</.*$,,')"
       PASSWD="$(sed 's,&lt;,<,' <<< "$PASSWD")"
       PASSWD="$(sed 's,&gt;,>,' <<< "$PASSWD")"
-      echo "[*] (online-domain-tools.com) Match found: $PASSWD"
+      echo "[*] (online-domain-tools.com) Match found: '$PASSWD'"
     fi
   fi
 
@@ -585,8 +648,6 @@ fi
 # - https://md5decrypt.net/en/Api/ - signup broken
 # - access online-domain-tools.com via tor for more free creds?
 # - implement more lm/ntlm crackers
-# - http://rainbowtables.it64.com/
-#curl 'http://rainbowtables.it64.com/p3.php' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:79.0) Gecko/20100101 Firefox/79.0' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8' -H 'Accept-Language: en-US,en;q=0.5' --compressed -H 'Content-Type: application/x-www-form-urlencoded' -H 'Origin: http://rainbowtables.it64.com' -H 'DNT: 1' -H 'Connection: keep-alive' -H 'Referer: http://rainbowtables.it64.com/p3.php' -H 'Cookie: PHPSESSID=7gkkqip7bk9crma6hnd3c09pb4' -H 'Upgrade-Insecure-Requests: 1' --data-raw 'hashe=44efce164ab921caaad3b435b51404ee&ifik=+Submit+&forma=tak'
 ## httpd|ws [port]^: python3 -m http.server PORT
 if [ "$1" == "httpd" ] || [ "$1" == "ws" ] ; then
   CMD="python3 -m http.server"
@@ -714,6 +775,15 @@ if [ "$1" == "ipwsh" ]; then
 fi
 # 2DO:
 # - Somehow ipwsh can't access c:\
+## len(gth) [INPUT]^: Show length of input
+if [[ "$1" =~ ^len(gth)?$ ]] && [ "$#" -ge 2 ]; then
+  CMD="wc"; checkCmd
+  INPUT="$(echo -n "$@" | cut -d' ' -f2-)"
+  CMD="echo -n '$INPUT' | wc -c"
+  echo "> $CMD"
+  bash -c "$CMD"
+  exit
+fi
 ## l(isten) [port]^: ncat -vlkp PORT
 if [ "$1" == "l" ] || [ "$1" == "listen" ] ; then
   CMD="ncat"; checkCmd
