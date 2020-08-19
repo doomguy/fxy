@@ -4,7 +4,7 @@ if [ "$1" == "update" ]; then
   if [ "$(which git)" ]; then
     FXYPATH=$(sed 's,fxy$,,' <<< "$0")
     cd "$FXYPATH" || exit
-    if [ "$(git config remote.origin.url)" == "git@github.com:doomguy/fxy.git" ]; then
+    if [[ "$(git config remote.origin.url)" =~ doomguy/fxy\.git ]]; then
       echo git pull
       exit
     fi
