@@ -26,7 +26,7 @@ echo '```' >> readme.md
 fxy help >> readme.md
 echo '```' >> readme.md
 echo '
-## installation
+## Installation
 ```
 curl https://raw.githubusercontent.com/doomguy/fxy/master/install.sh | bash
 ```

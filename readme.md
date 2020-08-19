@@ -51,7 +51,7 @@ Available commands:
 
 ```
 
-## installation
+## Installation
 ```
 curl https://raw.githubusercontent.com/doomguy/fxy/master/install.sh | bash
 ```
