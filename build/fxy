@@ -1137,7 +1137,9 @@ if [ "$1" == "update" ]; then
     FXYPATH=$(sed 's,fxy$,,' <<< "$0")
     cd "$FXYPATH" || exit
     if [[ "$(git config remote.origin.url)" =~ doomguy/fxy\.git$ ]]; then
-      git fetch --all && git reset --hard origin/master
+      git fetch --all \
+        && git reset --hard origin/master \
+        && echo "${info} Update successful!"
       exit
     fi
   fi
@@ -1147,8 +1149,9 @@ if [ "$1" == "update" ]; then
   export INSTCMD="apt install wget"
   checkCmd
 
-  wget 'https://raw.githubusercontent.com/doomguy/fxy/master/build/fxy' -O "$0"
-  chmod +x "$0"
+  wget 'https://raw.githubusercontent.com/doomguy/fxy/master/build/fxy' -O "$0" \
+  && chmod +x "$0" \
+  && echo "${info} Update successful!"
   exit
 fi
 ## weevely [gen|help]^: weevely php shell
