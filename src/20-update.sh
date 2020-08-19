@@ -1,3 +1,4 @@
+set -x
 ## update^: Update fxy
 if [ "$1" == "update" ]; then
   if [ "$(which git)" ]; then
