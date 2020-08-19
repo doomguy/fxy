@@ -1,6 +1,6 @@
-set -x
 ## update^: Update fxy
 if [ "$1" == "update" ]; then
+set -x
 
   # update for git clone
   if [ "$(which git)" ]; then
