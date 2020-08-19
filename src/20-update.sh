@@ -1,5 +1,5 @@
-## update^: Update fxy
-if [ "$1" == "update" ]; then
+## up(date)^: Update fxy
+if [[ "$1" =~ ^up(date)?$ ]]; then
   # update for git clone
   if [ "$(which git)" ]; then
     FXYPATH=$(sed 's,fxy$,,' <<< "$0")
