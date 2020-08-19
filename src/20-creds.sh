@@ -1,5 +1,5 @@
-## creds [add user:pass]|[del cid]^: Show/Add/Del creds
-if [ "$1" == "creds" ]; then
+## c(reds) [add user:pass]|[del cid]|[edit]^: Show/Add/Del creds
+if [[ "$1" =~ ^c(reds)?$ ]]; then
   FILE="creds.txt"
   if [ "$#" -eq 1 ]; then
     showCreds; exit
@@ -20,7 +20,7 @@ if [ "$1" == "creds" ]; then
       echo "${warn} Invalid credential ID!"; exit
     fi
     CMD="sed -i '${CID}d' $FILE"
-  elif [ "$2" == "edit" ]; then
+  elif [[ "$2" =~ ^e(dit)?$ ]]; then
     nano "$FILE"
     exit
   fi

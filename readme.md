@@ -14,7 +14,7 @@ Available commands:
   fxy  cewl [s|ssl|tls] [subdir]                      : cewl PROTO://RHOST+SUBDIR -w RHOST_cewl.txt
   fxy  ciph(ey) [input]                               : ciphey -t INPUT
   fxy  cme|crackmapexec [smb]                         : crackmapexec smb RHOST | tee
-  fxy  creds [add user:pass]|[del cid]                : Show/Add/Del creds
+  fxy  c(reds) [add user:pass]|[del cid]|[edit]       : Show/Add/Del creds
   fxy  curl [s|ssl|tls] [subdir]                      : curl -si PROTO://RHOST+SUBDIR | less
   fxy  (cyber)chef [magic]                            : Open CyberChef in your browser
   fxy  dirb [s|ssl|tls] [subdir]                      : dirb PROTO://RHOST+SUBDIR | tee
