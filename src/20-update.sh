@@ -4,8 +4,8 @@ if [ "$1" == "update" ]; then
   if [ "$(which git)" ]; then
     FXYPATH=$(sed 's,fxy$,,' <<< "$0")
     cd "$FXYPATH" || exit
-    if [[ "$(git config remote.origin.url)" =~ doomguy/fxy\.git ]]; then
-      echo git pull
+    if [[ "$(git config remote.origin.url)" =~ doomguy/fxy\.git$ ]]; then
+      echo 'git fetch --all && git reset --hard origin/master'
       exit
     fi
   else
