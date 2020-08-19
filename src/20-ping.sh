@@ -7,7 +7,7 @@ if [ "$1" == "p" ] || [ "$1" == "ping" ]; then
   fi
 
   CMD="$CMD $RHOST"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   bash -c "$CMD"
   exit
 fi

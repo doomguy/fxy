@@ -27,8 +27,9 @@ Available commands:
   fxy  httpd|ws [port]                                : python3 -m http.server PORT
   fxy  hydra [service] [port] [username]              : hydra brute force (ssh, ftp, smb)
   fxy  (i)conv|convert [file]                         : iconv -f UTF-16LE -t UTF-8 FILE -o FILE.conv
+  fxy  ip(s)                                          : Show interface and external IP(s)
   fxy  ipwsh [port]                                   : Download InsecurePowerShell and serve via davserver
-  fxy  len(gth) [INPUT]                               : Show length of input
+  fxy  len(gth) [input]                               : Show length of input
   fxy  l(isten) [port]                                : ncat -vlkp PORT
   fxy  md5|sha(1)|sha2(56)|sha3(84)|sha5(12) [input]  : Generate hashes from input
   fxy  nfs|showmount                                  : showmount -e RHOST

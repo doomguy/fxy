@@ -6,6 +6,6 @@ if [[ "$1" =~ ^c(i|y)ph(ey)?$ ]] && [ "$#" -eq 2 ]; then
 
   INPUT="$2"
   CMD="$CMD -t '$INPUT'"
-  echo "> $CMD"; prompt; bash -c "$CMD";
+  echo "${bldwht}> $CMD${txtrst}"; prompt; bash -c "$CMD";
   exit
 fi

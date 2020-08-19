@@ -26,7 +26,7 @@ if { [ "$1" == "hydra" ] || [ "$1" == "brute" ]; } && [ "$#" -ge 2 ]; then
     "ftp")              PORT="-s 21"; SVC="ftp" ;;
     "smb")              PORT="-s 445"; SVC="smb" ;;
     "http"|"http-get")  PORT="-s 80"; SVC="http-get"; SUBDIR="/" ;;
-    *)                  echo "[!] Error parsing service to attack!"; exit ;;
+    *)                  echo "${warn} Error parsing service to attack!"; exit ;;
   esac
 
   if [ "$#" -ge 3 ]; then
@@ -44,7 +44,7 @@ if { [ "$1" == "hydra" ] || [ "$1" == "brute" ]; } && [ "$#" -ge 2 ]; then
   fi
 
   CMD="hydra -I $USRNME -P $FPATH/pass.lst -u -e sr $PORT $RHOST $SVC $SUBDIR"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit

@@ -1,5 +1,17 @@
+# Text color variables
+#txtund=$(tput sgr 0 1)          # Underline
+txtbld=$(tput bold)             # Bold
+bldred=${txtbld}$(tput setaf 1) #  red
+bldblu=${txtbld}$(tput setaf 4) #  blue
+bldwht=${txtbld}$(tput setaf 7) #  white
+txtrst=$(tput sgr0)             # Reset
+info="${bldwht}\[*\]${txtrst}"    # Feedback
+#pass="${bldblu}\[*\]${txtrst}"
+warn="${bldred}\[!\]${txtrst}"
+ques="${bldblu}\[?\]${txtrst}"
+
 prompt() {
-  read -p "[?] Run command? (y/N): " -n 1 -r
+  read -p "${ques} ${bldwht}Run command? (y/N): ${txtrst}" -n 1 -r
   echo
   if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
     exit
@@ -25,9 +37,9 @@ showHelp() {
 INSTCMD=""
 checkCmd() {
   if [ ! "$(which "$CMD")" ]; then
-    echo "[!] '$CMD' required but missing."
+    echo "${warn} '$CMD' required but missing."
     if [ -n "$INSTCMD" ]; then
-      echo "> $INSTCMD"; prompt; bash -c "$INSTCMD";
+      echo "${bldwht}> $INSTCMD${txtrst}"; prompt; bash -c "$INSTCMD";
     else
       exit
     fi
@@ -43,18 +55,18 @@ getIP() {
 
   IP=$(ip -4 addr show "$DEV" | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
   if [ -z "$IP" ]; then
-    echo "[!] Error getting IP. Stale tun0 device?"; exit
+    echo "${warn} Error getting IP. Stale tun0 device?"; exit
   fi
-  echo "$IP"
+  echo -n "$IP"
 }
 
 getExtIP() {
-  EXTIP=$(curl ifconfig.me)
+  EXTIP=$(curl -s ifconfig.me)
   # curl api.ipify.org
   # curl ipinfo.io/ip
   # curl wtfismyip.com/text
   # curl checkip.amazonaws.com
-  echo "$EXTIP"
+  echo -n "$EXTIP"
 }
 
 showCreds() {
@@ -64,7 +76,7 @@ showCreds() {
   if [ -e "$FILE" ]; then
     column -t -s':' "$FILE" | cat -n
   else
-    echo -e "\n[*] No '$FILE' found!"
+    echo -e "\n${warn} No '$FILE' found!"
   fi
   exit
 }
@@ -76,10 +88,10 @@ getCreds() {
   else
     FILE="creds.txt"
     if [ ! -e "$FILE" ]; then
-      echo "[!] No '$FILE' found!"; exit
+      echo "${warn} No '$FILE' found!"; exit
     fi
     if [ "$CID" -gt "$(wc -l $FILE | cut -d' ' -f1)" ]; then
-      echo "[!] Invalid credential ID!"; exit
+      echo "${warn} Invalid credential ID!"; exit
     fi
 
     USRNME=$(sed -n "${CID}p" "$FILE" | cut -d':' -f1)
@@ -91,7 +103,7 @@ getCreds() {
 createUserPassLists() {
   FILE="creds.txt"
   if [ ! -e "$FILE" ]; then
-    echo "[!] No '$FILE' found!"; exit
+    echo "${warn} No '$FILE' found!"; exit
   fi
   FPATH="/dev/shm/.fxy"
   if [ ! -d "$FPATH" ]; then
@@ -101,7 +113,7 @@ createUserPassLists() {
   if [ "$(which "userlstgen.py")" ]; then
     genuserlst.py "$FILE" | tr '[:upper:]' '[:lower:]' | sort -u > "$FPATH/user.lst"
   else
-    echo "[*] Did not find 'genuserlst.py' in PATH. Falling back to simple mode."
+    echo "${info} Did not find 'genuserlst.py' in PATH. Falling back to simple mode."
     cut -d: -f1 "$FILE" | tr '[:upper:]' '[:lower:]' | sort -u | grep -v ^$ > "$FPATH/user.lst"
   fi
   # passlist

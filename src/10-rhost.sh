@@ -9,7 +9,7 @@ if [ "$#" -eq 2 ] && [[ "$1" =~ ^r(host)?$ ]]; then
     fi
     echo "$2" > $FILE
   else
-    echo "[!] You need to supply an IP or hostname as second argument!"
+    echo "${warn} You need to supply an IP or hostname as second argument!"
   fi
   exit
 fi

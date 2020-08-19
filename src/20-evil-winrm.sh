@@ -15,7 +15,7 @@ if [ "$1" == "evil-winrm" ] || [ "$1" == "winrm" ]; then
   fi
 
   CMD="$CMD -i $RHOST -u '$USRNME' -p '$PASSWD'"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit

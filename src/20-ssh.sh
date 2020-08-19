@@ -25,7 +25,7 @@ if [ "$1" == "ssh" ]; then
     CMD="$CMD -p $PORT"
   fi
 
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   bash -c "$CMD"
   exit
 fi

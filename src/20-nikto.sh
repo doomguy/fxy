@@ -18,7 +18,7 @@ if [ "$1" == "nikto" ]; then
   fi
 
   CMD="$CMD -host $PROTO://${RHOST}${SUBDIR} | tee ${RHOST}_$(echo "$CMD" | cut -d' ' -f1)_$(date +%F_%H%M%S).log"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit

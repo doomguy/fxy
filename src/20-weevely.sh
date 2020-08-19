@@ -21,7 +21,7 @@ if [ "$1" == "weevely" ] && [ "$#" -ge 2 ] && [ "$2" == "gen" ]; then
     PASSWD="$4"
   fi
   CMD="$CMD generate $PASSWD $FILE"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -60,7 +60,7 @@ if [ "$1" == "weevely" ]; then
   fi
   getMachinePass
   CMD="$CMD $PROTO://${RHOST}${SUBDIR}${FILE} $PASSWD"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit

@@ -18,7 +18,7 @@ if [ "$1" == "cewl" ]; then
   fi
 
   CMD="$CMD $PROTO://${RHOST}${SUBDIR} -w ${RHOST}_cewl.txt"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit

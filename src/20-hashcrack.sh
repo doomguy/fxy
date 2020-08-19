@@ -3,9 +3,9 @@ if { [ "$1" == "hashcrack" ] || [ "$1" == "hc" ]; } && [ "$#" -eq 3 ]; then
   WRDLST="/usr/share/wordlists/rockyou.txt"
   if [ ! -f "$WRDLST" ]; then
     if [ -e "$WRDLST.gz" ]; then
-      echo "[?] rockyou still zipped. Unzip?"
+      echo "${ques} rockyou still zipped. Unzip?"
       CMD="gunzip $WRDLST.gz"
-      echo "> $CMD"; prompt; bash -c "$CMD"
+      echo "${bldwht}> $CMD${txtrst}"; prompt; bash -c "$CMD"
     else
       WRDLST="/path/to/my/wrdlst"
     fi
@@ -17,7 +17,7 @@ if { [ "$1" == "hashcrack" ] || [ "$1" == "hc" ]; } && [ "$#" -eq 3 ]; then
     "sha"|"sha1")       JTYPE="raw-sha1" ;;
     "sha256"|"sha2")    JTYPE="raw-sha256" ;;
     "sha512"|"sha5")    JTYPE="raw-sha512" ;;
-    *)                  echo "[!] Error parsing type of hash!"; exit ;;
+    *)                  echo "${warn} Error parsing type of hash!"; exit ;;
   esac
 
   HASH="$3"

@@ -16,7 +16,7 @@ if [ "$1" == "smbpasswd" ]; then
 
   CMD="$CMD -r $RHOST -U $USRNME"
   echo "Password: $PASSWD"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit

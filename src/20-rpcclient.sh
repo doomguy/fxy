@@ -34,7 +34,7 @@ if [ "$1" == "rpc" ] || [ "$1" == "rpcclient" ]; then
   fi
 
   CMD="$CMD $WRKGRP $RHOST $CMND"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit

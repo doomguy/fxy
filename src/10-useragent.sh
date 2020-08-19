@@ -31,7 +31,7 @@ if [ -f $FILE ]; then
   export USRAGENT
 
   if [ -z "$USRAGENT" ]; then
-     echo "[!] Something went wrong on loading '$FILE'"
+     echo "${warn} Something went wrong on loading '$FILE'"
      USRAGENT="$DEFAULTUA"
      export USRAGENT
   fi

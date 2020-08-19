@@ -7,7 +7,7 @@ if [ "$1" == "cme" ] || [ "$1" == "crackmapexec" ]; then
     exit
   fi
   CMD="$CMD $RHOST | tee ${RHOST}_cme_$(date +%F_%H%M%S).log"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit

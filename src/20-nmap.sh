@@ -5,7 +5,7 @@ if [ "$1" == "n" ] || [ "$1" == "nmap" ]; then
     CMD="$CMD -p-"
   fi
   CMD="$CMD -v -A $RHOST -oA ${RHOST}_$(echo "$CMD" | cut -d' ' -f1)_$(date +%F_%H%M%S)"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit

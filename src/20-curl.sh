@@ -18,7 +18,7 @@ if [ "$1" == "curl" ]; then
   fi
 
   CMD="$CMD -ski -A '$USRAGENT' $PROTO://${RHOST}${SUBDIR} | less"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit

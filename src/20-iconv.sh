@@ -4,11 +4,11 @@ if { [ "$1" == "iconv" ] || [ "$1" == "conv" ] || [ "$1" == "convert" ]; } && [ 
 
   FILE="$2"
   if [ ! -f "$FILE" ]; then
-    echo "[!] Invalid input file!"; exit
+    echo "${warn} Invalid input file!"; exit
   fi
 
   CMD="iconv -f UTF-16LE -t UTF-8 $FILE -o $FILE.conv"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit

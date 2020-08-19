@@ -11,7 +11,7 @@ if [ "$1" == "httpd" ] || [ "$1" == "ws" ] ; then
   for f in $(find . -maxdepth 1 -type f 2>/dev/null | sed 's,\./,,' | sed 's, ,+,'); do
     echo "- http://$(getIP)/$f";
   done
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   bash -c "$CMD"
   exit
 fi

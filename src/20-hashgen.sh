@@ -14,7 +14,7 @@ if { [[ "$1" =~ ^md5|sha(1)?|sha2(56)?|sha3(84)?|sha5(12)?$ ]]; } && [ "$#" -ge 
     "sha256"|"sha2")    CMD="sha256sum" ;;
     "sha384"|"sha3")    CMD="sha384sum" ;;
     "sha512"|"sha5")    CMD="sha512sum" ;;
-    *)                  echo "[!] Error parsing type of hash!"; exit ;;
+    *)                  echo "${warn} Error parsing type of hash!"; exit ;;
   esac
 
   checkCmd

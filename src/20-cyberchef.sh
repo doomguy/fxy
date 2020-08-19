@@ -10,7 +10,7 @@ if [ "$1" == "chef" ] || [ "$1" == "cyberchef" ]; then
     exit
   fi
 
-  echo "> $CMD"
+  echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
   exit
