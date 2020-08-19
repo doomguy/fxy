@@ -50,3 +50,9 @@ Available commands:
   fxy  wfuzz                                          : wfuzz | tee
 
 ```
+
+## installation
+```
+curl https://raw.githubusercontent.com/doomguy/fxy/master/install.sh | bash
+```
+

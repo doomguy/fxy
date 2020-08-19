@@ -25,3 +25,9 @@ Shell wizardry for hacking and CTF.
 echo '```' >> readme.md
 fxy help >> readme.md
 echo '```' >> readme.md
+echo '
+## installation
+```
+curl https://raw.githubusercontent.com/doomguy/fxy/master/install.sh | bash
+```
+' >> readme.md
