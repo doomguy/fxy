@@ -534,7 +534,7 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -ge 3 ]; then
     *)                  echo "${warn} Error parsing type of hash!"; exit ;;
   esac
 
-  [ "${4-default}" == "q" ] || sleep 3
+  [ "${4-default}" == "q" ] || sleep 2
 
   # hashtoolkit.com
   if [[ "$TYPE" =~ ^md5|sha1|sha256|sha384|sha512$ ]]; then
