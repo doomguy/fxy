@@ -1,4 +1,4 @@
-## c(reds) [add user:pass]|[del cid]|[edit]^: Show/Add/Del creds
+## c(reds) [add user:pass]|[del cid]|[e(dit)]^: Show/Add/Del creds
 if [[ "$1" =~ ^c(reds)?$ ]]; then
   FILE="creds.txt"
   if [ "$#" -eq 1 ]; then

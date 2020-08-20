@@ -14,7 +14,7 @@ Available commands:
   fxy  cewl [s|ssl|tls] [subdir]                      : cewl PROTO://RHOST+SUBDIR -w RHOST_cewl.txt
   fxy  ciph(ey) [input]                               : ciphey -t INPUT
   fxy  cme|crackmapexec [smb]                         : crackmapexec smb RHOST | tee
-  fxy  c(reds) [add user:pass]|[del cid]|[edit]       : Show/Add/Del creds
+  fxy  c(reds) [add user:pass]|[del cid]|[e(dit)]     : Show/Add/Del creds
   fxy  curl [s|ssl|tls] [subdir]                      : curl -si PROTO://RHOST+SUBDIR | less
   fxy  (cyber)chef [magic]                            : Open CyberChef in your browser
   fxy  dirb [s|ssl|tls] [subdir]                      : dirb PROTO://RHOST+SUBDIR | tee
@@ -56,3 +56,35 @@ Available commands:
 curl https://raw.githubusercontent.com/doomguy/fxy/master/install.sh | bash
 ```
 
+## Example
+```
+$ fxy rhost webscantest.com
+
+$ fxy r
+  RHOST: webscantest.com
+
+$ fxy nmap
+> nmap -v -A webscantest.com -oA webscantest.com_nmap_2020-08-20_221653
+[?] Run command? (y/N):
+
+$ fxy nikto
+> nikto -host http://webscantest.com/ | tee webscantest.com_nikto_2020-08-20_221718.log
+[?] Run command? (y/N):
+
+$ fxy md5 pass123
+32250170a0dca92d53ec9624f336ca24
+
+$ fxy b64 fxy.rocks
+Znh5LnJvY2tz
+
+$ fxy ciphey MTIzNDU2
+> ciphey -t 'MTIzNDU2'
+[?] Run command? (y/N): y
+Format used:
+  base64
+  utf8
+Final result: "123456"
+
+$ fxy hs sha256 a32b722e08c256c1e701c2fc63f88064e9d76e9b01ade5f87fd2f2a6fe42b1a6
+[*] (hashtoolkit.com) Match found: 's3cure'
+```

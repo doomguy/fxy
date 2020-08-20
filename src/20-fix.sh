@@ -1,7 +1,7 @@
 ## fix [deps|pip(3)|py(thon)(3)|sys(tem)]^: Fix stufff
 if [[ "$1" =~ ^fix$ ]] && [ "$#" -eq 2 ]; then
   if [[ "$2" =~ ^dep(s|endencies)$ ]]; then
-    echo '# Run this as root to fix all fxy dependencies:'
+    echo '# Run this as root to install all fxy dependencies:'
     echo '#   fxy fix deps | bash'
     grep "export INSTCMD" "$0" | grep -v 'grep " export' | cut -d'=' -f2 | sort | while read -r LINE; do
       # Remove double quotes
