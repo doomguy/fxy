@@ -77,13 +77,13 @@ $ fxy md5 pass123
 $ fxy b64 fxy.rocks
 Znh5LnJvY2tz
 
-$ fxy ciphey MTIzNDU2
-> ciphey -t 'MTIzNDU2'
+$ fxy ciphey Znh5IHJvY2tz
+> ciphey -t 'Znh5IHJvY2tz'
 [?] Run command? (y/N): y
 Format used:
   base64
   utf8
-Final result: "123456"
+Final result: "fxy rocks"
 
 $ fxy hs sha256 a32b722e08c256c1e701c2fc63f88064e9d76e9b01ade5f87fd2f2a6fe42b1a6
 [*] (hashtoolkit.com) Match found: 's3cure'
