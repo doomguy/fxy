@@ -351,7 +351,7 @@ if [ "$1" == "curl" ]; then
   exit
 fi
 ## (cyber)chef [magic]^: Open CyberChef in your browser
-if [ "$1" == "chef" ] || [ "$1" == "cyberchef" ]; then
+if [[ "$1" =~ ^(cyber)?chef$ ]]; then
   CMD="firefox"; checkCmd
   CMD="firefox https://gchq.github.io/CyberChef/"
 
@@ -369,7 +369,9 @@ if [ "$1" == "chef" ] || [ "$1" == "cyberchef" ]; then
 fi
 ## dirb [s(sl)|tls] [subdir]^: dirb PROTO://RHOST+SUBDIR | tee
 if [ "$1" == "dirb" ]; then
-  CMD="$1"; checkCmd
+  CMD="$1"
+  export INSTCMD="apt istall dirb -y"
+  checkCmd
   PROTO="http"
   SUBDIR="/"
   # more than 1 arg?
@@ -386,7 +388,7 @@ if [ "$1" == "dirb" ]; then
     fi
   fi
 
-  CMD="$CMD $PROTO://${RHOST}${SUBDIR} | tee ${RHOST}_$(echo "$CMD" | cut -d' ' -f1)_$(date +%F_%H%M%S).log"
+  CMD="$CMD $PROTO://${RHOST}${SUBDIR} -a '$USRAGENT' | tee ${RHOST}_$(echo "$CMD" | cut -d' ' -f1)_$(date +%F_%H%M%S).log"
   echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"
@@ -862,7 +864,9 @@ if [ "$1" == "nfs" ] || [ "$1" == "showmount" ]; then
 fi
 ## nikto [s(sl)|tls] [subdir]^: nikto -host PROTO://RHOST+SUBDIR | tee
 if [ "$1" == "nikto" ]; then
-  CMD="$1"; checkCmd
+  CMD="$1"
+  export INSTCMD="apt install nikto -y"
+  checkCmd
   PROTO="http"
   SUBDIR="/"
   # more than 1 arg?
@@ -1102,7 +1106,7 @@ fi
 ## ssh [cid] [port]^: sshpass -e ssh :cid_user@RHOST -p PORT
 if [ "$1" == "ssh" ]; then
   CMD="sshpass";
-  export INSTCMD="apt install sshpass"
+  export INSTCMD="apt install sshpass -y"
   checkCmd
 
   # No ID supplied
@@ -1160,7 +1164,7 @@ if [[ "$1" =~ ^up(date)?$ ]]; then
 
   # update for non-git installations
   CMD="wget"
-  export INSTCMD="apt install wget"
+  export INSTCMD="apt install wget -y"
   checkCmd
 
   wget 'https://raw.githubusercontent.com/doomguy/fxy/master/build/fxy' -O "$0" \

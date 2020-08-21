@@ -1,6 +1,8 @@
 ## nikto [s(sl)|tls] [subdir]^: nikto -host PROTO://RHOST+SUBDIR | tee
 if [ "$1" == "nikto" ]; then
-  CMD="$1"; checkCmd
+  CMD="$1"
+  export INSTCMD="apt install nikto -y"
+  checkCmd
   PROTO="http"
   SUBDIR="/"
   # more than 1 arg?

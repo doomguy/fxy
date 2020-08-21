@@ -1,6 +1,8 @@
 ## dirb [s(sl)|tls] [subdir]^: dirb PROTO://RHOST+SUBDIR | tee
 if [ "$1" == "dirb" ]; then
-  CMD="$1"; checkCmd
+  CMD="$1"
+  export INSTCMD="apt istall dirb -y"
+  checkCmd
   PROTO="http"
   SUBDIR="/"
   # more than 1 arg?
@@ -17,7 +19,7 @@ if [ "$1" == "dirb" ]; then
     fi
   fi
 
-  CMD="$CMD $PROTO://${RHOST}${SUBDIR} | tee ${RHOST}_$(echo "$CMD" | cut -d' ' -f1)_$(date +%F_%H%M%S).log"
+  CMD="$CMD $PROTO://${RHOST}${SUBDIR} -a '$USRAGENT' | tee ${RHOST}_$(echo "$CMD" | cut -d' ' -f1)_$(date +%F_%H%M%S).log"
   echo "${bldwht}> $CMD${txtrst}"
   prompt
   bash -c "$CMD"

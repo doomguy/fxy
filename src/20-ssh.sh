@@ -1,7 +1,7 @@
 ## ssh [cid] [port]^: sshpass -e ssh :cid_user@RHOST -p PORT
 if [ "$1" == "ssh" ]; then
   CMD="sshpass";
-  export INSTCMD="apt install sshpass"
+  export INSTCMD="apt install sshpass -y"
   checkCmd
 
   # No ID supplied

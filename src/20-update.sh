@@ -14,7 +14,7 @@ if [[ "$1" =~ ^up(date)?$ ]]; then
 
   # update for non-git installations
   CMD="wget"
-  export INSTCMD="apt install wget"
+  export INSTCMD="apt install wget -y"
   checkCmd
 
   wget 'https://raw.githubusercontent.com/doomguy/fxy/master/build/fxy' -O "$0" \
