@@ -14,5 +14,5 @@ RHOST="$(fxy rhost | cut -d' ' -f 4)"
 
 @test            "fxy winrm 0" {
   result="$(build/fxy winrm 0 <<< N)"
-  [[ "$result" =~ "> evil-winrm -i webscantest.com -u 'NULL' -p 'NULL'" ]]
+  [[ "$result" =~ "> evil-winrm -i $RHOST -u 'NULL' -p 'NULL'" ]]
 }
