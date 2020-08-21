@@ -1,16 +1,16 @@
 #!/usr/bin/env bats
 
-@test "fxy r" {
+@test            "fxy r" {
   result="$(build/fxy r)"
   [[ "$result" =~ .*RHOST:\ .* ]]
 }
 
-@test "fxy rhost" {
-  result="$(build/fxy r)"
+@test            "fxy rhost" {
+  result="$(build/fxy rhost)"
   [[ "$result" =~ .*RHOST:\ .* ]]
 }
 
-@test "fxy r example.com" {
+@test  "fxy r example.com" {
   # save rhost
   RHOST="$(fxy rhost | cut -d' ' -f 4)"
   build/fxy r example.com

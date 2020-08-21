@@ -1,11 +1,11 @@
 #!/usr/bin/env bats
 
-@test "fxy ua" {
+@test            "fxy ua" {
   result="$(build/fxy ua)"
   [[ "$result" =~ User-Agent: ]]
 }
 
-@test "fxy useragent" {
+@test            "fxy useragent" {
   result="$(build/fxy useragent)"
   [[ "$result" =~ User-Agent: ]]
 }

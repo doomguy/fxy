@@ -1,16 +1,16 @@
 #!/usr/bin/env bats
 
-@test "fxy" {
+@test            "fxy" {
   result="$(build/fxy)"
   [[ "$result" =~ github.com/doomguy/fxy ]]
 }
 
-@test "fxy h" {
+@test            "fxy h" {
   result="$(build/fxy h)"
   [[ "$result" =~ github.com/doomguy/fxy ]]
 }
 
-@test "fxy help" {
+@test            "fxy help" {
   result="$(build/fxy help)"
   [[ "$result" =~ github.com/doomguy/fxy ]]
 }
