@@ -2,7 +2,7 @@
 if [ "$1" == "ipwsh" ]; then
   echo "${ques} Download InsecurePowerShell and serve via davserver?"; prompt
   CMD="davserver"
-  export INSTCMD="pip3 install PyWebDAV3"
+  export INSTCMD="python3 -m pip install PyWebDAV3"
   checkCmd
 
   FPATH="/dev/shm/.fxy/ipwsh"
