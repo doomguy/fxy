@@ -30,7 +30,7 @@ if { [ "$1" == "hashcrack" ] || [ "$1" == "hc" ]; } && [ "$#" -eq 3 ]; then
   # write hash to file with username
   CMD1="echo \"$USRNME:$HASH\" > hash_$USRNME.txt"
   CMD2="john --format=$JTYPE --wordlist $WRDLST --fork=2 --pot=hash.pot hash_$USRNME.txt"
-  echo -e "> $CMD1\n> $CMD2"; prompt; bash -c "$CMD1; $CMD2"; exit
+  echo -e "> $CMD1\n> $CMD2"; prompt; bash -c "$CMD1 && $CMD2"; exit
 fi
 # 2DO:
 # - add hashcat support
