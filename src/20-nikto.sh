@@ -1,4 +1,4 @@
-## nikto [s|ssl|tls] [subdir]^: nikto -host PROTO://RHOST+SUBDIR | tee
+## nikto [s(sl)|tls] [subdir]^: nikto -host PROTO://RHOST+SUBDIR | tee
 if [ "$1" == "nikto" ]; then
   CMD="$1"; checkCmd
   PROTO="http"
@@ -6,7 +6,7 @@ if [ "$1" == "nikto" ]; then
   # more than 1 arg?
   if [ "$#" -ge 2 ]; then
     # https?
-    if [ "$2" == "s" ] || [ "$2" == "ssl" ] || [ "$2" == "tls" ]; then
+    if [[ "$2" =~ ^s(sl)?|tls$ ]]; then
       PROTO="https"
     fi
 

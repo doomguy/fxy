@@ -1,5 +1,5 @@
 
-# FXY
+# fxy
 FXY is a small and smart bash script for fast command generation of common hacking and CTF related tasks. The source is completely modularized and adding new commands is super easy.
 
 ```
@@ -11,13 +11,13 @@ FXY is a small and smart bash script for fast command generation of common hacki
 
 Available commands:
   fxy  b(ase)64(e|d) [input]                          : Base64 Encode/Decode
-  fxy  cewl [s|ssl|tls] [subdir]                      : cewl PROTO://RHOST+SUBDIR -w RHOST_cewl.txt
+  fxy  cewl [s(sl)|tls] [subdir]                      : cewl PROTO://RHOST+SUBDIR -w RHOST_cewl.txt
   fxy  ciph(ey) [input]                               : ciphey -t INPUT
   fxy  cme|crackmapexec [smb]                         : crackmapexec smb RHOST | tee
   fxy  c(reds) [add user:pass]|[del cid]|[e(dit)]     : Show/Add/Del creds
-  fxy  curl [s|ssl|tls] [subdir]                      : curl -si PROTO://RHOST+SUBDIR | less
+  fxy  curl [s(sl)|tls] [subdir]                      : curl -si PROTO://RHOST+SUBDIR | less
   fxy  (cyber)chef [magic]                            : Open CyberChef in your browser
-  fxy  dirb [s|ssl|tls] [subdir]                      : dirb PROTO://RHOST+SUBDIR | tee
+  fxy  dirb [s(sl)|tls] [subdir]                      : dirb PROTO://RHOST+SUBDIR | tee
   fxy  (evil-)winrm [cid]                             : evil-winrm -i RHOST -u :cid_user -p :cid_pass
   fxy  fix [deps|pip(3)|py(thon)(3)|sys(tem)]         : Fix stufff
   fxy  h(ash)c(rack) [type] [hash|cid]                : Crack hash
@@ -33,7 +33,7 @@ Available commands:
   fxy  l(isten) [port]                                : ncat -vlkp PORT
   fxy  md5|sha(1)|sha2(56)|sha3(84)|sha5(12) [input]  : Generate hashes from input
   fxy  nfs|showmount                                  : showmount -e RHOST
-  fxy  nikto [s|ssl|tls] [subdir]                     : nikto -host PROTO://RHOST+SUBDIR | tee
+  fxy  nikto [s(sl)|tls] [subdir]                     : nikto -host PROTO://RHOST+SUBDIR | tee
   fxy  n(map) [full]                                  : nmap -v -A (-p-) RHOST | tee
   fxy  pass(word)                                     : Show default machine password
   fxy  peas [version] [port]                          : Download *peas and serve via http.server
@@ -56,7 +56,7 @@ Available commands:
 curl https://raw.githubusercontent.com/doomguy/fxy/master/install.sh | bash
 ```
 
-## FXY is Fun
+## fxy is Fun
 ```
 $ fxy rhost webscantest.com
 

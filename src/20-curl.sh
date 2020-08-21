@@ -1,4 +1,4 @@
-## curl [s|ssl|tls] [subdir]^: curl -si PROTO://RHOST+SUBDIR | less
+## curl [s(sl)|tls] [subdir]^: curl -si PROTO://RHOST+SUBDIR | less
 if [ "$1" == "curl" ]; then
   CMD="$1"; checkCmd
   PROTO="http"
@@ -6,7 +6,7 @@ if [ "$1" == "curl" ]; then
   # more than 1 arg?
   if [ "$#" -ge 2 ]; then
     # https?
-    if [ "$2" == "s" ] || [ "$2" == "ssl" ] || [ "$2" == "tls" ]; then
+    if [[ "$2" =~ ^s(sl)?|tls$ ]]; then
       PROTO="https"
     fi
 

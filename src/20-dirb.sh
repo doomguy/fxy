@@ -1,4 +1,4 @@
-## dirb [s|ssl|tls] [subdir]^: dirb PROTO://RHOST+SUBDIR | tee
+## dirb [s(sl)|tls] [subdir]^: dirb PROTO://RHOST+SUBDIR | tee
 if [ "$1" == "dirb" ]; then
   CMD="$1"; checkCmd
   PROTO="http"
@@ -6,7 +6,7 @@ if [ "$1" == "dirb" ]; then
   # more than 1 arg?
   if [ "$#" -ge 2 ]; then
     # https?
-    if [ "$2" == "s" ] || [ "$2" == "ssl" ] || [ "$2" == "tls" ]; then
+    if [[ "$2" =~ ^s(sl)?|tls$ ]]; then
       PROTO="https"
     fi
 

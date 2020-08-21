@@ -1,4 +1,4 @@
-## cewl [s|ssl|tls] [subdir]^: cewl PROTO://RHOST+SUBDIR -w RHOST_cewl.txt
+## cewl [s(sl)|tls] [subdir]^: cewl PROTO://RHOST+SUBDIR -w RHOST_cewl.txt
 if [ "$1" == "cewl" ]; then
   CMD="$1"; checkCmd
   PROTO="http"
@@ -6,7 +6,7 @@ if [ "$1" == "cewl" ]; then
   # more than 1 arg?
   if [ "$#" -ge 2 ]; then
     # https?
-    if [ "$2" == "s" ] || [ "$2" == "ssl" ] || [ "$2" == "tls" ]; then
+    if [[ "$2" =~ ^s(sl)?|tls$ ]]; then
       PROTO="https"
     fi
     # subdir?

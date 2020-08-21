@@ -14,7 +14,7 @@ if [ "$1" == "wfuzz" ] && [ "$2" == "vhost" ]; then
   DOMAIN="$RHOST"
   if [ "$#" -ge 3 ]; then
     # https?
-    if [ "$3" == "s" ] || [ "$3" == "ssl" ] || [ "$3" == "tls" ]; then
+    if [[ "$3" =~ ^s(sl)?|tls$ ]]; then
       PROTO="https"
     fi
 
@@ -57,7 +57,7 @@ if [ "$1" == "wfuzz" ] && [ "$2" != "vhost" ]; then
   SUB="/"
   if [ "$#" -ge 2 ]; then
     # https?
-    if [ "$2" == "s" ] || [ "$2" == "ssl" ] || [ "$2" == "tls" ]; then
+    if [[ "$2" =~ ^s(sl)?|tls$ ]]; then
       PROTO="https"
     fi
 

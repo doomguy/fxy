@@ -228,7 +228,7 @@ if [[ "$1" =~ ^b(ase)?64(e|d)?$ ]] && [ "$#" -eq 2 ]; then
     *)                                echo "${warn} Error parsing type of operation!"; exit ;;
   esac
 fi
-## cewl [s|ssl|tls] [subdir]^: cewl PROTO://RHOST+SUBDIR -w RHOST_cewl.txt
+## cewl [s(sl)|tls] [subdir]^: cewl PROTO://RHOST+SUBDIR -w RHOST_cewl.txt
 if [ "$1" == "cewl" ]; then
   CMD="$1"; checkCmd
   PROTO="http"
@@ -236,7 +236,7 @@ if [ "$1" == "cewl" ]; then
   # more than 1 arg?
   if [ "$#" -ge 2 ]; then
     # https?
-    if [ "$2" == "s" ] || [ "$2" == "ssl" ] || [ "$2" == "tls" ]; then
+    if [[ "$2" =~ ^s(sl)?|tls$ ]]; then
       PROTO="https"
     fi
     # subdir?
@@ -309,7 +309,7 @@ if [[ "$1" =~ ^c(reds)?$ ]]; then
   bash -c "$CMD"
   exit
 fi
-## curl [s|ssl|tls] [subdir]^: curl -si PROTO://RHOST+SUBDIR | less
+## curl [s(sl)|tls] [subdir]^: curl -si PROTO://RHOST+SUBDIR | less
 if [ "$1" == "curl" ]; then
   CMD="$1"; checkCmd
   PROTO="http"
@@ -317,7 +317,7 @@ if [ "$1" == "curl" ]; then
   # more than 1 arg?
   if [ "$#" -ge 2 ]; then
     # https?
-    if [ "$2" == "s" ] || [ "$2" == "ssl" ] || [ "$2" == "tls" ]; then
+    if [[ "$2" =~ ^s(sl)?|tls$ ]]; then
       PROTO="https"
     fi
 
@@ -351,7 +351,7 @@ if [ "$1" == "chef" ] || [ "$1" == "cyberchef" ]; then
   bash -c "$CMD"
   exit
 fi
-## dirb [s|ssl|tls] [subdir]^: dirb PROTO://RHOST+SUBDIR | tee
+## dirb [s(sl)|tls] [subdir]^: dirb PROTO://RHOST+SUBDIR | tee
 if [ "$1" == "dirb" ]; then
   CMD="$1"; checkCmd
   PROTO="http"
@@ -359,7 +359,7 @@ if [ "$1" == "dirb" ]; then
   # more than 1 arg?
   if [ "$#" -ge 2 ]; then
     # https?
-    if [ "$2" == "s" ] || [ "$2" == "ssl" ] || [ "$2" == "tls" ]; then
+    if [[ "$2" =~ ^s(sl)?|tls$ ]]; then
       PROTO="https"
     fi
 
@@ -844,7 +844,7 @@ if [ "$1" == "nfs" ] || [ "$1" == "showmount" ]; then
   bash -c "$CMD"
   exit
 fi
-## nikto [s|ssl|tls] [subdir]^: nikto -host PROTO://RHOST+SUBDIR | tee
+## nikto [s(sl)|tls] [subdir]^: nikto -host PROTO://RHOST+SUBDIR | tee
 if [ "$1" == "nikto" ]; then
   CMD="$1"; checkCmd
   PROTO="http"
@@ -852,7 +852,7 @@ if [ "$1" == "nikto" ]; then
   # more than 1 arg?
   if [ "$#" -ge 2 ]; then
     # https?
-    if [ "$2" == "s" ] || [ "$2" == "ssl" ] || [ "$2" == "tls" ]; then
+    if [[ "$2" =~ ^s(sl)?|tls$ ]]; then
       PROTO="https"
     fi
 
@@ -1157,7 +1157,7 @@ fi
 if [ "$1" == "weevely" ] && [ "$#" -ge 2 ] && [ "$2" == "help" ]; then
   echo "Available commands:"
   echo "  fxy weevely gen [file] [password]"
-  echo "  fxy weevely [s|ssl|tls] [subdir] [file] [password]"
+  echo "  fxy weevely [s(sl)|tls] [subdir] [file] [password]"
   exit
 fi
 
@@ -1167,7 +1167,7 @@ if [ "$1" == "weevely" ] && [ "$#" -ge 2 ] && [ "$2" == "gen" ]; then
   FILE="fxy.php"
   getMachinePass
   # filename?
-  if [ "$#" -eq 3 ]; then
+  if [ "$#" -ge 3 ]; then
     FILE="$3"
   fi
   # pasword?
@@ -1187,32 +1187,30 @@ if [ "$1" == "weevely" ]; then
   FILE="fxy.php"
   PROTO="http"
   SUBDIR="/"
+  getMachinePass
+  
   # more than 1 arg?
   if [ "$#" -ge 2 ]; then
     # https?
-    if [ "$2" == "s" ] || [ "$2" == "ssl" ] || [ "$2" == "tls" ]; then
+    if [[ "$2" =~ ^s(sl)?|tls$ ]]; then
       PROTO="https"
     fi
-    # subdir?
-    if [ "$#" -eq 3 ] && [ "$PROTO" == "https" ]; then
-      SUBDIR="$3"
-    elif [ "$#" -eq 2 ] && [ "$PROTO" == "http" ]; then
-      SUBDIR="$2"
-    fi
-    # filename?
-    if [ "$#" -eq 4 ] && [ "$PROTO" == "https" ]; then
-      FILE="$4"
-    elif [ "$#" -eq 3 ] && [ "$PROTO" == "http" ]; then
-      FILE="$3"
-    fi
-    # password?
-    if [ "$#" -eq 5 ] && [ "$PROTO" == "https" ]; then
-      PASSWD="$5"
-    elif [ "$#" -eq 4 ] && [ "$PROTO" == "http" ]; then
-      PASSWD="$4"
+
+    if [ "$PROTO" == "http" ]; then
+      case "$#" in
+        "2")  SUBDIR="$2" ;;
+        "3")  SUBDIR="$2"; FILE="$3" ;;
+        "4")  SUBDIR="$2"; FILE="$3"; PASSWD="$4" ;;
+      esac
+    elif [ "$PROTO" == "https" ]; then
+      case "$#" in
+        "3")  SUBDIR="$3" ;;
+        "4")  SUBDIR="$3"; FILE="$4" ;;
+        "5")  SUBDIR="$3"; FILE="$4"; PASSWD="$5" ;;
+      esac
     fi
   fi
-  getMachinePass
+
   CMD="$CMD $PROTO://${RHOST}${SUBDIR}${FILE} $PASSWD"
   echo "${bldwht}> $CMD${txtrst}"
   prompt
@@ -1235,7 +1233,7 @@ if [ "$1" == "wfuzz" ] && [ "$2" == "vhost" ]; then
   DOMAIN="$RHOST"
   if [ "$#" -ge 3 ]; then
     # https?
-    if [ "$3" == "s" ] || [ "$3" == "ssl" ] || [ "$3" == "tls" ]; then
+    if [[ "$3" =~ ^s(sl)?|tls$ ]]; then
       PROTO="https"
     fi
 
@@ -1278,7 +1276,7 @@ if [ "$1" == "wfuzz" ] && [ "$2" != "vhost" ]; then
   SUB="/"
   if [ "$#" -ge 2 ]; then
     # https?
-    if [ "$2" == "s" ] || [ "$2" == "ssl" ] || [ "$2" == "tls" ]; then
+    if [[ "$2" =~ ^s(sl)?|tls$ ]]; then
       PROTO="https"
     fi
 
