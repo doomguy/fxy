@@ -1,12 +1,12 @@
 
-# fxy
-Shell wizardry for hacking and CTF.
+# FXY
+FXY is a small and smart bash script for fast command generation of common hacking and CTF related tasks. The source is completely modularized and adding new commands is super easy.
 
 ```
  .    .
  |\__/|
- /     \    | FOXACID || Fox in the $hell |
-/_,- -,_\   |   github.com/doomguy/fxy    |
+ /     \    |  FXY || Fox in the $hell   |
+/_,- -,_\   |    github.com/doomguy/fxy  |
    \@/
 
 Available commands:
@@ -51,12 +51,12 @@ Available commands:
 
 ```
 
-## Installation
+## Easy to Install
 ```
 curl https://raw.githubusercontent.com/doomguy/fxy/master/install.sh | bash
 ```
 
-## Example
+## FXY is Fun
 ```
 $ fxy rhost webscantest.com
 

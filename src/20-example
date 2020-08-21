@@ -1,0 +1,11 @@
+## ex(ample) [input]^: example description
+if [[ "$1" =~ ^ex(ample)?$ ]] && [ "$#" -eq 2 ]; then
+  CMD="echo"
+  export INSTCMD="apt install $CMD"
+  checkCmd
+
+  INPUT="$2"
+  CMD="$CMD '$INPUT'"
+  echo "${bldwht}> $CMD${txtrst}"; prompt; bash -c "$CMD";
+  exit
+fi

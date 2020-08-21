@@ -2,7 +2,7 @@
 set -euo pipefail
 
 echo -e "\n[*] Building script"
-cat src/* > build/fxy
+cat src/*.sh > build/fxy
 echo -e "\n[*] Making script executable"
 chmod +x build/fxy
 echo -e "\n[*] Running shellcheck"
@@ -18,10 +18,10 @@ echo -e "\n[*] Running tests"
 bats test/*
 
 # build readme.md
-echo '
-# fxy
-Shell wizardry for hacking and CTF.
-' > readme.md
+echo "
+# FXY
+FXY is a small and smart bash script for fast command generation of common hacking and CTF related tasks. The source is completely modularized and adding new commands is super easy.
+" > readme.md
 echo '```' >> readme.md
 fxy help >> readme.md
 echo '```' >> readme.md
