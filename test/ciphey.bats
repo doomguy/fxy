@@ -10,6 +10,11 @@
   [[ "$result" =~ Final\ result:\ \"123456\" ]]
 }
 
+@test            "fxy cyphy MTIzNDU2" {
+  result="$(build/fxy cyphy MTIzNDU2 <<< Y)"
+  [[ "$result" =~ Final\ result:\ \"123456\" ]]
+}
+
 @test            "fxy ciph MTIzNDU2" {
   result="$(build/fxy ciph MTIzNDU2 <<< Y)"
   [[ "$result" =~ Final\ result:\ \"123456\" ]]
