@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-# encode
+# encode input
 
 @test            "fxy b64 123456" {
   result="$(build/fxy b64 123456)"
@@ -22,7 +22,12 @@
   [ "$result" == "MTIzNDU2" ]
 }
 
-# decode
+@test            "fxy b64 123 456" {
+  result="$(build/fxy b64 123 456)"
+  [ "$result" == "MTIzIDQ1Ng==" ]
+}
+
+# decode input
 
 @test            "fxy b64d MTIzNDU2" {
   result="$(build/fxy b64d MTIzNDU2)"
