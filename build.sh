@@ -15,7 +15,7 @@ set +e; shellcheck -s bash build/fxy; set -e
 #  exit
 #fi
 echo -e "\n[*] Running tests"
-bats test/*
+bats test/* | tee bats.result
 
 # build readme.md
 echo "
