@@ -31,7 +31,7 @@ showHelp() {
   showHead
   echo "Available commands:"
   grep "^##" "$0" | sort | column -t -s'^' | sed 's,##,  fxy ,'
-  echo
+  echo; exit
 }
 
 INSTCMD=""

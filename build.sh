@@ -20,7 +20,7 @@ bats test/*
 # build readme.md
 echo "
 # fxy
-FXY is a small and smart bash script for fast command generation of common hacking and CTF related tasks. The source is completely modularized and adding new commands is super easy.
+fxy is a small and smart bash script for fast command generation of common hacking and CTF related tasks. The source is completely modularized and adding new commands is super easy.
 " > readme.md
 echo '```' >> readme.md
 fxy help >> readme.md
