@@ -1,5 +1,5 @@
 ## (cyber)chef [magic]^: Open CyberChef in your browser
-if [ "$1" == "chef" ] || [ "$1" == "cyberchef" ]; then
+if [[ "$1" =~ ^(cyber)?chef$ ]]; then
   CMD="firefox"; checkCmd
   CMD="firefox https://gchq.github.io/CyberChef/"
 
