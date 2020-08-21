@@ -2,12 +2,12 @@
 
 @test "fxy len" {
   result="$(build/fxy len)"
-  [[ "$result" =~ FOXACID ]]
+  [[ "$result" =~ doomguy/fxy ]]
 }
 
 @test "fxy length" {
   result="$(build/fxy length)"
-  [[ "$result" =~ FOXACID ]]
+  [[ "$result" =~ doomguy/fxy ]]
 }
 
 @test "fxy len 123456" {
