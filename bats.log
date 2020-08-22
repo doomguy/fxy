@@ -1,4 +1,4 @@
-1..150
+1..153
 ok 1 fxy b64 123456
 ok 2 fxy b64e 123456
 ok 3 fxy base64 123456
@@ -115,37 +115,40 @@ ok 113 fxy hydra http (with file)
 ok 114 fxy hydra http 443 (with file)
 ok 115 fxy hydra http 443 alice (with file)
 ok 116 fxy hydra http 443 alice /certsrv/ (with file)
-ok 117 fxy len
-ok 118 fxy length
-ok 119 fxy len 123456
-ok 120 fxy length 123456
-ok 121 fxy length '123456'
-ok 122 fxy len 12345 6
-ok 123 fxy len '12345 6'
-ok 124 fxy n
-ok 125 fxy nmap
-ok 126 fxy n full
-ok 127 fxy pass
-ok 128 fxy password
-ok 129 fxy r
-ok 130 fxy rhost
-ok 131 fxy r example.com
-ok 132 fxy ua
-ok 133 fxy useragent
-ok 134 fxy ua TestAgent
-ok 135 fxy ua Test Agent
-ok 136 fxy ua default
-ok 137 fxy ua reset
-ok 138 fxy weevely gen
-ok 139 fxy weevely gen test.php
-ok 140 fxy weevely gen test.php 123456
-ok 141 fxy weevely
-ok 142 fxy weevely s
-ok 143 fxy weevely ssl
-ok 144 fxy weevely tls
-ok 145 fxy weevely :8080/files/
-ok 146 fxy weevely s :8080/files/
-ok 147 fxy weevely :8080/files/ test.php
-ok 148 fxy weevely s :8080/files/ test.php
-ok 149 fxy weevely :8080/files/ test.php 123456
-ok 150 fxy weevely s :8080/files/ test.php 123456
+ok 117 fxy iconv bats.log
+ok 118 fxy conv bats.log
+ok 119 fxy convert bats.log
+ok 120 fxy len
+ok 121 fxy length
+ok 122 fxy len 123456
+ok 123 fxy length 123456
+ok 124 fxy length '123456'
+ok 125 fxy len 12345 6
+ok 126 fxy len '12345 6'
+ok 127 fxy n
+ok 128 fxy nmap
+ok 129 fxy n full
+ok 130 fxy pass
+ok 131 fxy password
+ok 132 fxy r
+ok 133 fxy rhost
+ok 134 fxy r example.com
+ok 135 fxy ua
+ok 136 fxy useragent
+ok 137 fxy ua TestAgent
+ok 138 fxy ua Test Agent
+ok 139 fxy ua default
+ok 140 fxy ua reset
+ok 141 fxy weevely gen
+ok 142 fxy weevely gen test.php
+ok 143 fxy weevely gen test.php 123456
+ok 144 fxy weevely
+ok 145 fxy weevely s
+ok 146 fxy weevely ssl
+ok 147 fxy weevely tls
+ok 148 fxy weevely :8080/files/
+ok 149 fxy weevely s :8080/files/
+ok 150 fxy weevely :8080/files/ test.php
+ok 151 fxy weevely s :8080/files/ test.php
+ok 152 fxy weevely :8080/files/ test.php 123456
+ok 153 fxy weevely s :8080/files/ test.php 123456

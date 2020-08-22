@@ -25,6 +25,6 @@ set +e; shellcheck -s bash build/fxy; set -e
 #  exit
 #fi
 echo -e "\n[*] Running tests"
-bats test/* | tee bats.result
+bats test/* | tee bats.log
 
 echo -e "\n[*] Build successful!"

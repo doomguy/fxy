@@ -12,3 +12,4 @@ fi
 # enum4linux
 # bash one liners
 # user agent
+# fxy | grep port > validation
