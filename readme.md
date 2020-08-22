@@ -21,8 +21,8 @@ Available commands:
   fxy  (evil-)winrm [cid]                              : evil-winrm -i RHOST -u :cid_user -p :cid_pass
   fxy  fix [deps|pip(3)|py(thon)(3)|sys(tem)]          : Fix stufff
   fxy  h(ash)c(rack) [type] [hash|cid]                 : Crack hash
-  fxy  h(ash)i(d) [hash]                               : Identify hash type
-  fxy  h(ash)s(earch) [md5|sha1|...] [hash]            : Search for hashes
+  fxy  h(ash)i(d) [hash|cid]                           : Identify hash type
+  fxy  h(ash)s(earch) [md5|sha1|...] [hash|cid]        : Search for hashes
   fxy  h(elp)                                          : Show this help
   fxy  httpd|ws [port]                                 : python3 -m http.server PORT
   fxy  hydra [service] [port] [username]               : hydra brute force (ssh, ftp, smb)

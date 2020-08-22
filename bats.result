@@ -1,4 +1,4 @@
-1..130
+1..134
 ok 1 fxy b64 123456
 ok 2 fxy b64e 123456
 ok 3 fxy base64 123456
@@ -59,8 +59,8 @@ ok 57 fxy fix py
 ok 58 fxy fix py3
 ok 59 fxy fix sys
 ok 60 fxy fix system
-ok 61 fxy hc md5 1
-ok 62 fxy hashcrack md5 1
+ok 61 fxy hashcrack md5 1
+ok 62 fxy hc md5 1
 ok 63 fxy hc md5 0
 ok 64 fxy hc sha1 0
 ok 65 fxy hc sha256 0
@@ -76,56 +76,60 @@ ok 74 fxy sha5 123456
 ok 75 fxy sha512 123456
 ok 76 fxy md5 123 456
 ok 77 fxy md5 '123 456'
-ok 78 fxy hs lm invalid
-ok 79 fxy hs nt invalid
-ok 80 fxy hs md5 invalid
-ok 81 fxy hs sha1 invalid
-ok 82 fxy hs sha256 invalid
-ok 83 fxy hs sha384 invalid
-ok 84 fxy hs sha512 invalid
-ok 85 fxy hs md5 d41d8cd98f00b204e9800998ecf8427e
-ok 86 fxy hs sha1 da39a3ee5e6b4b0d3255bfef95601890afd80709
-ok 87 fxy hs sha256 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-ok 88 fxy hs sha384 38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b
-ok 89 fxy hs sha512 cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
-ok 90 fxy hs lm aad3b435b51404ee
-ok 91 fxy hs lm 44efce164ab921caaad3b435b51404ee (online) # skip
-ok 92 fxy
-ok 93 fxy h
-ok 94 fxy help
-ok 95 fxy ws # skip
-ok 96 fxy httpd # skip
-ok 97 fxy len
-ok 98 fxy length
-ok 99 fxy len 123456
-ok 100 fxy length 123456
-ok 101 fxy length '123456'
-ok 102 fxy len 12345 6
-ok 103 fxy len '12345 6'
-ok 104 fxy n
-ok 105 fxy nmap
-ok 106 fxy n full
-ok 107 fxy pass
-ok 108 fxy password
-ok 109 fxy r
-ok 110 fxy rhost
-ok 111 fxy r example.com
-ok 112 fxy ua
-ok 113 fxy useragent
-ok 114 fxy ua TestAgent
-ok 115 fxy ua Test Agent
-ok 116 fxy ua default
-ok 117 fxy ua reset
-ok 118 fxy weevely gen
-ok 119 fxy weevely gen test.php
-ok 120 fxy weevely gen test.php 123456
-ok 121 fxy weevely
-ok 122 fxy weevely s
-ok 123 fxy weevely ssl
-ok 124 fxy weevely tls
-ok 125 fxy weevely :8080/files/
-ok 126 fxy weevely s :8080/files/
-ok 127 fxy weevely :8080/files/ test.php
-ok 128 fxy weevely s :8080/files/ test.php
-ok 129 fxy weevely :8080/files/ test.php 123456
-ok 130 fxy weevely s :8080/files/ test.php 123456
+ok 78 fxy hashid 1
+ok 79 fxy hid 1
+ok 80 fxy hi 1
+ok 81 fxy hi e10adc3949ba59abbe56e057f20f883e
+ok 82 fxy hs lm invalid
+ok 83 fxy hs nt invalid
+ok 84 fxy hs md5 invalid
+ok 85 fxy hs sha1 invalid
+ok 86 fxy hs sha256 invalid
+ok 87 fxy hs sha384 invalid
+ok 88 fxy hs sha512 invalid
+ok 89 fxy hs md5 d41d8cd98f00b204e9800998ecf8427e
+ok 90 fxy hs sha1 da39a3ee5e6b4b0d3255bfef95601890afd80709
+ok 91 fxy hs sha256 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+ok 92 fxy hs sha384 38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b
+ok 93 fxy hs sha512 cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
+ok 94 fxy hs lm aad3b435b51404ee
+ok 95 fxy hs lm 44efce164ab921caaad3b435b51404ee (online) # skip
+ok 96 fxy
+ok 97 fxy h
+ok 98 fxy help
+ok 99 fxy ws # skip
+ok 100 fxy httpd # skip
+ok 101 fxy len
+ok 102 fxy length
+ok 103 fxy len 123456
+ok 104 fxy length 123456
+ok 105 fxy length '123456'
+ok 106 fxy len 12345 6
+ok 107 fxy len '12345 6'
+ok 108 fxy n
+ok 109 fxy nmap
+ok 110 fxy n full
+ok 111 fxy pass
+ok 112 fxy password
+ok 113 fxy r
+ok 114 fxy rhost
+ok 115 fxy r example.com
+ok 116 fxy ua
+ok 117 fxy useragent
+ok 118 fxy ua TestAgent
+ok 119 fxy ua Test Agent
+ok 120 fxy ua default
+ok 121 fxy ua reset
+ok 122 fxy weevely gen
+ok 123 fxy weevely gen test.php
+ok 124 fxy weevely gen test.php 123456
+ok 125 fxy weevely
+ok 126 fxy weevely s
+ok 127 fxy weevely ssl
+ok 128 fxy weevely tls
+ok 129 fxy weevely :8080/files/
+ok 130 fxy weevely s :8080/files/
+ok 131 fxy weevely :8080/files/ test.php
+ok 132 fxy weevely s :8080/files/ test.php
+ok 133 fxy weevely :8080/files/ test.php 123456
+ok 134 fxy weevely s :8080/files/ test.php 123456

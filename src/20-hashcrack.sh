@@ -26,6 +26,9 @@ if { [ "$1" == "hashcrack" ] || [ "$1" == "hc" ]; } && [ "$#" -eq 3 ]; then
     # assume a cid is given since hash is too short
     CID="$3"
     getCreds
+    if [ -z "$HASH" ]; then
+      echo "${warn} No hash found for credential ID '$CID'"; exit
+    fi
   fi
   # write hash to file with username
   CMD1="echo \"$USRNME:$HASH\" > hash_$USRNME.txt"

@@ -70,3 +70,8 @@
   result="$(build/fxy hs lm 44efce164ab921caaad3b435b51404ee)"
   [[ "$result" =~ 123456 ]]
 }
+
+@test            "fxy hs md5 1" {
+  result="$(build/fxy hs md5 1)"
+  [[ "$result" =~ "No 'creds.txt' found!" ]]
+}

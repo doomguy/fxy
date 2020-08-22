@@ -1,13 +1,22 @@
-## h(ash)s(earch) [md5|sha1|...] [hash]^: Search for hashes
+## h(ash)s(earch) [md5|sha1|...] [hash|cid]^: Search for hashes
 # hashsearch help
-if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -eq 1 ]; then
+if [[ "$1" =~ ^h(ash)?s(earch)?$ ]] && [ "$#" -eq 1 ]; then
   echo "Available commands:"
-  echo "  fxy h(ash)s(earch) [md5|sha(1)|sha2(56)|sha3(56)|sha5(12)] [hash]"
+  echo "  fxy h(ash)s(earch) [md5|sha(1)|sha2(56)|sha3(84)|sha5(12)] [hash|cid]"
   exit
 fi
 
-if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -ge 3 ]; then
+if [[ "$1" =~ ^h(ash)?s(earch)?$ ]] && [ "$#" -ge 3 ]; then
   HASH="$3"
+  if [ "$(echo -n "$HASH" | wc -c)" -le 2 ] && [ "$HASH" -ge 1 ]; then
+    # assume a cid is given since hash is too short
+    CID="$3"
+    getCreds
+    if [ -z "$HASH" ]; then
+      echo "${warn} No hash found for credential ID '$CID'"; exit
+    fi
+    echo "${info} Searching for hash: $HASH"
+  fi
 
   case "$2" in
     "md5")              TYPE="md5";
@@ -36,10 +45,10 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -ge 3 ]; then
     "nt"|"NT")          TYPE="nt";
                         [[ "$HASH" =~ ^[A-Za-z0-9]{32}$ ]] || { echo "${warn} Invalid NT Hash!"; exit; } ;;
 
-    *)                  echo "${warn} Error parsing type of hash!"; exit ;;
-  esac
+    *)                  TYPE="any" ;;
+    esac
 
-  [ "${4-default}" == "q" ] || sleep 2
+  [ "${4-default}" == "qq" ] || sleep 2
 
   # hashtoolkit.com
   if [[ "$TYPE" =~ ^md5|sha1|sha256|sha384|sha512$ ]]; then
@@ -147,23 +156,45 @@ if { [ "$1" == "hashsearch" ] || [ "$1" == "hs" ]; } && [ "$#" -ge 3 ]; then
     if [ "$TYPE" == "nt" ]; then TYPE="ntlm"; fi
     RES=$(curl -ski -A "$USRAGENT" "https://reverse-hash-lookup.online-domain-tools.com/" --data "text=$HASH&function=$TYPE&do=form-submit&phone=5deab72563840e7678c4067671849b85332d7438&send=%3E+Reverse!")
     if [ -n "$(grep -i 'You do not have enough credits in your account.' <<< "$RES")" ]; then
-      echo "${warn} (online-domain-tools.com) No free credits left!";
+      echo "${warn} (online-domain-tools.com) No free credits left!"
     elif [ -n "$(grep -i 'Hash #1:</b> ERROR:' <<< "$RES")" ]; then
-      echo "${warn} (online-domain-tools.com) No match found or error!";
+      echo "${warn} (online-domain-tools.com) No match found or error!"
     else
       PASSWD="$(grep -o -m 1 "Hash #1.*" <<< "$RES" | cut -d' ' -f3 | sed 's,</.*$,,')"
       PASSWD="$(sed 's,&lt;,<,' <<< "$PASSWD")"
       PASSWD="$(sed 's,&gt;,>,' <<< "$PASSWD")"
-      echo "${info} (online-domain-tools.com) Match found: '$PASSWD'"
+      echo "${info} (online-domain-tools.com) Match found: '$PASSWD'"; exit
+    fi
+  fi
+
+  # hashes.org
+  if [[ "$TYPE" =~ ^.*$ ]]; then # search for any hash type
+    RES=$(curl -ski -A "$USRAGENT" https://hashes.com/en/decrypt/hash)
+    if [[ "$RES" =~ captcha/images ]]; then
+      echo -n "${warn} (hashes.org) Captcha detected! Retrying in "
+      for i in {90..1}; do echo -n "${i}s "; sleep 1; done; echo
+      RES=$(curl -ski -A "$USRAGENT" https://hashes.com/en/decrypt/hash)
+    fi
+    CSRF=$(grep 'csrf_token' <<< "$RES" | cut -d'"' -f6)
+    RES=$(curl -ski -A "$USRAGENT" -b "csrf_token=$CSRF" https://hashes.com/en/decrypt/hash --data-raw "csrf_token=$CSRF&hashes=$HASH&submitted=true")
+    if [[ "$RES" =~ "Please wait 10 seconds" ]]; then
+      echo -n "${warn} (hashes.org) Too fast! Please retry in 60s!"
+    elif [[ "$RES" =~ "0 found 1 not found" ]]; then
+      echo "${warn} (hashes.org) No match found!"
+    elif [[ "$RES" =~ "Invalid captcha" ]]; then
+      echo "${warn} (hashes.org) Captcha error! Please retry in 1min!"
+    elif [[ "$RES" =~ "1 found 0 not found" ]]; then
+      PASSWD=$(grep -o "$HASH.*" <<< "$RES" | sed "s,$HASH:\(.*\)</div></pre>.*,\1," | tr -d '\r\n')
+      echo "${info} (hashes.org) Match found: '$PASSWD'"; exit
     fi
   fi
 
   # Still here?
-  echo -e "\nNothing found so far. Want to do it manually on crackstation.net?"
+  echo -e "\nNothing found so far. Want to try it manually on crackstation.net?"
   CMD="firefox 'https://crackstation.net'"
   echo "${bldwht}> $CMD${txtrst}"; prompt; bash -c "$CMD"; exit
 fi
 # 2DO:
 # - https://md5decrypt.net/en/Api/ - signup broken
-# - access online-domain-tools.com via tor for more free creds?
 # - implement more lm/ntlm crackers
+# torify
