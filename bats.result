@@ -1,4 +1,4 @@
-1..148
+1..150
 ok 1 fxy b64 123456
 ok 2 fxy b64e 123456
 ok 3 fxy base64 123456
@@ -107,45 +107,45 @@ ok 105 fxy hydra smb (no file)
 ok 106 fxy hydra http (no file)
 ok 107 fxy hydra ssh (with file)
 ok 108 fxy hydra ssh 9001 (with file)
-not ok 109 fxy hydra ssh 123invalidport123 (with file)
-# (in test file test/hydra.bats, line 52)
-#   `[[ "$result" =~ "Invalid Port number!" ]]' failed
+ok 109 fxy hydra ssh 123invalidport123 (with file)
 ok 110 fxy hydra ssh 9001 alice (with file)
 ok 111 fxy hydra ftp (with file)
 ok 112 fxy hydra smb (with file)
 ok 113 fxy hydra http (with file)
-ok 114 fxy hydra http (with file)
-ok 115 fxy len
-ok 116 fxy length
-ok 117 fxy len 123456
-ok 118 fxy length 123456
-ok 119 fxy length '123456'
-ok 120 fxy len 12345 6
-ok 121 fxy len '12345 6'
-ok 122 fxy n
-ok 123 fxy nmap
-ok 124 fxy n full
-ok 125 fxy pass
-ok 126 fxy password
-ok 127 fxy r
-ok 128 fxy rhost
-ok 129 fxy r example.com
-ok 130 fxy ua
-ok 131 fxy useragent
-ok 132 fxy ua TestAgent
-ok 133 fxy ua Test Agent
-ok 134 fxy ua default
-ok 135 fxy ua reset
-ok 136 fxy weevely gen
-ok 137 fxy weevely gen test.php
-ok 138 fxy weevely gen test.php 123456
-ok 139 fxy weevely
-ok 140 fxy weevely s
-ok 141 fxy weevely ssl
-ok 142 fxy weevely tls
-ok 143 fxy weevely :8080/files/
-ok 144 fxy weevely s :8080/files/
-ok 145 fxy weevely :8080/files/ test.php
-ok 146 fxy weevely s :8080/files/ test.php
-ok 147 fxy weevely :8080/files/ test.php 123456
-ok 148 fxy weevely s :8080/files/ test.php 123456
+ok 114 fxy hydra http 443 (with file)
+ok 115 fxy hydra http 443 alice (with file)
+ok 116 fxy hydra http 443 alice /certsrv/ (with file)
+ok 117 fxy len
+ok 118 fxy length
+ok 119 fxy len 123456
+ok 120 fxy length 123456
+ok 121 fxy length '123456'
+ok 122 fxy len 12345 6
+ok 123 fxy len '12345 6'
+ok 124 fxy n
+ok 125 fxy nmap
+ok 126 fxy n full
+ok 127 fxy pass
+ok 128 fxy password
+ok 129 fxy r
+ok 130 fxy rhost
+ok 131 fxy r example.com
+ok 132 fxy ua
+ok 133 fxy useragent
+ok 134 fxy ua TestAgent
+ok 135 fxy ua Test Agent
+ok 136 fxy ua default
+ok 137 fxy ua reset
+ok 138 fxy weevely gen
+ok 139 fxy weevely gen test.php
+ok 140 fxy weevely gen test.php 123456
+ok 141 fxy weevely
+ok 142 fxy weevely s
+ok 143 fxy weevely ssl
+ok 144 fxy weevely tls
+ok 145 fxy weevely :8080/files/
+ok 146 fxy weevely s :8080/files/
+ok 147 fxy weevely :8080/files/ test.php
+ok 148 fxy weevely s :8080/files/ test.php
+ok 149 fxy weevely :8080/files/ test.php 123456
+ok 150 fxy weevely s :8080/files/ test.php 123456
