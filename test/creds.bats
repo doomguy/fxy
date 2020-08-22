@@ -46,7 +46,7 @@
 }
 
 @test            "fxy c d 1 (with file)" {
-  echo 'alice:123456:' >> creds.txt
+  echo 'alice:123456:' > creds.txt
   result="$(build/fxy c d 1 <<< N)"
   rm creds.txt
   [[ "$result" =~ "> sed -i '1d' creds.txt" ]]

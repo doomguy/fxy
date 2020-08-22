@@ -1,11 +1,11 @@
 ## hydra [service] [port] [username]^: hydra brute force (ssh, ftp, smb)
 # hydra help
-if [ "$1" == "hydra" ] && [ "$#" -eq 1 ]; then
+if [[ "$1" =~ ^hydra|brute$ ]] && [ "$#" -eq 1 ]; then
   echo "Available commands:"
   echo "  fxy hydra ssh [port] [username]"
   echo "  fxy hydra ftp [port] [username]"
   echo "  fxy hydra smb [port] [username]"
-  echo "  fxy hydra http [url] [username] [subdir]"
+  echo "  fxy hydra http [port] [username] [subdir]"
   echo -e "\n[i] For more check out: https://book.hacktricks.xyz/brute-force"
   exit
 fi
@@ -13,9 +13,12 @@ fi
 # hydra -I -L user.lst -P pass.lst -u -e sr -s 22333 127.0.0.1 ssh
 # hydra -I -L user.lst -P pass.lst -u -e sr -s 21 127.0.0.1 ftp
 # hydra -I -L user.lst -P pass.lst -u -e sr -s 445 127.0.0.1 smb
-# hydra -L /usr/share/brutex/wordlists/simple-users.txt -P /usr/share/brutex/wordlists/password.lst sizzle.htb.local http-get /certsrv/
-if { [ "$1" == "hydra" ] || [ "$1" == "brute" ]; } && [ "$#" -ge 2 ]; then
-  CMD="hydra"; checkCmd
+# hydra -L /usr/share/brutex/wordlists/simple-users.txt \
+# -P /usr/share/brutex/wordlists/password.lst sizzle.htb.local http-get /certsrv/
+if [[ "$1" =~ ^hydra|brute$ ]] && [ "$#" -ge 2 ]; then
+  CMD="hydra"
+  export INSTCMD="apt install hydra -y"
+  checkCmd
   createUserPassLists
   FPATH="/dev/shm/.fxy"
   SUBDIR="" # used for http
@@ -30,7 +33,11 @@ if { [ "$1" == "hydra" ] || [ "$1" == "brute" ]; } && [ "$#" -ge 2 ]; then
   esac
 
   if [ "$#" -ge 3 ]; then
-    PORT="-s $3"
+    if [[ "$3" =~ ^[0-9]+$ ]]; then # is it a number?
+      PORT="-s $3"
+    else
+      echo "${warn} Port is not a number!"; exit
+    fi
   fi
 
   if [ "$#" -ge 4 ]; then
@@ -39,7 +46,7 @@ if { [ "$1" == "hydra" ] || [ "$1" == "brute" ]; } && [ "$#" -ge 2 ]; then
     USRNME="-L $FPATH/user.lst"
   fi
 
-  if [ "$#" -ge 5 ]; then
+  if [ "$SVC" == "http-get" ] && [ "$#" -ge 5 ]; then
     SUBDIR="$5"
   fi
 

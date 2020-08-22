@@ -1,4 +1,4 @@
-1..134
+1..148
 ok 1 fxy b64 123456
 ok 2 fxy b64e 123456
 ok 3 fxy base64 123456
@@ -94,42 +94,58 @@ ok 92 fxy hs sha384 38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6
 ok 93 fxy hs sha512 cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
 ok 94 fxy hs lm aad3b435b51404ee
 ok 95 fxy hs lm 44efce164ab921caaad3b435b51404ee (online) # skip
-ok 96 fxy
-ok 97 fxy h
-ok 98 fxy help
-ok 99 fxy ws # skip
-ok 100 fxy httpd # skip
-ok 101 fxy len
-ok 102 fxy length
-ok 103 fxy len 123456
-ok 104 fxy length 123456
-ok 105 fxy length '123456'
-ok 106 fxy len 12345 6
-ok 107 fxy len '12345 6'
-ok 108 fxy n
-ok 109 fxy nmap
-ok 110 fxy n full
-ok 111 fxy pass
-ok 112 fxy password
-ok 113 fxy r
-ok 114 fxy rhost
-ok 115 fxy r example.com
-ok 116 fxy ua
-ok 117 fxy useragent
-ok 118 fxy ua TestAgent
-ok 119 fxy ua Test Agent
-ok 120 fxy ua default
-ok 121 fxy ua reset
-ok 122 fxy weevely gen
-ok 123 fxy weevely gen test.php
-ok 124 fxy weevely gen test.php 123456
-ok 125 fxy weevely
-ok 126 fxy weevely s
-ok 127 fxy weevely ssl
-ok 128 fxy weevely tls
-ok 129 fxy weevely :8080/files/
-ok 130 fxy weevely s :8080/files/
-ok 131 fxy weevely :8080/files/ test.php
-ok 132 fxy weevely s :8080/files/ test.php
-ok 133 fxy weevely :8080/files/ test.php 123456
-ok 134 fxy weevely s :8080/files/ test.php 123456
+ok 96 fxy hs md5 1
+ok 97 fxy
+ok 98 fxy h
+ok 99 fxy help
+ok 100 fxy ws # skip
+ok 101 fxy httpd # skip
+ok 102 fxy hydra
+ok 103 fxy hydra ssh (no file)
+ok 104 fxy hydra ftp (no file)
+ok 105 fxy hydra smb (no file)
+ok 106 fxy hydra http (no file)
+ok 107 fxy hydra ssh (with file)
+ok 108 fxy hydra ssh 9001 (with file)
+not ok 109 fxy hydra ssh 123invalidport123 (with file)
+# (in test file test/hydra.bats, line 52)
+#   `[[ "$result" =~ "Invalid Port number!" ]]' failed
+ok 110 fxy hydra ssh 9001 alice (with file)
+ok 111 fxy hydra ftp (with file)
+ok 112 fxy hydra smb (with file)
+ok 113 fxy hydra http (with file)
+ok 114 fxy hydra http (with file)
+ok 115 fxy len
+ok 116 fxy length
+ok 117 fxy len 123456
+ok 118 fxy length 123456
+ok 119 fxy length '123456'
+ok 120 fxy len 12345 6
+ok 121 fxy len '12345 6'
+ok 122 fxy n
+ok 123 fxy nmap
+ok 124 fxy n full
+ok 125 fxy pass
+ok 126 fxy password
+ok 127 fxy r
+ok 128 fxy rhost
+ok 129 fxy r example.com
+ok 130 fxy ua
+ok 131 fxy useragent
+ok 132 fxy ua TestAgent
+ok 133 fxy ua Test Agent
+ok 134 fxy ua default
+ok 135 fxy ua reset
+ok 136 fxy weevely gen
+ok 137 fxy weevely gen test.php
+ok 138 fxy weevely gen test.php 123456
+ok 139 fxy weevely
+ok 140 fxy weevely s
+ok 141 fxy weevely ssl
+ok 142 fxy weevely tls
+ok 143 fxy weevely :8080/files/
+ok 144 fxy weevely s :8080/files/
+ok 145 fxy weevely :8080/files/ test.php
+ok 146 fxy weevely s :8080/files/ test.php
+ok 147 fxy weevely :8080/files/ test.php 123456
+ok 148 fxy weevely s :8080/files/ test.php 123456
