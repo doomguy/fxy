@@ -22,7 +22,7 @@ if { [ "$1" == "hashcrack" ] || [ "$1" == "hc" ]; } && [ "$#" -eq 3 ]; then
 
   HASH="$3"
   USRNME="unknown"
-  if [ "$(echo -n "$HASH" | wc -c)" -le 2 ]; then
+  if [ "$(echo -n "$HASH" | wc -c)" -le 2 ] && [ "$HASH" -ge 1 ]; then
     # assume a cid is given since hash is too short
     CID="$3"
     getCreds
