@@ -45,9 +45,9 @@ RHOST="$(fxy rhost | cut -d' ' -f 4)"
   [[ "$result" =~ "hydra -I -L /dev/shm/.fxy/user.lst -P /dev/shm/.fxy/pass.lst -u -e sr -s 9001 $RHOST ssh" ]]
 }
 
-@test            "fxy hydra ssh 123invalidport123 (with file)" {
+@test            "fxy hydra ssh 123invalid (with file)" {
   echo 'alice:123456:' > creds.txt
-  result="$(build/fxy hydra ssh 123invalidport123 <<< N)"
+  result="$(build/fxy hydra ssh 123invalid <<< N)"
   rm creds.txt
   [[ "$result" =~ "Port is not a number!" ]]
 }

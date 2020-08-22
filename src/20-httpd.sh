@@ -3,7 +3,11 @@ if [ "$1" == "httpd" ] || [ "$1" == "ws" ] ; then
   CMD="python3 -m http.server"
   PORT="80"
   if [ "$#" -eq 2 ]; then
-    PORT="$2"
+    if [[ "$2" =~ ^[0-9]+$ ]]; then # is it a number?
+      PORT="$2"
+    else
+      echo "${warn} Port is not a number!"; exit
+    fi
   fi
   CMD="$CMD $PORT"
   echo "URL: http://$(getIP)/"

@@ -9,3 +9,8 @@
   result="$(timeout 2s -s 15 build/fxy httpd)"
   [ grep -q '> python3 -m http.server 80' <<< "$result" ]
 }
+
+@test            "fxy ws 123invalid" {
+  result="$(build/fxy ws 123invalid)"
+  [[ "$result" =~ "Port is not a number!" ]]
+}

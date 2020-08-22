@@ -1,7 +1,7 @@
 ## dirb [s(sl)|tls] [subdir]^: dirb PROTO://RHOST+SUBDIR | tee
 if [ "$1" == "dirb" ]; then
   CMD="$1"
-  export INSTCMD="apt istall dirb -y"
+  export INSTCMD="apt install dirb -y"
   checkCmd
   PROTO="http"
   SUBDIR="/"

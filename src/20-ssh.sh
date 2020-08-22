@@ -21,8 +21,12 @@ if [ "$1" == "ssh" ]; then
 
   # port?
   if [ "$#" -eq 3 ]; then
-    PORT="$3"
-    CMD="$CMD -p $PORT"
+    if [[ "$3" =~ ^[0-9]+$ ]]; then # is it a number?
+      PORT="$3"
+      CMD="$CMD -p $PORT"
+    else
+      echo "${warn} Port is not a number!"; exit
+    fi
   fi
 
   echo "${bldwht}> $CMD${txtrst}"

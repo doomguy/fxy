@@ -1,7 +1,10 @@
 ## l(isten) [port]^: ncat -vlkp PORT
-if [ "$1" == "l" ] || [ "$1" == "listen" ] ; then
-  CMD="ncat"; checkCmd
-  if [ "$#" -eq 2 ]; then
+if [[ "$1" =~ ^l(isten)?$ ]]; then
+  CMD="ncat"
+  export INSTCMD="apt install ncat -y"
+  checkCmd
+
+  if [ "$#" -eq 2 ] && [[ "$2" =~ ^[0-9]+$ ]]; then
     PORT="$2"
   else
     PORT="9001"

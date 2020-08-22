@@ -3,7 +3,11 @@
 if [ "$1" == "socat" ]; then
   CMD="$1"; checkCmd
   if [ "$#" -eq 2 ]; then
-    PORT="$2"
+    if [[ "$2" =~ ^[0-9]+$ ]]; then # is it a number?
+      PORT="$2"
+    else
+      echo "${warn} Port is not a number!"; exit
+    fi
   else
     PORT="9001"
   fi

