@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 @test            "fxy todo" {
-  result="$(build/fxy todo 2>&1)"
+  result="$(build/fxy todo)"
   [[ "$result" =~ '2DO:' ]]
 }
 

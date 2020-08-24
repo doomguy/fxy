@@ -1,4 +1,4 @@
-1..176
+1..191
 ok 1 fxy b64 123456
 ok 2 fxy b64e 123456
 ok 3 fxy base64 123456
@@ -175,3 +175,18 @@ ok 173 fxy weevely :8080/files/ test.php
 ok 174 fxy weevely s :8080/files/ test.php
 ok 175 fxy weevely :8080/files/ test.php 123456
 ok 176 fxy weevely s :8080/files/ test.php 123456
+ok 177 fxy wfuzz help
+ok 178 fxy wfuzz vhost
+ok 179 fxy wfuzz vhost s
+ok 180 fxy wfuzz vhost ssl
+ok 181 fxy wfuzz vhost tls
+ok 182 fxy wfuzz vhost example.com
+ok 183 fxy wfuzz vhost s example.com
+ok 184 fxy wfuzz vhost example.com 123
+ok 185 fxy wfuzz vhost s example.com 123
+ok 186 fxy wfuzz vhost example.com 123 456
+ok 187 fxy wfuzz vhost s example.com 123 456
+ok 188 fxy wfuzz
+ok 189 fxy wfuzz s
+ok 190 fxy wfuzz ssl
+ok 191 fxy wfuzz tls

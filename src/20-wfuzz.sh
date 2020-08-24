@@ -1,14 +1,14 @@
-## wfuzz^: wfuzz | tee
+## wfuzz [help]^: wfuzz | tee
 # wfuzz help
-if [ "$1" == "wfuzz" ] && [ "$#" -eq 1 ]; then
+if [ "$#" -eq 2 ] && [ "$1" == "wfuzz" ] && [ "$2" == "help" ]; then
   echo "Available commands:"
-  echo "  fxy wfuzz vhost [s|ssl|tls] [domain] [hw] [hc]"
-  echo "  fxy wfuzz [s|ssl|tls] [subdir] [hw] [hc]"
+  echo "  fxy wfuzz vhost [s(sl)|tls] [domain] [hw] [hc]"
+  echo "  fxy wfuzz [s(sl)|tls] [subdir] [hw] [hc]"
   exit
 fi
 
 # wfuzz vhost
-if [ "$1" == "wfuzz" ] && [ "$2" == "vhost" ]; then
+if [ "$#" -ge 2 ] && [ "$1" == "wfuzz" ] && [ "$2" == "vhost" ]; then
   CMD="$1"; checkCmd
   PROTO="http"
   DOMAIN="$RHOST"
@@ -51,7 +51,7 @@ if [ "$1" == "wfuzz" ] && [ "$2" == "vhost" ]; then
 fi
 
 # wfuzz normal
-if [ "$1" == "wfuzz" ] && [ "$2" != "vhost" ]; then
+if [ "$1" == "wfuzz" ]; then
   CMD="$1"; checkCmd
   PROTO="http"
   SUB="/"

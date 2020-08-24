@@ -47,7 +47,7 @@ Available commands:
   fxy  up(date)                                        : Update fxy
   fxy  u(ser)a(gent) [text]                            : Show/Set User-Agent
   fxy  weevely [gen|help]                              : weevely php shell
-  fxy  wfuzz                                           : wfuzz | tee
+  fxy  wfuzz [help]                                    : wfuzz | tee
 
 ```
 

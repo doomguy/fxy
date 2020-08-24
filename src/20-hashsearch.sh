@@ -2,7 +2,7 @@
 # hashsearch help
 if [[ "$1" =~ ^h(ash)?s(earch)?$ ]] && [ "$#" -eq 1 ]; then
   echo "Available commands:"
-  echo "  fxy h(ash)s(earch) [md5|sha(1)|sha2(56)|sha3(84)|sha5(12)] [hash|cid]"
+  echo "  fxy h(ash)s(earch) [md5|sha(1)|sha2(56)|sha3(84)|sha5(12)|any] [hash|cid]"
   exit
 fi
 
