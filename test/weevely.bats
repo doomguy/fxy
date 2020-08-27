@@ -3,6 +3,11 @@
 RHOST="$(fxy rhost | cut -d' ' -f 4)"
 PASSWD="$(fxy pass | grep : | cut -d' ' -f 6)"
 
+@test            "fxy weevely help" {
+  result="$(build/fxy weevely help <<< N)"
+  [[ "$result" =~ "Available commands for 'weevely'" ]]
+}
+
 @test            "fxy weevely gen" {
   result="$(build/fxy weevely gen <<< N)"
   [[ "$result" =~ "> weevely generate $PASSWD fxy.php" ]]

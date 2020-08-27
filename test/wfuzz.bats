@@ -4,7 +4,7 @@ RHOST="$(fxy rhost | cut -d' ' -f 4)"
 # help
 @test            "fxy wfuzz help" {
   result="$(build/fxy wfuzz help)"
-  [[ "$result" =~ Available\ commands.*fxy\ wfuzz\ vhost ]]
+  [[ "$result" =~ "Available commands for 'wfuzz'" ]]
 }
 
 # vhost

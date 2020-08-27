@@ -36,7 +36,7 @@ echo ' .    .
 showHelp() {
   showHead
   echo "Available commands:"
-  grep "^##" "$0" | sort | column -t -s'^' | sed 's,##,  fxy ,'
+  grep "^##" "$0" | sort | column -t -s'^' | sed 's,##,  fxy,'
   echo; exit
 }
 
@@ -129,18 +129,22 @@ createUserPassLists() {
 getMachinePass() {
   PASSWD="$(echo -n "$(hostname)$(cat /sys/class/net/*/address | head -n1)" | sha256sum | cut -c1-20)"
 }
-## h(elp)^: Show this help
+## help^: Show this help
 if [ "$#" -lt 1 ]; then
   showHelp
   exit
 fi
 
 # Show generic help
-if [ "$#" -eq 2 ] && [[ "$2" =~ ^help|\?$ ]]; then
-  help=$(fxy | grep  "$1")
+if [ "$#" -eq 2 ] && [ "$2" == "help" ]; then
+  help=$(fxy | tr -d '()' | grep  "$1")
   if [ -n "$help" ] && [[ ! "$help" =~ help ]]; then
-    echo "Available commands:"
-    fxy | grep  "$1"
+    echo "Available commands for '$1':"
+    RES=$(fxy | grep "$1")
+    if [[ ! "$RES" =~ "$1" ]]; then
+      RES=$(fxy | tr -d '()' | grep "$1")
+    fi
+    echo "$RES" | grep --color "$1"
     exit
   fi
 fi
@@ -534,11 +538,11 @@ if [[ "$1" =~ ^h(ash)?i(d)?$ ]] && [ "$#" -eq 2 ]; then
   fi
   exit
 fi
-## h(ash)s(earch) [md5|sha1|...] [hash|cid]^: Search for hashes
+## h(ash)s(earch) [help|any|md5|sha1|...] [hash|cid]^: Search for hashes
 # hashsearch help
-if [[ "$1" =~ ^h(ash)?s(earch)?$ ]] && [ "$#" -eq 1 ]; then
-  echo "Available commands:"
-  echo "  fxy h(ash)s(earch) [md5|sha(1)|sha2(56)|sha3(84)|sha5(12)|any] [hash|cid]"
+if [[ "$1" =~ ^h(ash)?s(earch)?$ ]] && { [ "$#" -eq 1 ] || { [ "$#" -eq 2 ] && [ "$2" == "help" ]; }; }; then
+  echo "Available commands for 'hashsearch':"
+  echo "  fxy h(ash)s(earch) [any|md5|sha(1)|sha2(56)|sha3(84)|sha5(12)] [hash|cid]"
   exit
 fi
 
@@ -755,10 +759,10 @@ if [ "$1" == "httpd" ] || [ "$1" == "ws" ] ; then
   bash -c "$CMD"
   exit
 fi
-## hydra [service] [port] [username]^: hydra brute force (ssh, ftp, smb)
+## hydra [help|service] [port] [username]^: hydra brute force (ssh, ftp, smb)
 # hydra help
-if [[ "$1" =~ ^hydra|brute$ ]] && [ "$#" -eq 1 ]; then
-  echo "Available commands:"
+if [[ "$1" =~ ^hydra|brute$ ]] && { [ "$#" -eq 1 ] || { [ "$#" -eq 2 ] && [ "$2" == "help" ]; }; }; then
+  echo "Available commands for 'hydra':"
   echo "  fxy hydra ssh [port] [username]"
   echo "  fxy hydra ftp [port] [username]"
   echo "  fxy hydra smb [port] [username]"
@@ -978,7 +982,7 @@ if [ "$#" -eq 1 ] && [[ "$1" =~ ^pass(word)?$ ]]; then
 fi
 ## peas [version] [port]^: Download *peas and serve via http.server
 if [ "$1" == "peas" ] && [ "$#" -eq 1 ]; then
-  echo "Available commands:"
+  echo "Available commands for 'peas':"
   echo "  fxy peas lin"
   echo "  fxy peas winbat"
   echo "  fxy peas winany"
@@ -1053,11 +1057,11 @@ if [[ "$1" =~ ^p(ing)?$ ]]; then
   bash -c "$CMD"
   exit
 fi
-## rev(shell) [type] [port]^: Reverse shell generator (bash, php, python, perl, ...)
+## rev(shell) [help|type] [port]^: Reverse shell generator (bash, php, python, perl, ...)
 # revshell help
-if { [ "$1" == "revshell" ] || [ "$1" == "rev" ]; } && [ "$#" -eq 1 ]; then
-  echo "Available commands:"
-  echo "  fxy revshell [type] [port]"
+if [[ "$1" =~ ^rev(shell)?$ ]] && { [ "$#" -eq 1 ] || { [ "$#" -eq 2 ] && [ "$2" == "help" ]; }; }; then
+  echo "Available commands for 'revshell':"
+  echo "  fxy revshell [help|type] [port]"
   echo -e "\nAvailable revshells:"
   SHELLS="bash php pyton2|py2 python|python3|py|py3 perl ruby nc|ncat|netcat awk go ps|psh|pwsh|powershell lua telnet socat"
   IFS=" "
@@ -1259,10 +1263,10 @@ if [[ "$1" =~ ^up(date)?$ ]]; then
   && echo "${info} Update successful!"
   exit
 fi
-## weevely [gen|help]^: weevely php shell
+## weevely [help|gen]^: weevely php shell
 # weevely help
-if [ "$1" == "weevely" ] && [ "$#" -ge 2 ] && [ "$2" == "help" ]; then
-  echo "Available commands:"
+if [ "$1" == "weevely" ] && { [ "$#" -eq 2 ] && [ "$2" == "help" ]; }; then
+  echo "Available commands for 'weevely':"
   echo "  fxy weevely gen [file] [password]"
   echo "  fxy weevely [s(sl)|tls] [subdir] [file] [password]"
   exit
@@ -1295,7 +1299,7 @@ if [ "$1" == "weevely" ]; then
   PROTO="http"
   SUBDIR="/"
   getMachinePass
-  
+
   # more than 1 arg?
   if [ "$#" -ge 2 ]; then
     # https?
@@ -1324,10 +1328,10 @@ if [ "$1" == "weevely" ]; then
   bash -c "$CMD"
   exit
 fi
-## wfuzz [help]^: wfuzz | tee
+## wfuzz [help|vhost]^: wfuzz | tee
 # wfuzz help
-if [ "$#" -eq 2 ] && [ "$1" == "wfuzz" ] && [ "$2" == "help" ]; then
-  echo "Available commands:"
+if [ "$1" == "wfuzz" ] && { [ "$#" -eq 2 ] && [ "$2" == "help" ]; }; then
+  echo "Available commands for 'wfuzz':"
   echo "  fxy wfuzz vhost [s(sl)|tls] [domain] [hw] [hc]"
   echo "  fxy wfuzz [s(sl)|tls] [subdir] [hw] [hc]"
   exit

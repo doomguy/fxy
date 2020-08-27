@@ -1,8 +1,8 @@
-## rev(shell) [type] [port]^: Reverse shell generator (bash, php, python, perl, ...)
+## rev(shell) [help|type] [port]^: Reverse shell generator (bash, php, python, perl, ...)
 # revshell help
-if { [ "$1" == "revshell" ] || [ "$1" == "rev" ]; } && [ "$#" -eq 1 ]; then
-  echo "Available commands:"
-  echo "  fxy revshell [type] [port]"
+if [[ "$1" =~ ^rev(shell)?$ ]] && { [ "$#" -eq 1 ] || { [ "$#" -eq 2 ] && [ "$2" == "help" ]; }; }; then
+  echo "Available commands for 'revshell':"
+  echo "  fxy revshell [help|type] [port]"
   echo -e "\nAvailable revshells:"
   SHELLS="bash php pyton2|py2 python|python3|py|py3 perl ruby nc|ncat|netcat awk go ps|psh|pwsh|powershell lua telnet socat"
   IFS=" "

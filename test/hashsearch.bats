@@ -1,7 +1,32 @@
 #!/usr/bin/env bats
 
+@test            "fxy hs" {
+  result="$(build/fxy hs)"
+  [[ "$result" =~ "Available commands for 'hashsearch'" ]]
+}
+
+@test            "fxy hashsearch" {
+  result="$(build/fxy hashsearch)"
+  [[ "$result" =~ "Available commands for 'hashsearch'" ]]
+}
+
+@test            "fxy hs help" {
+  result="$(build/fxy hs help)"
+  [[ "$result" =~ "Available commands for 'hashsearch'" ]]
+}
+
+@test            "fxy hashsearch help" {
+  result="$(build/fxy hashsearch help)"
+  [[ "$result" =~ "Available commands for 'hashsearch'" ]]
+}
+
 @test            "fxy hs lm invalid" {
   result="$(build/fxy hs lm invalid)"
+  [[ "$result" =~ Invalid\ LM\ Hash ]]
+}
+
+@test            "fxy hashsearch lm invalid" {
+  result="$(build/fxy hashsearch lm invalid)"
   [[ "$result" =~ Invalid\ LM\ Hash ]]
 }
 

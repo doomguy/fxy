@@ -1,7 +1,7 @@
-## weevely [gen|help]^: weevely php shell
+## weevely [help|gen]^: weevely php shell
 # weevely help
-if [ "$1" == "weevely" ] && [ "$#" -ge 2 ] && [ "$2" == "help" ]; then
-  echo "Available commands:"
+if [ "$1" == "weevely" ] && { [ "$#" -eq 2 ] && [ "$2" == "help" ]; }; then
+  echo "Available commands for 'weevely':"
   echo "  fxy weevely gen [file] [password]"
   echo "  fxy weevely [s(sl)|tls] [subdir] [file] [password]"
   exit
@@ -34,7 +34,7 @@ if [ "$1" == "weevely" ]; then
   PROTO="http"
   SUBDIR="/"
   getMachinePass
-  
+
   # more than 1 arg?
   if [ "$#" -ge 2 ]; then
     # https?

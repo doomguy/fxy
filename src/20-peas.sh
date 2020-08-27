@@ -1,6 +1,6 @@
 ## peas [version] [port]^: Download *peas and serve via http.server
 if [ "$1" == "peas" ] && [ "$#" -eq 1 ]; then
-  echo "Available commands:"
+  echo "Available commands for 'peas':"
   echo "  fxy peas lin"
   echo "  fxy peas winbat"
   echo "  fxy peas winany"

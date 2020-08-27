@@ -1,7 +1,7 @@
-## wfuzz [help]^: wfuzz | tee
+## wfuzz [help|vhost]^: wfuzz | tee
 # wfuzz help
-if [ "$#" -eq 2 ] && [ "$1" == "wfuzz" ] && [ "$2" == "help" ]; then
-  echo "Available commands:"
+if [ "$1" == "wfuzz" ] && { [ "$#" -eq 2 ] && [ "$2" == "help" ]; }; then
+  echo "Available commands for 'wfuzz':"
   echo "  fxy wfuzz vhost [s(sl)|tls] [domain] [hw] [hc]"
   echo "  fxy wfuzz [s(sl)|tls] [subdir] [hw] [hc]"
   exit
