@@ -1,4 +1,4 @@
-## hydra [help|service] [port] [username]^: hydra brute force (ssh, ftp, smb, http)
+## hydra|brute [help|service] [port] [username]^: hydra brute force (ssh, ftp, smb, http)
 # hydra help
 if [[ "$1" =~ ^hydra|brute$ ]] && { [ "$#" -eq 1 ] || { [ "$#" -eq 2 ] && [ "$2" == "help" ]; }; }; then
   echo "Available commands for 'hydra':"
@@ -13,8 +13,7 @@ fi
 # hydra -I -L user.lst -P pass.lst -u -e sr -s 22333 127.0.0.1 ssh
 # hydra -I -L user.lst -P pass.lst -u -e sr -s 21 127.0.0.1 ftp
 # hydra -I -L user.lst -P pass.lst -u -e sr -s 445 127.0.0.1 smb
-# hydra -L /usr/share/brutex/wordlists/simple-users.txt \
-# -P /usr/share/brutex/wordlists/password.lst sizzle.htb.local http-get /certsrv/
+# hydra -L /usr/share/brutex/wordlists/simple-users.txt -P /usr/share/brutex/wordlists/password.lst sizzle.htb.local http-get /certsrv/
 if [[ "$1" =~ ^hydra|brute$ ]] && [ "$#" -ge 2 ]; then
   CMD="hydra"
   export INSTCMD="apt install hydra -y"

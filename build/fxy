@@ -129,16 +129,16 @@ createUserPassLists() {
 getMachinePass() {
   PASSWD="$(echo -n "$(hostname)$(cat /sys/class/net/*/address | head -n1)" | sha256sum | cut -c1-20)"
 }
-## h(elp) [search keyword]^: Show this help
+## h(elp) [search keyword]^: Show help or search for keyword
 if [ "$#" -lt 1 ] || { [ "$#" -eq 1 ] && [[ "$1" =~ ^h(elp)?$ ]]; }; then
   showHelp
   exit
 fi
 
 if [ "$#" -eq 2 ] && [[ "$1" =~ ^h(elp)?$ ]]; then
-  if [ -n "$(fxy | grep "$2")" ]; then
+  if [ -n "$(fxy | tr -d '()' | grep "$2")" ]; then
     echo "Found entries for '$2':"
-    fxy | grep --color "$2"
+    fxy | tr -d '()' | grep --color "$2"
   else
     echo "${warn} Nothing found!"
   fi
@@ -146,7 +146,6 @@ if [ "$#" -eq 2 ] && [[ "$1" =~ ^h(elp)?$ ]]; then
 fi
 
 # 2DO:
-# - fxy ssh help
 # - fcy cyberchef help
 ## r(host) [target]^: Show/Set RHOST
 # Set RHOST
@@ -759,7 +758,7 @@ if [ "$1" == "httpd" ] || [ "$1" == "ws" ] ; then
   bash -c "$CMD"
   exit
 fi
-## hydra [help|service] [port] [username]^: hydra brute force (ssh, ftp, smb, http)
+## hydra|brute [help|service] [port] [username]^: hydra brute force (ssh, ftp, smb, http)
 # hydra help
 if [[ "$1" =~ ^hydra|brute$ ]] && { [ "$#" -eq 1 ] || { [ "$#" -eq 2 ] && [ "$2" == "help" ]; }; }; then
   echo "Available commands for 'hydra':"
@@ -774,8 +773,7 @@ fi
 # hydra -I -L user.lst -P pass.lst -u -e sr -s 22333 127.0.0.1 ssh
 # hydra -I -L user.lst -P pass.lst -u -e sr -s 21 127.0.0.1 ftp
 # hydra -I -L user.lst -P pass.lst -u -e sr -s 445 127.0.0.1 smb
-# hydra -L /usr/share/brutex/wordlists/simple-users.txt \
-# -P /usr/share/brutex/wordlists/password.lst sizzle.htb.local http-get /certsrv/
+# hydra -L /usr/share/brutex/wordlists/simple-users.txt -P /usr/share/brutex/wordlists/password.lst sizzle.htb.local http-get /certsrv/
 if [[ "$1" =~ ^hydra|brute$ ]] && [ "$#" -ge 2 ]; then
   CMD="hydra"
   export INSTCMD="apt install hydra -y"
@@ -846,6 +844,15 @@ if [[ "$1" =~ ^ip(s)?$ ]]; then
 fi
 ## ipwsh [port]^: Download InsecurePowerShell and serve via davserver
 if [ "$1" == "ipwsh" ]; then
+  PORT="80"
+  if [ "$#" -ge 2 ]; then
+    if [[ "$2" =~ ^[0-9]+$ ]]; then # is it a number?
+      PORT="$2"
+    else
+      echo "${warn} Port is not a number!"; exit
+    fi
+  fi
+
   echo "${ques} Download InsecurePowerShell and serve via davserver?"; prompt
   CMD="davserver"
   export INSTCMD="python3 -m pip install PyWebDAV3 --upgrade"
@@ -861,11 +868,6 @@ if [ "$1" == "ipwsh" ]; then
     unzip pwsh.zip
     mv InsecurePowerShell-v6.0.0-rc.2-win-x64 pwsh
     cd pwsh
-  fi
-
-  PORT="80"
-  if [ "$#" -ge 2 ]; then
-    PORT="$2"
   fi
 
   echo -e "\n${info}${txtbld} Run this on your target:"
@@ -1072,11 +1074,15 @@ if [[ "$1" =~ ^rev(shell)?$ ]] && { [ "$#" -eq 1 ] || { [ "$#" -eq 2 ] && [ "$2"
   exit
 fi
 
-# revshell help
+# revshell
 if { [ "$1" == "revshell" ] || [ "$1" == "rev" ]; } && [ "$#" -ge 2 ]; then
   PORT="9001"
   if [ "$#" -ge 3 ]; then
-    PORT="$3"
+    if [[ "$3" =~ ^[0-9]+$ ]]; then # is it a number?
+      PORT="$3"
+    else
+      echo "${warn} Port is not a number!"; exit
+    fi
   fi
 
   echo -e "> Run this on your target:\n"

@@ -5,7 +5,12 @@ RHOST="$(fxy rhost | cut -d' ' -f 4)"
 # show help screen
 @test            "fxy hydra" {
   result="$(build/fxy hydra)"
-  [[ "$result" =~ "For more check out" ]]
+  [[ "$result" =~ "Available commands for 'hydra'" ]]
+}
+
+@test            "fxy hydra help" {
+  result="$(build/fxy hydra help)"
+  [[ "$result" =~ "Available commands for 'hydra'" ]]
 }
 
 # no creds.txt

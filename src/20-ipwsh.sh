@@ -1,5 +1,14 @@
 ## ipwsh [port]^: Download InsecurePowerShell and serve via davserver
 if [ "$1" == "ipwsh" ]; then
+  PORT="80"
+  if [ "$#" -ge 2 ]; then
+    if [[ "$2" =~ ^[0-9]+$ ]]; then # is it a number?
+      PORT="$2"
+    else
+      echo "${warn} Port is not a number!"; exit
+    fi
+  fi
+
   echo "${ques} Download InsecurePowerShell and serve via davserver?"; prompt
   CMD="davserver"
   export INSTCMD="python3 -m pip install PyWebDAV3 --upgrade"
@@ -15,11 +24,6 @@ if [ "$1" == "ipwsh" ]; then
     unzip pwsh.zip
     mv InsecurePowerShell-v6.0.0-rc.2-win-x64 pwsh
     cd pwsh
-  fi
-
-  PORT="80"
-  if [ "$#" -ge 2 ]; then
-    PORT="$2"
   fi
 
   echo -e "\n${info}${txtbld} Run this on your target:"

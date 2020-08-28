@@ -13,11 +13,15 @@ if [[ "$1" =~ ^rev(shell)?$ ]] && { [ "$#" -eq 1 ] || { [ "$#" -eq 2 ] && [ "$2"
   exit
 fi
 
-# revshell help
+# revshell
 if { [ "$1" == "revshell" ] || [ "$1" == "rev" ]; } && [ "$#" -ge 2 ]; then
   PORT="9001"
   if [ "$#" -ge 3 ]; then
-    PORT="$3"
+    if [[ "$3" =~ ^[0-9]+$ ]]; then # is it a number?
+      PORT="$3"
+    else
+      echo "${warn} Port is not a number!"; exit
+    fi
   fi
 
   echo -e "> Run this on your target:\n"
