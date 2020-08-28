@@ -129,25 +129,37 @@ createUserPassLists() {
 getMachinePass() {
   PASSWD="$(echo -n "$(hostname)$(cat /sys/class/net/*/address | head -n1)" | sha256sum | cut -c1-20)"
 }
-## help^: Show this help
-if [ "$#" -lt 1 ]; then
+## h(elp) [keyword]^: Show this help
+if [ "$#" -lt 1 ] || { [ "$#" -eq 1 ] && [[ "$1" =~ ^h(elp)?$ ]]; }; then
   showHelp
   exit
 fi
 
-# Show generic help
-if [ "$#" -eq 2 ] && [ "$2" == "help" ]; then
-  help=$(fxy | tr -d '()' | grep  "$1")
-  if [ -n "$help" ] && [[ ! "$help" =~ help ]]; then
-    echo "Available commands for '$1':"
-    RES=$(fxy | grep "$1")
-    if [[ ! "$RES" =~ "$1" ]]; then
-      RES=$(fxy | tr -d '()' | grep "$1")
-    fi
-    echo "$RES" | grep --color "$1"
-    exit
-  fi
+if [ "$#" -eq 2 ] && [[ "$1" =~ ^h(elp)?$ ]]; then
+  echo "Found entries for '$2':"
+  fxy | grep --color "$2"
+  exit
 fi
+
+# Show generic help
+# if [ "$#" -eq 2 ] && [ "$2" == "help" ]; then
+#   help=$(fxy | tr -d '()' | grep -E "$1.*help.*:")
+#   if [ -z "$help" ]; then
+#     echo "Found entries for '$1':"
+#     RES=$(fxy | grep -E "$1")
+#     if [ -z "$RES" ]; then
+#       RES=$(fxy | tr -d '()' | grep "$1")
+#     fi
+#     if [ -n "$RES" ]; then
+#       echo "$RES" | grep --color "$1"
+#       exit
+#     fi
+#   fi
+# fi
+
+# 2DO:
+# - fxy ssh help
+# - fcy cyberchef help
 ## r(host) [target]^: Show/Set RHOST
 # Set RHOST
 if [ "$#" -eq 2 ] && [[ "$1" =~ ^r(host)?$ ]]; then
@@ -759,7 +771,7 @@ if [ "$1" == "httpd" ] || [ "$1" == "ws" ] ; then
   bash -c "$CMD"
   exit
 fi
-## hydra [help|service] [port] [username]^: hydra brute force (ssh, ftp, smb)
+## hydra [help|service] [port] [username]^: hydra brute force (ssh, ftp, smb, http)
 # hydra help
 if [[ "$1" =~ ^hydra|brute$ ]] && { [ "$#" -eq 1 ] || { [ "$#" -eq 2 ] && [ "$2" == "help" ]; }; }; then
   echo "Available commands for 'hydra':"
@@ -1230,15 +1242,16 @@ if [ "$#" -eq 1 ] && [[ "$1" =~ ^(2|to)do$ ]]; then
   exit
 fi
 
-# gobuster dir -u http://10.10.10.191/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php
-# msf multi handler
-# msf venom most common
-# smbclient
-# smbmap
-# enum4linux
-# bash one liners
-# user agent
-# fxy | grep port > validation
+# 2DO:
+# - gobuster dir -u http://10.10.10.191/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php
+# - msf multi handler
+# - msf venom most common
+# - smbclient
+# - smbmap
+# - enum4linux
+# - bash one liners
+# - fxy | grep port > validation
+# - fxy | grep cid > validation
 ## up(date)^: Update fxy
 if [[ "$1" =~ ^up(date)?$ ]]; then
   # update for git clone

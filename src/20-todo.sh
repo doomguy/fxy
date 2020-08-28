@@ -4,12 +4,13 @@ if [ "$#" -eq 1 ] && [[ "$1" =~ ^(2|to)do$ ]]; then
   exit
 fi
 
-# gobuster dir -u http://10.10.10.191/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php
-# msf multi handler
-# msf venom most common
-# smbclient
-# smbmap
-# enum4linux
-# bash one liners
-# user agent
-# fxy | grep port > validation
+# 2DO:
+# - gobuster dir -u http://10.10.10.191/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php
+# - msf multi handler
+# - msf venom most common
+# - smbclient
+# - smbmap
+# - enum4linux
+# - bash one liners
+# - fxy | grep port > validation
+# - fxy | grep cid > validation

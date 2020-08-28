@@ -23,9 +23,9 @@ Available commands:
   fxy h(ash)c(rack) [type] [hash|cid]                    : Crack hash
   fxy h(ash)i(d) [hash|cid]                              : Identify hash type
   fxy h(ash)s(earch) [help|any|md5|sha1|...] [hash|cid]  : Search for hashes
-  fxy help                                               : Show this help
+  fxy h(elp) [keyword]                                   : Show this help
   fxy httpd|ws [port]                                    : python3 -m http.server PORT
-  fxy hydra [help|service] [port] [username]             : hydra brute force (ssh, ftp, smb)
+  fxy hydra [help|service] [port] [username]             : hydra brute force (ssh, ftp, smb, http)
   fxy (i)conv|convert [file]                             : iconv -f UTF-16LE -t UTF-8 FILE -o FILE.conv
   fxy ip(s)                                              : Show interface and external IP(s)
   fxy ipwsh [port]                                       : Download InsecurePowerShell and serve via davserver

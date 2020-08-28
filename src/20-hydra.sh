@@ -1,4 +1,4 @@
-## hydra [help|service] [port] [username]^: hydra brute force (ssh, ftp, smb)
+## hydra [help|service] [port] [username]^: hydra brute force (ssh, ftp, smb, http)
 # hydra help
 if [[ "$1" =~ ^hydra|brute$ ]] && { [ "$#" -eq 1 ] || { [ "$#" -eq 2 ] && [ "$2" == "help" ]; }; }; then
   echo "Available commands for 'hydra':"
