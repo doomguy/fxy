@@ -14,3 +14,13 @@
   result="$(build/fxy help)"
   [[ "$result" =~ github.com/doomguy/fxy ]]
 }
+
+@test            "fxy h ssh" {
+  result="$(build/fxy h ssh)"
+  [[ "$result" =~ "Found entries for 'ssh'" ]]
+}
+
+@test            "fxy h sshr" {
+  result="$(build/fxy h sshr)"
+  [[ "$result" =~ "Nothing found" ]]
+}
