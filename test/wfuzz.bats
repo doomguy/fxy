@@ -40,22 +40,22 @@ RHOST="$(fxy rhost | cut -d' ' -f 4)"
 
 @test            "fxy wfuzz vhost example.com 123" {
   result="$(build/fxy wfuzz vhost example.com 123 <<< N)"
-  [[ "$result" =~ "wfuzz -H 'Host: FUZZ.example.com' -u 'http://127.0.0.1' -w /dev/shm/.fxy/wfuzz/subdomains-top1million-20000.txt --hw 123" ]]
+  [[ "$result" =~ "wfuzz -H 'Host: FUZZ.example.com' -u 'http://$RHOST' -w /dev/shm/.fxy/wfuzz/subdomains-top1million-20000.txt --hw 123" ]]
 }
 
 @test            "fxy wfuzz vhost s example.com 123" {
   result="$(build/fxy wfuzz vhost s example.com 123 <<< N)"
-  [[ "$result" =~ "wfuzz -H 'Host: FUZZ.example.com' -u 'https://127.0.0.1' -w /dev/shm/.fxy/wfuzz/subdomains-top1million-20000.txt --hw 123" ]]
+  [[ "$result" =~ "wfuzz -H 'Host: FUZZ.example.com' -u 'https://$RHOST' -w /dev/shm/.fxy/wfuzz/subdomains-top1million-20000.txt --hw 123" ]]
 }
 
 @test            "fxy wfuzz vhost example.com 123 456" {
   result="$(build/fxy wfuzz vhost example.com 123 456 <<< N)"
-  [[ "$result" =~ "wfuzz -H 'Host: FUZZ.example.com' -u 'http://127.0.0.1' -w /dev/shm/.fxy/wfuzz/subdomains-top1million-20000.txt --hw 123 --hc 456" ]]
+  [[ "$result" =~ "wfuzz -H 'Host: FUZZ.example.com' -u 'http://$RHOST' -w /dev/shm/.fxy/wfuzz/subdomains-top1million-20000.txt --hw 123 --hc 456" ]]
 }
 
 @test            "fxy wfuzz vhost s example.com 123 456" {
   result="$(build/fxy wfuzz vhost s example.com 123 456 <<< N)"
-  [[ "$result" =~ "wfuzz -H 'Host: FUZZ.example.com' -u 'https://127.0.0.1' -w /dev/shm/.fxy/wfuzz/subdomains-top1million-20000.txt --hw 123 --hc 456" ]]
+  [[ "$result" =~ "wfuzz -H 'Host: FUZZ.example.com' -u 'https://$RHOST' -w /dev/shm/.fxy/wfuzz/subdomains-top1million-20000.txt --hw 123 --hc 456" ]]
 }
 
 # normal

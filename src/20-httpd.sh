@@ -10,10 +10,11 @@ if [ "$1" == "httpd" ] || [ "$1" == "ws" ] ; then
     fi
   fi
   CMD="$CMD $PORT"
-  echo "URL: http://$(getIP)/"
+  IP=$(getIP)
+  echo "URL: http://$IP/"
   echo "DIR: $(pwd)"
-  for f in $(find . -maxdepth 1 -type f 2>/dev/null | sed 's,\./,,' | sed 's, ,+,'); do
-    echo "- http://$(getIP)/$f";
+  for f in $(find . -maxdepth 1 -type f 2>/dev/null | sed 's,\./,,' | sed 's, ,+,' | sort); do
+    echo "- http://$IP/$f";
   done
   echo "${bldwht}> $CMD${txtrst}"
   bash -c "$CMD"

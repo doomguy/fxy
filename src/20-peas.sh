@@ -21,7 +21,7 @@ if [ "$1" == "peas" ] && [ "$#" -ge 2 ] && { [ "$2" == "lin" ] || [ "$2" == "win
 
   echo "${ques} Download *peas and serve via http.server on port $PORT?"; prompt
 
-  FPATH="/dev/shm/.fxy/peas"
+  FPATH="/dev/shm/.fxy/files"
   if [ ! -d "$FPATH" ]; then
     mkdir -p "$FPATH"
   fi
