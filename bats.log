@@ -1,4 +1,4 @@
-1..208
+1..214
 ok 1 fxy b64 123456
 ok 2 fxy b64e 123456
 ok 3 fxy base64 123456
@@ -207,3 +207,9 @@ ok 205 fxy wfuzz
 ok 206 fxy wfuzz s
 ok 207 fxy wfuzz ssl
 ok 208 fxy wfuzz tls
+ok 209 fxy wfuzz :8080/admin/
+ok 210 fxy wfuzz s :8080/admin/
+ok 211 fxy wfuzz :8080/admin/ 123
+ok 212 fxy wfuzz s :8080/admin/ 123
+ok 213 fxy wfuzz :8080/admin/ 123 456
+ok 214 fxy wfuzz s :8080/admin/ 123 456

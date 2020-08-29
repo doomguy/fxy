@@ -45,5 +45,5 @@ set +e; bats test/* | tee bats.log
 if [ "$?" -eq 0 ]; then
   echo -e "\n${info} ${bldgreen}Build successful!\n"
 else
-  echo -e "\n${warn} Build failed!\n"
+  echo -e "\n${warn} ${txtbld}Build failed!\n"
 fi

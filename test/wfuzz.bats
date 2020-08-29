@@ -61,20 +61,51 @@ RHOST="$(fxy rhost | cut -d' ' -f 4)"
 # normal
 @test            "fxy wfuzz" {
   result="$(build/fxy wfuzz <<< N)"
-  [[ "$result" =~ "wfuzz -u 'http://$RHOST/' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt" ]]
+  [[ "$result" =~ "wfuzz -u 'http://$RHOST/FUZZ' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt" ]]
 }
 
 @test            "fxy wfuzz s" {
   result="$(build/fxy wfuzz s <<< N)"
-  [[ "$result" =~ "wfuzz -u 'https://$RHOST/' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt" ]]
+  [[ "$result" =~ "wfuzz -u 'https://$RHOST/FUZZ' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt" ]]
 }
 
 @test            "fxy wfuzz ssl" {
   result="$(build/fxy wfuzz ssl <<< N)"
-  [[ "$result" =~ "wfuzz -u 'https://$RHOST/' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt" ]]
+  [[ "$result" =~ "wfuzz -u 'https://$RHOST/FUZZ' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt" ]]
 }
 
 @test            "fxy wfuzz tls" {
   result="$(build/fxy wfuzz tls <<< N)"
-  [[ "$result" =~ "wfuzz -u 'https://$RHOST/' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt" ]]
+  [[ "$result" =~ "wfuzz -u 'https://$RHOST/FUZZ' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt" ]]
+}
+
+@test            "fxy wfuzz :8080/admin/" {
+  result="$(build/fxy wfuzz :8080/admin/ <<< N)"
+  [[ "$result" =~ "wfuzz -u 'http://$RHOST:8080/admin/FUZZ' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt" ]]
+}
+
+@test            "fxy wfuzz s :8080/admin/" {
+  result="$(build/fxy wfuzz s :8080/admin/ <<< N)"
+  [[ "$result" =~ "wfuzz -u 'https://$RHOST:8080/admin/FUZZ' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt" ]]
+}
+
+@test            "fxy wfuzz :8080/admin/ 123" {
+  result="$(build/fxy wfuzz :8080/admin/ 123 <<< N)"
+  [[ "$result" =~ "wfuzz -u 'http://$RHOST:8080/admin/FUZZ' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt --hw 123" ]]
+}
+
+
+@test            "fxy wfuzz s :8080/admin/ 123" {
+  result="$(build/fxy wfuzz s :8080/admin/ 123 <<< N)"
+  [[ "$result" =~ "wfuzz -u 'https://$RHOST:8080/admin/FUZZ' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt --hw 123" ]]
+}
+
+@test            "fxy wfuzz :8080/admin/ 123 456" {
+  result="$(build/fxy wfuzz :8080/admin/ 123 456 <<< N)"
+  [[ "$result" =~ "wfuzz -u 'http://$RHOST:8080/admin/FUZZ' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt --hw 123 --hc 456" ]]
+}
+
+@test            "fxy wfuzz s :8080/admin/ 123 456" {
+  result="$(build/fxy wfuzz s :8080/admin/ 123 456 <<< N)"
+  [[ "$result" =~ "wfuzz -u 'https://$RHOST:8080/admin/FUZZ' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt --hw 123 --hc 456" ]]
 }

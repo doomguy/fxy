@@ -1244,8 +1244,7 @@ fi
 # - smbmap
 # - enum4linux
 # - bash one liners
-# - fxy | grep port > validation
-# - fxy | grep cid > validation
+# - fxy help cid > validation
 ## up(date)^: Update fxy
 if [[ "$1" =~ ^up(date)?$ ]]; then
   # update for git clone
@@ -1335,7 +1334,9 @@ if [ "$1" == "weevely" ]; then
   bash -c "$CMD"
   exit
 fi
-## wfuzz [help|vhost]^: wfuzz | tee
+## wfuzz vhost [s(sl)|tls] [domain] [hw] [hc]^: wfuzz vhost
+## wfuzz [help|s(sl)|tls] [subdir] [hw] [hc]^: wfuzz files/folders
+
 # wfuzz help
 if [ "$1" == "wfuzz" ] && { [ "$#" -eq 2 ] && [ "$2" == "help" ]; }; then
   echo "Available commands for 'wfuzz':"
@@ -1387,7 +1388,7 @@ if [ "$#" -ge 2 ] && [ "$1" == "wfuzz" ] && [ "$2" == "vhost" ]; then
   exit
 fi
 
-# wfuzz normal
+# wfuzz files/folders
 if [ "$1" == "wfuzz" ]; then
   CMD="$1"; checkCmd
   PROTO="http"
@@ -1411,7 +1412,7 @@ if [ "$1" == "wfuzz" ]; then
   if [ "$#" -eq 4 ] && [ "$PROTO" == "https" ]; then HW="--hw $4"; fi
   if [ "$#" -eq 5 ] && [ "$PROTO" == "https" ]; then HW="--hw $4"; HC="--hc $5"; fi
 
-  CMD="wfuzz -u '$PROTO://${RHOST}${SUB}' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt $HW $HC"
+  CMD="wfuzz -u '$PROTO://${RHOST}${SUB}FUZZ' -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt $HW $HC"
   CMD="$CMD | tee ${RHOST}_$(echo "$CMD" | cut -d' ' -f1)_$(date +%F_%H%M%S).log"
   echo "${bldwht}> $CMD${txtrst}"
   prompt

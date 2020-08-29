@@ -47,7 +47,8 @@ Available commands:
   fxy up(date)                                           : Update fxy
   fxy u(ser)a(gent) [text]                               : Show/Set User-Agent
   fxy weevely [help|gen]                                 : weevely php shell
-  fxy wfuzz [help|vhost]                                 : wfuzz | tee
+  fxy wfuzz [help|s(sl)|tls] [subdir] [hw] [hc]          : wfuzz files/folders
+  fxy wfuzz vhost [s(sl)|tls] [domain] [hw] [hc]         : wfuzz vhost
 
 ```
 

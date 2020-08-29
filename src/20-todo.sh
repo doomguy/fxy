@@ -12,5 +12,4 @@ fi
 # - smbmap
 # - enum4linux
 # - bash one liners
-# - fxy | grep port > validation
-# - fxy | grep cid > validation
+# - fxy help cid > validation
