@@ -32,7 +32,9 @@ Available commands:
   fxy len(gth) [input]                                   : Show length of input
   fxy l(isten) [port]                                    : ncat -vlkp PORT
   fxy md5|sha(1)|sha2(56)|sha3(84)|sha5(12) [input]      : Generate hashes from input
-  fxy msf [payload] [port]                               : metasploit setp listener / generate payload
+  fxy msf [payload] [port] [gen(erate)] [format]         : metasploit setup listener / generate payload
+  fxy msf ssh(enum) [port] [wordlist]                    : metasploit ssh user enumeration
+  fxy msf webdel(ivery) [lport] [py|php|psh]             : metasploit web delivery exploit
   fxy nfs|showmount                                      : showmount -e RHOST
   fxy nikto [s(sl)|tls] [subdir]                         : nikto -host PROTO://RHOST+SUBDIR | tee
   fxy n(map) [full]                                      : nmap -v -A (-p-) RHOST | tee

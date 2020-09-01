@@ -21,3 +21,5 @@ if { [[ "$1" =~ ^md5|sha(1)?|sha2(56)?|sha3(84)?|sha5(12)?$ ]]; } && [ "$#" -ge 
   echo -n "$INPUT" | $CMD | cut -d' ' -f1
   exit
 fi
+
+# https://defuse.ca/checksums.htm#checksums

