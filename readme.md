@@ -24,17 +24,18 @@ Available commands:
   fxy h(ash)i(d) [hash|cid]                              : Identify hash type
   fxy h(ash)s(earch) [help|any|md5|sha1|...] [hash|cid]  : Search for hashes
   fxy h(elp) [search keyword]                            : Show help or search for keyword
-  fxy httpd|ws [port]                                    : python3 -m http.server PORT
+  fxy httpd|ws [port]                                    : Spawn python3 http webserver
+  fxy httpsd|wss [port]                                  : Spawn openssl https webserver
   fxy hydra|brute [help|service] [port] [username]       : hydra brute force (ssh, ftp, smb, http)
   fxy (i)conv|convert [file]                             : iconv -f UTF-16LE -t UTF-8 FILE -o FILE.conv
-  fxy ip(s)                                              : Show interface and external IP(s)
+  fxy ip(s)                                              : Show local and external IP(s)
   fxy ipwsh [port]                                       : Download InsecurePowerShell and serve via davserver
   fxy len(gth) [input]                                   : Show length of input
   fxy l(isten) [port]                                    : ncat -vlkp PORT
   fxy md5|sha(1)|sha2(56)|sha3(84)|sha5(12) [input]      : Generate hashes from input
   fxy msf [payload] [port] [gen(erate)] [format]         : metasploit setup listener / generate payload
   fxy msf ssh(enum) [port] [wordlist]                    : metasploit ssh user enumeration
-  fxy msf webdel(ivery) [lport] [py|php|psh]             : metasploit web delivery exploit
+  fxy msf webdel(ivery) [lport] [py|php|psh]             : metasploit web delivery module
   fxy nfs|showmount                                      : showmount -e RHOST
   fxy nikto [s(sl)|tls] [subdir]                         : nikto -host PROTO://RHOST+SUBDIR | tee
   fxy n(map) [full]                                      : nmap -v -A (-p-) RHOST | tee

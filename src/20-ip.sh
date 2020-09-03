@@ -1,4 +1,4 @@
-## ip(s)^: Show interface and external IP(s)
+## ip(s)^: Show local and external IP(s)
 if [[ "$1" =~ ^ip(s)?$ ]]; then
   CMD="ip"; checkCmd
   ip a \
