@@ -1,4 +1,4 @@
-1..217
+1..218
 ok 1 fxy b64 123456
 ok 2 fxy b64e 123456
 ok 3 fxy base64 123456
@@ -108,111 +108,112 @@ ok 106 fxy h sshr
 ok 107 fxy ws # skip
 ok 108 fxy httpd # skip
 ok 109 fxy ws 123invalid
-ok 110 fxy hydra
-ok 111 fxy hydra help
-ok 112 fxy hydra ssh (no file)
-ok 113 fxy hydra ftp (no file)
-ok 114 fxy hydra smb (no file)
-ok 115 fxy hydra http (no file)
-ok 116 fxy hydra ssh (with file)
-ok 117 fxy hydra ssh 9001 (with file)
-ok 118 fxy hydra ssh 123invalid (with file)
-ok 119 fxy hydra ssh 9001 alice (with file)
-ok 120 fxy hydra ftp (with file)
-ok 121 fxy hydra smb (with file)
-ok 122 fxy hydra http (with file)
-ok 123 fxy hydra http 443 (with file)
-ok 124 fxy hydra http 443 alice (with file)
-ok 125 fxy hydra http 443 alice /certsrv/ (with file)
-ok 126 fxy iconv bats.log
-ok 127 fxy conv bats.log
-ok 128 fxy convert bats.log
-ok 129 fxy ips
-ok 130 fxy ip
-ok 131 fxy ipwsh
-ok 132 fxy ipwsh 123invalid
-ok 133 fxy len
-ok 134 fxy length
-ok 135 fxy len 123456
-ok 136 fxy length 123456
-ok 137 fxy length '123456'
-ok 138 fxy len 12345 6
-ok 139 fxy len '12345 6'
-ok 140 fxy listen 123invalid
-ok 141 fxy l 123invalid
-ok 142 fxy msf payload 123invalid
-ok 143 fxy nikto
-ok 144 fxy nikto s
-ok 145 fxy nikto ssl
-ok 146 fxy nikto tls
-ok 147 fxy nikto :8080/index.html
-ok 148 fxy nikto s :8080/index.html
-ok 149 fxy n
-ok 150 fxy nmap
-ok 151 fxy n full
-ok 152 fxy pass
-ok 153 fxy password
-ok 154 fxy peas
-ok 155 fxy peas lin
-ok 156 fxy peas winbat
-ok 157 fxy peas winany
-ok 158 fxy peas win86
-ok 159 fxy peas win64
-ok 160 fxy peas lin 9001
-ok 161 fxy peas lin 123invalid
-ok 162 fxy ping 1
-ok 163 fxy ping 123invalid
-ok 164 fxy rev
-ok 165 fxy revshell
-ok 166 fxy rev help
-ok 167 fxy revshell help
-ok 168 fxy rev bash
-ok 169 fxy rev bash 123invalid
-ok 170 fxy r
-ok 171 fxy rhost
-ok 172 fxy r example.com
-ok 173 fxy socat 123invalid
-ok 174 fxy ssh 0 123invalid
-ok 175 fxy todo
-ok 176 fxy 2do
-ok 177 fxy ua
-ok 178 fxy useragent
-ok 179 fxy ua TestAgent
-ok 180 fxy ua Test Agent
-ok 181 fxy ua default
-ok 182 fxy ua reset
-ok 183 fxy weevely help
-ok 184 fxy weevely gen
-ok 185 fxy weevely gen test.php
-ok 186 fxy weevely gen test.php 123456
-ok 187 fxy weevely
-ok 188 fxy weevely s
-ok 189 fxy weevely ssl
-ok 190 fxy weevely tls
-ok 191 fxy weevely :8080/files/
-ok 192 fxy weevely s :8080/files/
-ok 193 fxy weevely :8080/files/ test.php
-ok 194 fxy weevely s :8080/files/ test.php
-ok 195 fxy weevely :8080/files/ test.php 123456
-ok 196 fxy weevely s :8080/files/ test.php 123456
-ok 197 fxy wfuzz help
-ok 198 fxy wfuzz vhost
-ok 199 fxy wfuzz vhost s
-ok 200 fxy wfuzz vhost ssl
-ok 201 fxy wfuzz vhost tls
-ok 202 fxy wfuzz vhost example.com
-ok 203 fxy wfuzz vhost s example.com
-ok 204 fxy wfuzz vhost example.com 123
-ok 205 fxy wfuzz vhost s example.com 123
-ok 206 fxy wfuzz vhost example.com 123 456
-ok 207 fxy wfuzz vhost s example.com 123 456
-ok 208 fxy wfuzz
-ok 209 fxy wfuzz s
-ok 210 fxy wfuzz ssl
-ok 211 fxy wfuzz tls
-ok 212 fxy wfuzz :8080/admin/
-ok 213 fxy wfuzz s :8080/admin/
-ok 214 fxy wfuzz :8080/admin/ 123
-ok 215 fxy wfuzz s :8080/admin/ 123
-ok 216 fxy wfuzz :8080/admin/ 123 456
-ok 217 fxy wfuzz s :8080/admin/ 123 456
+ok 110 fxy wss 123invalid
+ok 111 fxy hydra
+ok 112 fxy hydra help
+ok 113 fxy hydra ssh (no file)
+ok 114 fxy hydra ftp (no file)
+ok 115 fxy hydra smb (no file)
+ok 116 fxy hydra http (no file)
+ok 117 fxy hydra ssh (with file)
+ok 118 fxy hydra ssh 9001 (with file)
+ok 119 fxy hydra ssh 123invalid (with file)
+ok 120 fxy hydra ssh 9001 alice (with file)
+ok 121 fxy hydra ftp (with file)
+ok 122 fxy hydra smb (with file)
+ok 123 fxy hydra http (with file)
+ok 124 fxy hydra http 443 (with file)
+ok 125 fxy hydra http 443 alice (with file)
+ok 126 fxy hydra http 443 alice /certsrv/ (with file)
+ok 127 fxy iconv bats.log
+ok 128 fxy conv bats.log
+ok 129 fxy convert bats.log
+ok 130 fxy ips
+ok 131 fxy ip
+ok 132 fxy ipwsh
+ok 133 fxy ipwsh 123invalid
+ok 134 fxy len
+ok 135 fxy length
+ok 136 fxy len 123456
+ok 137 fxy length 123456
+ok 138 fxy length '123456'
+ok 139 fxy len 12345 6
+ok 140 fxy len '12345 6'
+ok 141 fxy listen 123invalid
+ok 142 fxy l 123invalid
+ok 143 fxy msf payload 123invalid
+ok 144 fxy nikto
+ok 145 fxy nikto s
+ok 146 fxy nikto ssl
+ok 147 fxy nikto tls
+ok 148 fxy nikto :8080/index.html
+ok 149 fxy nikto s :8080/index.html
+ok 150 fxy n
+ok 151 fxy nmap
+ok 152 fxy n full
+ok 153 fxy pass
+ok 154 fxy password
+ok 155 fxy peas
+ok 156 fxy peas lin
+ok 157 fxy peas winbat
+ok 158 fxy peas winany
+ok 159 fxy peas win86
+ok 160 fxy peas win64
+ok 161 fxy peas lin 9001
+ok 162 fxy peas lin 123invalid
+ok 163 fxy ping 1
+ok 164 fxy ping 123invalid
+ok 165 fxy rev
+ok 166 fxy revshell
+ok 167 fxy rev help
+ok 168 fxy revshell help
+ok 169 fxy rev bash
+ok 170 fxy rev bash 123invalid
+ok 171 fxy r
+ok 172 fxy rhost
+ok 173 fxy r example.com
+ok 174 fxy socat 123invalid
+ok 175 fxy ssh 0 123invalid
+ok 176 fxy todo
+ok 177 fxy 2do
+ok 178 fxy ua
+ok 179 fxy useragent
+ok 180 fxy ua TestAgent
+ok 181 fxy ua Test Agent
+ok 182 fxy ua default
+ok 183 fxy ua reset
+ok 184 fxy weevely help
+ok 185 fxy weevely gen
+ok 186 fxy weevely gen test.php
+ok 187 fxy weevely gen test.php 123456
+ok 188 fxy weevely
+ok 189 fxy weevely s
+ok 190 fxy weevely ssl
+ok 191 fxy weevely tls
+ok 192 fxy weevely :8080/files/
+ok 193 fxy weevely s :8080/files/
+ok 194 fxy weevely :8080/files/ test.php
+ok 195 fxy weevely s :8080/files/ test.php
+ok 196 fxy weevely :8080/files/ test.php 123456
+ok 197 fxy weevely s :8080/files/ test.php 123456
+ok 198 fxy wfuzz help
+ok 199 fxy wfuzz vhost
+ok 200 fxy wfuzz vhost s
+ok 201 fxy wfuzz vhost ssl
+ok 202 fxy wfuzz vhost tls
+ok 203 fxy wfuzz vhost example.com
+ok 204 fxy wfuzz vhost s example.com
+ok 205 fxy wfuzz vhost example.com 123
+ok 206 fxy wfuzz vhost s example.com 123
+ok 207 fxy wfuzz vhost example.com 123 456
+ok 208 fxy wfuzz vhost s example.com 123 456
+ok 209 fxy wfuzz
+ok 210 fxy wfuzz s
+ok 211 fxy wfuzz ssl
+ok 212 fxy wfuzz tls
+ok 213 fxy wfuzz :8080/admin/
+ok 214 fxy wfuzz s :8080/admin/
+ok 215 fxy wfuzz :8080/admin/ 123
+ok 216 fxy wfuzz s :8080/admin/ 123
+ok 217 fxy wfuzz :8080/admin/ 123 456
+ok 218 fxy wfuzz s :8080/admin/ 123 456

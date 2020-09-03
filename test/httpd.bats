@@ -14,3 +14,8 @@
   result="$(build/fxy ws 123invalid)"
   [[ "$result" =~ "Port is not a number!" ]]
 }
+
+@test            "fxy wss 123invalid" {
+  result="$(build/fxy wss 123invalid)"
+  [[ "$result" =~ "Port is not a number!" ]]
+}

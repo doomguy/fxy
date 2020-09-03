@@ -29,7 +29,7 @@ if [[ "$1" =~ ^msf$ ]] && [ "$#" -ge 2 ] && [[ "$2" =~ ^ssh(enum)?$ ]]; then
   exit
 fi
 
-## msf webdel(ivery) [lport] [py|php|psh]^: metasploit web delivery module
+## msf web(del)(ivery) [lport] [py|php|psh]^: metasploit web delivery module
 if [[ "$1" =~ ^msf$ ]] && [ "$#" -ge 2 ] && [[ "$2" =~ ^web(del)?(ivery)?$ ]]; then
   CMD="msfconsole"
   export INSTCMD="apt install metasploit-framework -y"
