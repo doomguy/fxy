@@ -14,6 +14,14 @@ info="${bldwht}[*]${txtrst}"    # Feedback
 warn="${bldred}[!]${txtrst}"
 #ques="${bldblu}[?]${txtrst}"
 
+prompt() {
+  read -p "${ques} ${bldwht}Run command? (y/N): ${txtrst}" -n 1 -r
+  echo
+  if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
+    exit
+  fi
+}
+
 INSTCMD=""
 checkCmd() {
   if [ ! "$(which "$CMD")" ]; then
