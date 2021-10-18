@@ -12,7 +12,7 @@ txtrst=$(tput sgr0)             # Reset
 info="${bldwht}[*]${txtrst}"    # Feedback
 #pass="${bldblu}\[*\]${txtrst}"
 warn="${bldred}[!]${txtrst}"
-#ques="${bldblu}[?]${txtrst}"
+ques="${bldblu}[?]${txtrst}"
 
 prompt() {
   read -p "${ques} ${bldwht}Run command? (y/N): ${txtrst}" -n 1 -r
