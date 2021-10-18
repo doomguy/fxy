@@ -5,7 +5,7 @@ set -euo pipefail
 #txtund=$(tput sgr 0 1)          # Underline
 txtbld=$(tput bold)             # Bold
 bldred=${txtbld}$(tput setaf 1) #  red
-#bldblu=${txtbld}$(tput setaf 4) #  blue
+bldblu=${txtbld}$(tput setaf 4) #  blue
 bldgreen=${txtbld}$(tput setaf 2)
 bldwht=${txtbld}$(tput setaf 7) #  white
 txtrst=$(tput sgr0)             # Reset
