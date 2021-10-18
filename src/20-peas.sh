@@ -28,7 +28,7 @@ if [ "$1" == "peas" ] && [ "$#" -ge 2 ] && { [ "$2" == "lin" ] || [ "$2" == "win
   cd "$FPATH" || exit
 
   URL1="https://raw.githubusercontent.com/carlospolop/privilege-escalation-awesome-scripts-suite/master"
-  URL2="https://github.com/carlospolop/PEASS-ng/raw/master/winPEAS/winPEASexe/binaries/Obfuscated%20Releases/"
+  URL2="https://github.com/carlospolop/PEASS-ng/raw/master/winPEAS/winPEASexe/binaries/Obfuscated%20Releases"
 
   case "$2" in
     "lin")       wget "$URL1/linPEAS/linpeas.sh" -O "$FPATH/linpeas.sh" ;;
