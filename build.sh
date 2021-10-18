@@ -14,6 +14,26 @@ info="${bldwht}[*]${txtrst}"    # Feedback
 warn="${bldred}[!]${txtrst}"
 #ques="${bldblu}[?]${txtrst}"
 
+INSTCMD=""
+checkCmd() {
+  if [ ! "$(which "$CMD")" ]; then
+    echo "${warn} '$CMD' required but missing."
+    if [ -n "$INSTCMD" ]; then
+      echo "${bldwht}> $INSTCMD${txtrst}"; prompt; bash -c "$INSTCMD";
+    else
+      exit
+    fi
+  fi
+}
+
+echo -e "\n${info} Check for missing build commands"
+CMD="shellcheck"
+INSTCMD="sudo apt-get install shellcheck -y"
+checkCmd
+
+CMD="bats"
+INSTCMD="sudo apt-get install bats -y"
+checkCmd
 
 echo -e "\n${info} Building script"
 cat src/*.sh > build/fxy
