@@ -34,11 +34,10 @@ checkCmd() {
   fi
 }
 
-echo -e "\n${info} Check for missing build commands"
+echo -e "\n${info} Checking for missing build commands"
 CMD="shellcheck"
 INSTCMD="sudo apt-get install shellcheck -y"
 checkCmd
-
 CMD="bats"
 INSTCMD="sudo apt-get install bats -y"
 checkCmd
